@@ -34,7 +34,12 @@
               <div class="space-y-6 border-t border-gray-200 px-4 py-6">
                 <div class="flow-root">
                   <RouterLink v-if="!authStore.user" to="/login" class="-m-2 block p-2 font-medium text-gray-900" @click="closeMobileMenu">Sign in</RouterLink>
-                  <RouterLink v-else to="/account" class="-m-2 block p-2 font-medium text-gray-900" @click="closeMobileMenu">Account</RouterLink>
+                  <div v-else class="space-y-2">
+                    <div class="-m-2 block p-2 font-medium text-gray-900">{{ authStore.user.displayName || authStore.user.email }}</div>
+                    <RouterLink to="/account" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Account</RouterLink>
+                    <RouterLink to="/manage-shop" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Manage Shop</RouterLink>
+                    <button @click="logout" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4 w-full text-left">Logout</button>
+                  </div>
                 </div>
               </div>
             </DialogPanel>
@@ -46,8 +51,8 @@
     <header class="relative bg-white">
       <p class="flex h-10 items-center justify-center bg-gray-800 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">Free shipping on orders over $100</p>
 
-      <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="border-b border-gray-200">
+      <div class="border-b border-gray-200">
+        <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex h-16 items-center">
             <button type="button" class="relative rounded-md bg-white p-2 text-gray-400 lg:hidden" @click="toggleMobileMenu">
               <span class="absolute -inset-0.5" />
@@ -75,7 +80,34 @@
             <div class="ml-auto flex items-center">
               <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                 <RouterLink v-if="!authStore.user" to="/login" class="text-sm font-medium text-gray-700 hover:text-gray-800">Sign in</RouterLink>
-                <RouterLink v-else to="/account" class="text-sm font-medium text-gray-700 hover:text-gray-800">Account</RouterLink>
+                <Menu v-else as="div" class="relative ml-3">
+                  <div>
+                    <MenuButton class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
+                      {{ authStore.user.displayName || authStore.user.email }}
+                      <ChevronDownIcon class="ml-1 h-5 w-5" aria-hidden="true" />
+                    </MenuButton>
+                  </div>
+                  <transition
+                    enter-active-class="transition ease-out duration-100"
+                    enter-from-class="transform opacity-0 scale-95"
+                    enter-to-class="transform opacity-100 scale-100"
+                    leave-active-class="transition ease-in duration-75"
+                    leave-from-class="transform opacity-100 scale-100"
+                    leave-to-class="transform opacity-0 scale-95"
+                  >
+                    <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <MenuItem v-slot="{ active }">
+                        <RouterLink to="/account" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Account</RouterLink>
+                      </MenuItem>
+                      <MenuItem v-slot="{ active }">
+                        <RouterLink to="/manage-shop" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Manage Shop</RouterLink>
+                      </MenuItem>
+                      <MenuItem v-slot="{ active }">
+                        <button @click="logout" :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-700']">Logout</button>
+                      </MenuItem>
+                    </MenuItems>
+                  </transition>
+                </Menu>
               </div>
 
               <!-- Search -->
@@ -98,8 +130,8 @@
               </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </header>
   </div>
 </template>
@@ -114,14 +146,21 @@ import {
   DialogPanel,
   TransitionChild,
   TransitionRoot,
+  Menu,
+  MenuButton,
+  MenuItems,
+  MenuItem
 } from '@headlessui/vue'
 import { 
   Bars3Icon, 
   MagnifyingGlassIcon, 
   ShoppingBagIcon, 
-  XMarkIcon 
+  XMarkIcon,
+  ChevronDownIcon
 } from '@heroicons/vue/24/outline'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const cartStore = useCartStore()
 const mobileMenuOpen = ref(false)
@@ -134,6 +173,12 @@ const toggleMobileMenu = () => {
 
 const closeMobileMenu = () => {
   mobileMenuOpen.value = false
+}
+
+const logout = async () => {
+  await authStore.logout()
+  closeMobileMenu()
+  router.push('/')
 }
 
 // Close mobile menu when route changes or on large screens
