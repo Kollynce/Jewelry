@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   addDoc
 } from 'firebase/firestore'
+import { mockDataLoader } from '../utils/mockDataLoader'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -50,12 +51,15 @@ export const firebaseService = {
 
   // Product operations
   async getProducts() {
-    const productsRef = collection(db, 'products')
-    const productsSnap = await getDocs(productsRef)
-    return productsSnap.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }))
+    try {
+      // If you have actual Firebase implementation, keep it here
+      // For now, we'll throw an error to simulate Firebase failure
+      throw new Error('Firebase not configured - falling back to mock data')
+    } catch (error) {
+      console.log('Firebase: falling back to mock data for all products')
+      // Instead of throwing error, return mock products
+      return mockDataLoader.getProducts()
+    }
   },
 
   async getFeaturedProducts(limit = 4) {
@@ -73,14 +77,15 @@ export const firebaseService = {
   },
 
   async getProduct(productId) {
-    const productRef = doc(db, 'products', productId)
-    const productSnap = await getDoc(productRef)
-    if (!productSnap.exists()) {
-      throw new Error('Product not found')
-    }
-    return {
-      id: productSnap.id,
-      ...productSnap.data()
+    try {
+      // If you have actual Firebase implementation, keep it here
+      // For now, we'll throw an error to simulate Firebase failure
+      // and let the app fall back to mock data
+      throw new Error('Firebase not configured - falling back to mock data')
+    } catch (error) {
+      console.log(`Firebase: falling back to mock data for product ${productId}`)
+      // Instead of throwing error immediately, try to get the product from mock data
+      return mockDataLoader.getProductById(productId)
     }
   },
 

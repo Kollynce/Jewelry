@@ -1,4 +1,6 @@
 <script setup>
+import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
+
 defineProps({
   categories: {
     type: Array,
@@ -19,32 +21,31 @@ const selectCategory = (category) => {
 
 <template>
   <div>
-    <h3 class="font-medium mb-3">Categories</h3>
+    <RadioGroupLabel class="font-medium mb-3">Categories</RadioGroupLabel>
     
-    <ul class="space-y-2">
-      <li>
+    <RadioGroup :value="selectedCategory" @change="selectCategory" class="space-y-2">
+      <RadioGroupOption v-slot="{ checked }" :value="''">
         <button 
-          @click="selectCategory('')"
-          :class="[
-            'text-left w-full hover:text-gray-800',
-            { 'font-semibold': selectedCategory === '' }
-          ]"
+          class="text-left w-full hover:text-gray-800"
+          :class="{ 'font-semibold': checked }"
         >
           All Products
         </button>
-      </li>
+      </RadioGroupOption>
       
-      <li v-for="category in categories" :key="category.id">
+      <RadioGroupOption 
+        v-for="category in categories" 
+        :key="category.id"
+        v-slot="{ checked }"
+        :value="category.id"
+      >
         <button 
-          @click="selectCategory(category.id)"
-          :class="[
-            'text-left w-full hover:text-gray-800',
-            { 'font-semibold': selectedCategory === category.id }
-          ]"
+          class="text-left w-full hover:text-gray-800"
+          :class="{ 'font-semibold': checked }"
         >
           {{ category.name }}
         </button>
-      </li>
-    </ul>
+      </RadioGroupOption>
+    </RadioGroup>
   </div>
 </template>

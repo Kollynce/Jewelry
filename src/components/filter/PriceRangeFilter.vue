@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
+import { Button } from '@headlessui/vue'
 
 const props = defineProps({
   minPrice: {
@@ -78,8 +79,8 @@ watch(() => props.initialMax, (newVal) => {
       </div>
     </div>
     
-    <button @click="applyFilter" class="btn btn-primary w-full">
+    <Button @click="applyFilter" class="btn btn-primary w-full">
       Apply Filter
-    </button>
+    </Button>
   </div>
 </template>

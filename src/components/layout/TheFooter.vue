@@ -1,5 +1,6 @@
 <script setup>
-// No props or logic needed
+// Remove the import that's causing the error
+// No imports needed for basic functionality
 </script>
 
 <template>

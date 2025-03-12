@@ -110,31 +110,11 @@
         </div>
         
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div v-for="product in featuredProducts" :key="product.id" 
-              class="group relative bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
-            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-lg">
-              <img :src="product.imageUrl || product.image" :alt="product.name"
-                  class="h-60 w-full object-cover object-center group-hover:opacity-90">
-            </div>
-            <div class="p-4">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="text-lg font-medium text-gray-900">{{ product.name }}</h3>
-                  <p class="text-sm text-gray-500">{{ product.category }}</p>
-                </div>
-                <p class="text-lg font-medium text-gray-900">${{ (product.price || 0).toFixed(2) }}</p>
-              </div>
-              <div class="mt-4 flex justify-between">
-                <router-link :to="`/product/${product.id}`" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
-                  View details
-                </router-link>
-                <button @click="addToCart(product)" 
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-md text-sm transition-all">
-                  Add to cart
-                </button>
-              </div>
-            </div>
-          </div>
+          <ProductCard 
+            v-for="product in featuredProducts" 
+            :key="product.id" 
+            :product="product" 
+          />
         </div>
       </div>
     </section>
@@ -266,6 +246,7 @@ import { ref, onMounted, nextTick } from 'vue'
 import { firebaseService } from '../services/firebaseService'
 import { useCartStore } from '@/stores/cart'
 import { mockDataLoader } from '../utils/mockDataLoader'
+import ProductCard from '@/components/ProductCard.vue'
 
 const newCollection = ref([])
 const trending = ref([])
