@@ -127,27 +127,6 @@
             </svg>
           </router-link>
         </div>
-        
-        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
-          <div class="flex items-center mb-4">
-            <div class="bg-purple-100 p-3 rounded-full mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-              </svg>
-            </div>
-            <h2 class="text-xl font-semibold">Categories</h2>
-          </div>
-          <p class="text-gray-600 mb-4">Organize your jewelry products</p>
-          <router-link 
-            to="/admin/categories" 
-            class="text-purple-600 hover:text-purple-800 font-medium flex items-center"
-          >
-            Manage Categories
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          </router-link>
-        </div>
 
         <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
           <div class="flex items-center mb-4">
@@ -185,15 +164,6 @@
             Add New Product
           </router-link>
           <router-link 
-            to="/admin/categories/new" 
-            class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg flex items-center transition-colors duration-200"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-            </svg>
-            Add New Category
-          </router-link>
-          <router-link 
             to="/admin/orders/pending" 
             class="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded-lg flex items-center transition-colors duration-200"
           >
@@ -221,45 +191,64 @@
 import { useAuthStore } from '../stores/auth';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { firebaseService } from '../services/firebaseService';
 
 const authStore = useAuthStore();
 const router = useRouter();
 const loading = ref(true);
 
-// Mock statistics - in a real app, these would come from your API
+// Initialize statistics with zeros
 const stats = ref({
-  products: 58,
-  orders: 24,
-  categories: 12,
-  revenue: 9845.50
+  products: 0,
+  orders: 0,
+  categories: 0,
+  revenue: 0
 });
 
-const refreshData = () => {
+const refreshData = async () => {
   loading.value = true;
-  // Simulate data fetching
-  setTimeout(() => {
-    // In a real app, you would fetch actual data here
+  
+  try {
+    // Fetch real data from Firebase
+    const [products, orders, categories] = await Promise.all([
+      firebaseService.getProducts(),
+      firebaseService.getAllOrders(),
+      firebaseService.getCategories()
+    ]);
+    
+    // Calculate total revenue from all orders
+    const totalRevenue = orders.reduce((sum, order) => {
+      // Make sure order.total exists and is a number
+      const orderTotal = typeof order.total === 'number' ? order.total : 0;
+      return sum + orderTotal;
+    }, 0);
+    
+    // Update stats with real values
     stats.value = {
-      products: Math.floor(Math.random() * 20) + 50,
-      orders: Math.floor(Math.random() * 10) + 20,
-      categories: Math.floor(Math.random() * 5) + 10,
-      revenue: Math.random() * 5000 + 8000
+      products: products.length,
+      orders: orders.length,
+      categories: categories.length,
+      revenue: totalRevenue
     };
+    
+    console.log('Dashboard data loaded:', stats.value);
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error);
+    // Keep existing values if there's an error
+  } finally {
     loading.value = false;
-  }, 800);
+  }
 };
 
-onMounted(() => {
+onMounted(async () => {
   // Additional admin validation could be added here if needed
   if (!authStore.user) {
     router.push('/login');
     return;
   }
   
-  // Simulate loading data
-  setTimeout(() => {
-    loading.value = false;
-  }, 800);
+  // Load real data when component mounts
+  await refreshData();
 });
 </script>
 

@@ -94,7 +94,7 @@
             <div 
               v-for="(image, index) in product.images" 
               :key="index"
-              class="relative border rounded p-2"
+              class="relative border rounded p-2 group"
             >
               <img 
                 :src="getImageSrc(image)" 
@@ -104,38 +104,86 @@
               <button 
                 type="button"
                 @click="removeImage(index)" 
-                class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity"
+                aria-label="Remove image"
               >
                 ×
               </button>
             </div>
             
-            <div class="border border-dashed rounded-lg p-4 flex flex-col items-center justify-center min-h-[8rem]">
-              <div class="mb-2 w-full">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
+            <div 
+              class="border border-dashed rounded-lg flex flex-col items-center justify-center min-h-[8rem] relative"
+              :class="isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'"
+              @dragover.prevent="isDragging = true"
+              @dragleave.prevent="isDragging = false" 
+              @drop.prevent="handleFileDrop"
+            >
+              <div 
+                class="absolute inset-0 flex flex-col items-center justify-center p-4"
+                @click="$refs.fileInput.click()"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p class="text-sm font-medium text-gray-700 mb-1">Drag image here or click to upload</p>
+                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
                 <input 
+                  ref="fileInput"
                   type="file" 
                   id="image-upload"
                   @change="handleFileUpload"
                   accept="image/*"
-                  class="w-full mb-2 text-sm"
+                  class="hidden"
+                  aria-label="Upload image"
                 />
-                <div class="text-sm text-gray-500 mb-2 text-center">-- OR --</div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Enter Image URL</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 flex items-center gap-4">
+            <div class="flex-1">
+              <label for="image-url" class="block text-sm font-medium text-gray-700 mb-1">Add Image by URL</label>
+              <div class="flex">
                 <input 
                   type="url" 
+                  id="image-url"
                   v-model="newImageUrl" 
-                  placeholder="Enter image URL"
-                  class="w-full p-2 border border-gray-300 rounded mb-2"
+                  placeholder="https://example.com/image.jpg"
+                  class="flex-1 p-2 border border-gray-300 rounded-l focus:ring-blue-500 focus:border-blue-500"
                 >
-                <div class="flex justify-center">
+                <button 
+                  type="button"
+                  @click="addImage" 
+                  class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-r transition-colors"
+                  :disabled="isUploading || !newImageUrl.trim()"
+                >
+                  Add URL
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Upload preview -->
+          <div v-if="previewImage" class="mt-4">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Image preview:</h3>
+            <div class="flex items-center gap-4">
+              <img :src="previewImage" class="h-24 w-24 object-cover rounded border" alt="Preview image">
+              <div class="flex-1">
+                <p class="text-sm text-gray-700">Ready to upload</p>
+                <div class="flex gap-2 mt-1">
                   <button 
-                    type="button"
-                    @click="addImage" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded"
-                    :disabled="isUploading || !newImageUrl.trim()"
+                    type="button" 
+                    @click="confirmImageUpload"
+                    class="text-sm bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded transition-colors"
                   >
-                    Add URL
+                    Add to product
+                  </button>
+                  <button 
+                    type="button" 
+                    @click="cancelImageUpload"
+                    class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 py-1 px-3 rounded transition-colors"
+                  >
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -143,33 +191,20 @@
           </div>
           
           <!-- Upload progress/status -->
-          <div v-if="isUploading" class="mt-2 bg-blue-50 text-blue-700 px-4 py-2 rounded">
-            <div class="flex items-center">
-              <span class="inline-block animate-spin mr-2">⟳</span>
+          <div v-if="isUploading" class="mt-4">
+            <div class="bg-blue-50 text-blue-700 px-4 py-3 rounded flex items-center">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
               <span>{{ uploadStatus }}</span>
             </div>
-          </div>
-          
-          <!-- Placeholder images -->
-          <div class="mt-4">
-            <h3 class="text-md font-medium mb-2">Or choose from placeholder images:</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-              <div 
-                v-for="(placeholder, index) in placeholderImages" 
-                :key="'placeholder-'+index"
-                class="border rounded cursor-pointer hover:border-blue-500 transition-colors"
-                @click="addPlaceholderImage(placeholder)"
-              >
-                <img 
-                  :src="placeholder" 
-                  class="w-full h-16 object-cover rounded" 
-                  alt="Placeholder image"
-                >
-              </div>
+            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-blue-600 h-2 rounded-full" :style="`width: ${uploadProgress}%`"></div>
             </div>
           </div>
           
-          <p class="text-sm text-gray-500 mt-2">
+          <p class="text-sm text-gray-500 mt-4">
             Add at least one product image. For best results, use images with a 1:1 aspect ratio.
             <br>
             <span class="text-green-600 font-medium">High-resolution images will be automatically resized to optimize performance.</span>
@@ -299,21 +334,14 @@ const error = ref(null);
 const showSizeWarning = ref(false);
 const formKey = computed(() => isEditMode.value ? `product_edit_${productId.value}` : 'product_new');
 const uploadStatus = ref('Processing image...');
+const uploadProgress = ref(0);
+const isDragging = ref(false);
+const previewImage = ref('');
+const selectedFile = ref(null);
 
 const hasTempImages = computed(() => {
   return product.value.images.some(img => img.startsWith('temp://'));
 });
-
-// Placeholder images - add URLs to real placeholder images
-const placeholderImages = [
-  'https://via.placeholder.com/400x400?text=Jewelry+Item',
-  'https://via.placeholder.com/400x400?text=Necklace',
-  'https://via.placeholder.com/400x400?text=Earrings',
-  'https://via.placeholder.com/400x400?text=Bracelet',
-  'https://via.placeholder.com/400x400?text=Ring',
-  'https://placehold.co/400x400/gold/white?text=Jewelry',
-  'https://placehold.co/400x400/silver/black?text=Silver+Jewelry'
-];
 
 // Load product data from server or localStorage
 onMounted(async () => {
@@ -377,16 +405,18 @@ const getImageSrc = (url) => {
   return url;
 };
 
-// Add a placeholder image
-const addPlaceholderImage = (url) => {
-  if (!product.value.images.includes(url)) {
-    product.value.images.push(url);
+// Handle file drop for drag and drop functionality
+const handleFileDrop = (event) => {
+  isDragging.value = false;
+  const droppedFiles = event.dataTransfer.files;
+  
+  if (droppedFiles.length > 0) {
+    processFile(droppedFiles[0]);
   }
 };
 
-// Handle file upload with better error handling and resize feedback
-const handleFileUpload = async (event) => {
-  const file = event.target.files[0];
+// Process the selected file and show preview
+const processFile = (file) => {
   if (!file) return;
 
   // Validate file type
@@ -394,35 +424,83 @@ const handleFileUpload = async (event) => {
     error.value = 'Please select an image file';
     return;
   }
+
+  // Validate file size (5MB limit)
+  if (file.size > 5 * 1024 * 1024) {
+    error.value = 'Image size should be less than 5MB';
+    return;
+  }
+
+  selectedFile.value = file;
   
+  // Create preview
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewImage.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+// Handle file selection from input
+const handleFileUpload = (event) => {
+  processFile(event.target.files[0]);
+};
+
+// Cancel image upload and reset preview
+const cancelImageUpload = () => {
+  previewImage.value = '';
+  selectedFile.value = null;
+  if (this.$refs && this.$refs.fileInput) {
+    this.$refs.fileInput.value = '';
+  }
+};
+
+// Confirm and proceed with image upload
+const confirmImageUpload = async () => {
+  if (!selectedFile.value) return;
+
   isUploading.value = true;
   error.value = null;
+  uploadProgress.value = 0;
 
   try {
-    // Check original file size and update status accordingly
-    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+    // Check file size and update status accordingly
+    const fileSizeMB = (selectedFile.value.size / (1024 * 1024)).toFixed(2);
     
-    if (file.size > 1024 * 1024) { // Larger than 1MB
+    if (selectedFile.value.size > 1024 * 1024) { // Larger than 1MB
       uploadStatus.value = `Resizing ${fileSizeMB}MB image for optimal performance...`;
     } else {
       uploadStatus.value = `Processing ${fileSizeMB}MB image...`;
     }
     
+    // Simulate progress for better UX
+    const progressInterval = setInterval(() => {
+      uploadProgress.value += 5;
+      if (uploadProgress.value >= 90) clearInterval(progressInterval);
+    }, 100);
+    
     // Process file - will be converted to base64
-    const imageUrl = await firebaseService.uploadProductImage(file);
+    const imageUrl = await firebaseService.uploadProductImage(selectedFile.value);
     product.value.images.push(imageUrl);
+    
+    uploadProgress.value = 100;
+    uploadStatus.value = "Upload complete!";
     
     // Show size warning if we're storing base64 data
     if (imageUrl.startsWith('base64://')) {
       showSizeWarning.value = true;
     }
     
-    // Reset file input
-    event.target.value = '';
+    // Reset preview and file input
+    setTimeout(() => {
+      previewImage.value = '';
+      selectedFile.value = null;
+      isUploading.value = false;
+    }, 1000);
+    
   } catch (err) {
     console.error('Error processing image:', err);
     error.value = `Failed to process image: ${err.message || 'Unknown error'}`;
-  } finally {
     isUploading.value = false;
   }
 };

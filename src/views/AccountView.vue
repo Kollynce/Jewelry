@@ -1,7 +1,379 @@
+<template>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900">My Account</h1>
+    
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="space-y-6 animate-pulse">
+      <div class="bg-white shadow rounded-lg p-6">
+        <div class="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div v-for="i in 4" :key="i" class="space-y-2">
+            <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+            <div class="h-6 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white shadow rounded-lg p-6">
+        <div class="h-6 bg-gray-200 rounded w-1/3 mb-6"></div>
+        <div v-for="i in 3" :key="i" class="mb-4 pb-4 border-b last:border-b-0">
+          <div class="flex justify-between mb-2">
+            <div class="h-6 bg-gray-200 rounded w-1/4"></div>
+            <div class="h-6 bg-gray-200 rounded w-20"></div>
+          </div>
+          <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+        </div>
+      </div>
+    </div>
+    
+    <TransitionRoot appear :show="!loading" as="div" enter="transition-opacity duration-500" 
+      enter-from="opacity-0" enter-to="opacity-100">
+      <div>
+        <!-- Notification messages -->
+        <TransitionRoot appear :show="!!successMsg" as="div" 
+          enter="transform transition duration-300 ease-out"
+          enter-from="-translate-y-4 opacity-0"
+          enter-to="translate-y-0 opacity-100"
+          leave="transform transition duration-200 ease-in"
+          leave-from="translate-y-0 opacity-100"
+          leave-to="-translate-y-4 opacity-0"
+          class="mb-6">
+          <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-md shadow-sm flex items-center">
+            <CheckIcon class="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+            <p class="text-green-700">{{ successMsg }}</p>
+          </div>
+        </TransitionRoot>
+        
+        <TransitionRoot appear :show="!!errorMsg" as="div"
+          enter="transform transition duration-300 ease-out"
+          enter-from="-translate-y-4 opacity-0"
+          enter-to="translate-y-0 opacity-100"
+          leave="transform transition duration-200 ease-in"
+          leave-from="translate-y-0 opacity-100"
+          leave-to="-translate-y-4 opacity-0"
+          class="mb-6">
+          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md shadow-sm flex items-center">
+            <XMarkIcon class="w-5 h-5 text-red-500 mr-3 flex-shrink-0" />
+            <p class="text-red-700">{{ errorMsg }}</p>
+          </div>
+        </TransitionRoot>
+        
+        <!-- TabGroup for main navigation -->
+        <TabGroup :defaultIndex="0" as="div" :class="getTransitionClasses(100)">
+          <TabList class="flex border-b mb-6 space-x-2">
+            <Tab v-slot="{ selected }" as="template">
+              <button class="py-3 px-6 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-t-md transition-colors"
+                :class="[
+                  selected 
+                    ? 'text-indigo-700 border-b-2 border-indigo-500 bg-indigo-50/50'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ]">
+                Profile Information
+              </button>
+            </Tab>
+            <Tab v-slot="{ selected }" as="template">
+              <button class="py-3 px-6 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-t-md transition-colors flex items-center"
+                :class="[
+                  selected 
+                    ? 'text-indigo-700 border-b-2 border-indigo-500 bg-indigo-50/50'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ]">
+                Order History
+                <span v-if="orders.length" 
+                  class="ml-2 bg-indigo-100 text-indigo-800 text-xs px-2 py-0.5 rounded-full">
+                  {{ orders.length }}
+                </span>
+              </button>
+            </Tab>
+          </TabList>
+
+          <TabPanels class="focus:outline-none">
+            <!-- Profile Tab Panel -->
+            <TabPanel :class="getTransitionClasses(200)" class="focus:outline-none">
+              <div class="bg-white shadow-sm rounded-lg overflow-hidden ring-1 ring-gray-900/5">
+                <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4">
+                  <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-white">Personal Details</h2>
+                    <button 
+                      v-if="!editMode" 
+                      @click="editMode = true"
+                      class="btn-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-600"
+                      aria-label="Edit profile"
+                    >
+                      <PencilIcon class="w-4 h-4 mr-1" />
+                      Edit
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="p-6">
+                  <!-- View mode -->
+                  <div v-if="!editMode" class="grid md:grid-cols-2 gap-y-6 gap-x-8">
+                    <div class="profile-field">
+                      <p class="field-label">Full Name</p>
+                      <p class="field-value font-medium">{{ userProfile?.firstName || '-' }} {{ userProfile?.lastName || '' }}</p>
+                    </div>
+                    <div class="profile-field">
+                      <p class="field-label">Email</p>
+                      <p class="field-value font-medium">{{ userProfile?.email || authStore.user.email }}</p>
+                    </div>
+                    <div class="profile-field">
+                      <p class="field-label">Phone</p>
+                      <p class="field-value font-medium">{{ userProfile?.phone || 'Not provided' }}</p>
+                    </div>
+                    <div class="profile-field">
+                      <p class="field-label">Address</p>
+                      <p class="field-value font-medium whitespace-pre-line">{{ userProfile?.address || 'Not provided' }}</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Edit mode -->
+                  <TransitionRoot 
+                    appear 
+                    :show="editMode" 
+                    enter="transition-opacity ease-out duration-300"
+                    enter-from="opacity-0"
+                    enter-to="opacity-100"
+                    leave="transition-opacity ease-in duration-200"
+                    leave-from="opacity-100"
+                    leave-to="opacity-0"
+                    as="div"
+                  >
+                    <form @submit.prevent="saveProfile" class="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label class="form-label" for="firstName">First Name</label>
+                        <input 
+                          id="firstName"
+                          v-model="formData.firstName" 
+                          type="text" 
+                          class="form-input" 
+                          placeholder="Enter your first name"
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <input 
+                          id="lastName"
+                          v-model="formData.lastName" 
+                          type="text" 
+                          class="form-input" 
+                          placeholder="Enter your last name"
+                        >
+                      </div>
+                      
+                      <div>
+                        <label class="form-label" for="email">Email</label>
+                        <input 
+                          id="email"
+                          v-model="formData.email" 
+                          type="email" 
+                          class="form-input bg-gray-50 cursor-not-allowed" 
+                          disabled
+                          aria-disabled="true"
+                        >
+                        <p class="text-xs text-gray-500 mt-1">Email cannot be changed</p>
+                      </div>
+                      
+                      <div>
+                        <label class="form-label" for="phone">Phone</label>
+                        <input 
+                          id="phone"
+                          v-model="formData.phone" 
+                          type="tel" 
+                          class="form-input" 
+                          placeholder="Enter your phone number"
+                        >
+                      </div>
+                      
+                      <div class="md:col-span-2">
+                        <label class="form-label" for="address">Address</label>
+                        <textarea 
+                          id="address"
+                          v-model="formData.address" 
+                          class="form-input min-h-[100px] resize-y" 
+                          placeholder="Enter your address"
+                        ></textarea>
+                      </div>
+                      
+                      <div class="md:col-span-2 flex justify-end space-x-4 pt-2">
+                        <button 
+                          type="button" 
+                          @click="editMode = false" 
+                          class="btn btn-secondary"
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          <CheckIcon class="w-4 h-4 mr-1.5" />
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  </TransitionRoot>
+                </div>
+              </div>
+            </TabPanel>
+            
+            <!-- Orders Tab Panel -->
+            <TabPanel :class="getTransitionClasses(300)" class="focus:outline-none">
+              <div class="bg-white shadow-sm rounded-lg overflow-hidden ring-1 ring-gray-900/5">
+                <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4">
+                  <h2 class="text-xl font-semibold text-white">Order History</h2>
+                </div>
+                
+                <div class="p-6">
+                  <div v-if="orders.length === 0" class="text-center py-12 bg-gray-50 rounded-lg">
+                    <ShoppingBagIcon class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p class="text-gray-500 mb-4">You haven't placed any orders yet.</p>
+                    <router-link to="/products" class="btn btn-primary inline-flex items-center justify-center">
+                      <ShoppingBagIcon class="w-4 h-4 mr-2" />
+                      Start Shopping
+                    </router-link>
+                  </div>
+                  
+                  <div v-else class="space-y-6">
+                    <TransitionRoot 
+                      appear 
+                      :show="true"
+                      enter="transition-opacity ease-out duration-300"
+                      enter-from="opacity-0"
+                      enter-to="opacity-100"
+                      as="div"
+                      class="space-y-6"
+                    >
+                      <div v-for="(order, index) in orders" :key="order.id" 
+                        class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200"
+                        :class="{'delay-100': index === 0, 'delay-150': index === 1, 'delay-200': index >= 2}">
+                        <Disclosure v-slot="{ open }" as="div" defaultOpen>
+                          <DisclosureButton 
+                            class="w-full bg-gray-50 p-4 flex flex-wrap justify-between items-center border-b text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                          >
+                            <div class="flex items-start space-x-4">
+                              <div class="bg-indigo-100 rounded-full p-2 hidden sm:block">
+                                <ShoppingBagIcon class="w-5 h-5 text-indigo-600" />
+                              </div>
+                              <div>
+                                <p class="font-medium text-gray-900">
+                                  Order #{{ order.orderNumber }}
+                                </p>
+                                <div class="flex items-center text-sm text-gray-600 mt-1">
+                                  <CalendarIcon class="w-3.5 h-3.5 mr-1.5" />
+                                  {{ order.formattedDate }}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="flex flex-col items-end mt-2 sm:mt-0">
+                              <p class="font-semibold text-lg text-gray-900">${{ order.displayTotal }}</p>
+                              <span :class="['text-xs px-3 py-1 rounded-full mt-1 inline-flex items-center', getStatusColor(order.status || 'Processing')]">
+                                <span class="w-1.5 h-1.5 rounded-full mr-1" 
+                                  :class="{'bg-amber-500': (order.status || 'Processing') === 'Processing', 
+                                           'bg-blue-500': order.status === 'Shipped',
+                                           'bg-emerald-500': order.status === 'Delivered', 
+                                           'bg-red-500': order.status === 'Cancelled'}"></span>
+                                {{ order.status || 'Processing' }}
+                              </span>
+                              <ChevronRightIcon 
+                                class="w-5 h-5 text-gray-400 mt-1.5 transition-transform duration-200" 
+                                :class="{'transform rotate-90': open}"
+                              />
+                            </div>
+                          </DisclosureButton>
+                          
+                          <DisclosurePanel class="p-4 bg-white">
+                            <div class="mb-2 pb-2 border-b border-dashed">
+                              <h4 class="text-sm font-medium text-gray-500 mb-2">Items</h4>
+                            </div>
+                            
+                            <p v-if="!order.items || order.items.length === 0" class="text-sm italic text-gray-500">
+                              No items found in this order
+                            </p>
+                            <div v-else class="space-y-2 mb-4">
+                              <div v-for="(item, itemIndex) in order.items" :key="itemIndex" 
+                                class="flex justify-between text-sm py-2 border-b border-gray-100 last:border-b-0">
+                                <div class="flex items-center">
+                                  <!-- Product image thumbnail - improved matching ProductCard.vue -->
+                                  <div class="h-14 w-14 rounded-md overflow-hidden border border-gray-200 mr-3 flex-shrink-0 bg-gray-50">
+                                    <img 
+                                      :src="processImageUrl(item.imageUrl || item.image)" 
+                                      :alt="item.name"
+                                      class="h-full w-full object-cover object-center"
+                                      @error="handleImageError"
+                                      loading="lazy"
+                                    >
+                                  </div>
+                                  
+                                  <!-- Item info -->
+                                  <div>
+                                    <span class="text-gray-800 font-medium">{{ item.name }}</span>
+                                    <div class="flex items-center mt-1">
+                                      <span class="bg-indigo-100 text-indigo-800 rounded-full w-5 h-5 flex items-center justify-center mr-2 text-xs">
+                                        {{ item.quantity }}
+                                      </span>
+                                      <span class="text-xs text-gray-500 md:hidden">
+                                        ${{ item.price?.toFixed(2) || '0.00' }} each
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <!-- Item price (for desktop) -->
+                                <div class="flex flex-col items-end">
+                                  <span class="text-gray-900 font-medium">
+                                    ${{ (item.price * item.quantity).toFixed(2) }}
+                                  </span>
+                                  <span class="text-xs text-gray-500 hidden md:block">
+                                    ${{ item.price?.toFixed(2) || '0.00' }} each
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <!-- Order summary and details -->
+                            <div class="mt-4 flex flex-col space-y-2 text-sm">
+                              <div class="flex justify-between text-gray-500 pt-2 border-t">
+                                <span>Order date:</span>
+                                <span class="font-medium text-gray-700">{{ order.formattedDate }}</span>
+                              </div>
+                              
+                              <!-- Add total summary -->
+                              <div class="flex justify-between text-gray-500">
+                                <span>Total:</span>
+                                <span class="font-medium text-gray-900">${{ order.displayTotal }}</span>
+                              </div>
+                            </div>
+                          </DisclosurePanel>
+                        </Disclosure>
+                      </div>
+                    </TransitionRoot>
+                    
+                    <!-- Debug info in development -->
+                    <div v-if="isDev" class="mt-6 p-3 bg-gray-100 rounded text-xs">
+                      <p class="font-bold">Debug Info:</p>
+                      <p>Orders count: {{ orders.length }}</p>
+                      <p>First order ID: {{ orders[0]?.id }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
+      </div>
+    </TransitionRoot>
+  </div>
+</template>
+
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { firebaseService } from '../services/firebaseService'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels, TransitionRoot, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { CheckIcon, XMarkIcon, PencilIcon, ShoppingBagIcon, CalendarIcon, ChevronRightIcon, PhotoIcon } from '@heroicons/vue/24/outline'
 
 const authStore = useAuthStore()
 const userProfile = ref(null)
@@ -10,6 +382,7 @@ const loading = ref(true)
 const editMode = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
+const activeTab = ref('profile') // New ref for tab navigation
 
 // For development mode detection
 const isDev = ref(import.meta.env.DEV || false)
@@ -22,6 +395,9 @@ const formData = ref({
   phone: '',
   address: ''
 })
+
+// Track if page is fully loaded for transition effects
+const pageLoaded = ref(false)
 
 onMounted(async () => {
   if (authStore.user) {
@@ -71,9 +447,16 @@ onMounted(async () => {
       console.error('Error in account view:', error)
     } finally {
       loading.value = false
+      // Small delay to ensure smooth transition after page load
+      setTimeout(() => {
+        pageLoaded.value = true
+      }, 100)
     }
   } else {
-    loading.value = false;
+    loading.value = false
+    setTimeout(() => {
+      pageLoaded.value = true
+    }, 100)
   }
 })
 
@@ -125,172 +508,128 @@ const saveProfile = async () => {
     userProfile.value = { ...userProfile.value, ...formData.value }
     editMode.value = false
     successMsg.value = 'Profile updated successfully!'
+    
+    // Auto-hide success message after 3 seconds
+    setTimeout(() => {
+      successMsg.value = ''
+    }, 3000)
   } catch (error) {
     errorMsg.value = 'Failed to update profile'
     console.error('Error updating profile:', error)
   }
 }
-</script>
 
-<template>
-  <div>
-    <h1 class="text-3xl font-bold mb-8">My Account</h1>
-    
-    <div v-if="loading" class="text-center py-8">
-      <p>Loading account information...</p>
-    </div>
-    
-    <div v-else>
-      <!-- Success/error messages -->
-      <div v-if="successMsg" class="bg-green-100 p-4 rounded mb-6">
-        <p class="text-green-700">{{ successMsg }}</p>
-      </div>
+// Get appropriate status color based on order status
+const getStatusColor = (status) => {
+  const statusMap = {
+    'Processing': 'bg-amber-100 text-amber-800 border border-amber-300',
+    'Shipped': 'bg-blue-100 text-blue-800 border border-blue-300',
+    'Delivered': 'bg-emerald-100 text-emerald-800 border border-emerald-300',
+    'Cancelled': 'bg-red-100 text-red-800 border border-red-300'
+  }
+  
+  return statusMap[status] || 'bg-gray-100 text-gray-800 border border-gray-300'
+}
+
+// Add transition classes for elements
+const getTransitionClasses = (delay = 0) => {
+  return {
+    'transition-all duration-500 ease-out': true,
+    'opacity-0 translate-y-4': !pageLoaded.value,
+    'opacity-100 translate-y-0': pageLoaded.value,
+    [`delay-${delay}`]: delay > 0
+  }
+}
+
+// Process image URLs to handle errors - matching ProductCard.vue implementation
+const processImageUrl = (url) => {
+  if (!url) return '/images/no-image.jpg';
+  
+  // Handle different image formats
+  if (typeof url === 'string') {
+    // Handle base64 images
+    if (url.startsWith('base64://')) {
+      return url.replace('base64://', '');
+    }
+    // Handle temp images
+    if (url.startsWith('temp://')) {
+      return url.replace('temp://', '');
+    }
+  }
+  
+  return url;
+}
+
+// Handle image loading errors - matching ProductCard.vue implementation
+const handleImageError = (event) => {
+  console.error('Image failed to load:', event.target.src);
+  event.target.src = '/images/no-image.jpg';
+  
+  // If the local fallback fails, use inline SVG
+  event.target.onerror = function() {
+    const parent = event.target.parentNode;
+    if (parent) {
+      parent.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
+      event.target.style.display = 'none';
       
-      <div v-if="errorMsg" class="bg-red-100 p-4 rounded mb-6">
-        <p class="text-red-700">{{ errorMsg }}</p>
-      </div>
-      
-      <!-- User profile section -->
-      <div class="bg-white shadow rounded-lg p-6 mb-8">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl font-semibold">Profile Information</h2>
-          <button 
-            v-if="!editMode" 
-            @click="editMode = true"
-            class="btn btn-secondary"
-          >
-            Edit Profile
-          </button>
-        </div>
-        
-        <!-- View mode -->
-        <div v-if="!editMode" class="grid md:grid-cols-2 gap-4">
-          <div>
-            <p class="text-sm text-gray-600">Full Name</p>
-            <p>{{ userProfile?.firstName }} {{ userProfile?.lastName }}</p>
-          </div>
-          <div>
-            <p class="text-sm text-gray-600">Email</p>
-            <p>{{ userProfile?.email || authStore.user.email }}</p>
-          </div>
-          <div>
-            <p class="text-sm text-gray-600">Phone</p>
-            <p>{{ userProfile?.phone || 'Not provided' }}</p>
-          </div>
-          <div>
-            <p class="text-sm text-gray-600">Address</p>
-            <p>{{ userProfile?.address || 'Not provided' }}</p>
-          </div>
-        </div>
-        
-        <!-- Edit mode -->
-        <form v-else @submit.prevent="saveProfile" class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="form-label">First Name</label>
-            <input v-model="formData.firstName" type="text" class="form-input">
-          </div>
-          
-          <div>
-            <label class="form-label">Last Name</label>
-            <input v-model="formData.lastName" type="text" class="form-input">
-          </div>
-          
-          <div>
-            <label class="form-label">Email</label>
-            <input v-model="formData.email" type="email" class="form-input" disabled>
-          </div>
-          
-          <div>
-            <label class="form-label">Phone</label>
-            <input v-model="formData.phone" type="tel" class="form-input">
-          </div>
-          
-          <div class="md:col-span-2">
-            <label class="form-label">Address</label>
-            <textarea v-model="formData.address" class="form-input"></textarea>
-          </div>
-          
-          <div class="md:col-span-2 flex justify-end space-x-4">
-            <button 
-              type="button" 
-              @click="editMode = false" 
-              class="btn btn-secondary"
-            >
-              Cancel
-            </button>
-            <button 
-              type="submit"
-              class="btn btn-primary"
-            >
-              Save Changes
-            </button>
-          </div>
-        </form>
-      </div>
-      
-      <!-- Order history section -->
-      <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-2xl font-semibold mb-4">Order History</h2>
-        
-        <div v-if="orders.length === 0" class="text-center py-8 bg-gray-50 rounded">
-          <p>You haven't placed any orders yet.</p>
-          <router-link to="/products" class="btn btn-primary mt-4">Start Shopping</router-link>
-        </div>
-        
-        <div v-else>
-          <div v-for="order in orders" :key="order.id" class="border-b py-4 last:border-b-0">
-            <div class="flex justify-between">
-              <div>
-                <p class="font-semibold">Order #{{ order.orderNumber }}</p>
-                <p class="text-sm text-gray-600">{{ order.formattedDate }}</p>
-              </div>
-              <p class="font-semibold">${{ order.displayTotal }}</p>
-            </div>
-            
-            <div class="mt-2">
-              <p v-if="!order.items || order.items.length === 0" class="text-sm text-gray-500">
-                No items found in this order
-              </p>
-              <div v-else v-for="(item, index) in order.items" :key="index" class="text-sm">
-                {{ item.quantity }}x {{ item.name }}
-              </div>
-            </div>
-            
-            <div class="mt-3 text-xs text-gray-500">
-              Status: <span class="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">{{ order.status || 'Processing' }}</span>
-            </div>
-          </div>
-          
-          <!-- Debug info in development - fixed to use ref instead of import.meta directly -->
-          <div v-if="isDev" class="mt-6 p-3 bg-gray-100 rounded text-xs">
-            <p class="font-bold">Debug Info:</p>
-            <p>Orders count: {{ orders.length }}</p>
-            <p>First order ID: {{ orders[0]?.id }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+      const svgElement = document.createElement('div');
+      svgElement.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <path d="M12 6v12M6 12h12" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+      svgElement.className = 'broken-image';
+      parent.appendChild(svgElement);
+    }
+  };
+}
+</script>
 
 <style scoped>
 .btn {
-  @apply px-4 py-2 rounded-md transition-all font-medium;
+  @apply px-4 py-2 rounded-md transition-all font-medium flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
 }
 
 .btn-primary {
-  @apply bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  @apply bg-indigo-600 hover:bg-indigo-700 text-white focus-visible:ring-indigo-500;
 }
 
 .btn-secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-gray-800;
+  @apply bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-300 focus-visible:ring-gray-500;
+}
+
+.btn-white {
+  @apply bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded flex items-center text-sm;
 }
 
 .form-input {
-  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all;
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all shadow-sm;
 }
 
 .form-label {
   @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+.profile-field {
+  @apply relative;
+}
+
+.field-label {
+  @apply text-xs text-gray-500 mb-1;
+}
+
+.field-value {
+  @apply text-gray-900;
+}
+
+/* Add consistent styles for broken images */
+.broken-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
 }
 </style>
