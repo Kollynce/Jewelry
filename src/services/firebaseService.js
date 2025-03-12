@@ -52,52 +52,6 @@ export const firebaseService = {
     const userRef = doc(db, 'users', userId)
     await setDoc(userRef, userData, { merge: true })
   },
-  
-  // Add the missing updateUser function
-  async updateUser(userId, userData) {
-    try {
-      const userRef = doc(db, 'users', userId);
-      
-      // Filter out any undefined values from userData
-      const cleanedData = Object.entries(userData).reduce((acc, [key, value]) => {
-        // Only include properties that have defined values
-        if (value !== undefined && value !== null) {
-          acc[key] = value;
-        }
-        return acc;
-      }, {});
-      
-      // Add timestamp
-      cleanedData.updatedAt = serverTimestamp();
-      
-      console.log(`Updating user ${userId} with data:`, cleanedData);
-      
-      // Use updateDoc instead of setDoc to ensure we don't overwrite the entire document
-      await updateDoc(userRef, cleanedData);
-      
-      console.log(`User ${userId} updated successfully`);
-      return true;
-    } catch (error) {
-      console.error(`Error updating user ${userId}:`, error);
-      throw error;
-    }
-  },
-
-  async getAllUsers() {
-    try {
-      const usersRef = collection(db, 'users');
-      const usersSnapshot = await getDocs(usersRef);
-      
-      return usersSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt ? doc.data().createdAt : null
-      }));
-    } catch (error) {
-      console.error('Error getting users:', error);
-      return [];
-    }
-  },
 
   // Product operations
   async getProducts() {

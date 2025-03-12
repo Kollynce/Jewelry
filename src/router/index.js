@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '../stores/auth'
-import AdminOrders from '../views/AdminOrders.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -91,14 +90,8 @@ const router = createRouter({
     },
     {
       path: '/admin/orders',
-      name: 'AdminOrders',
-      component: AdminOrders,
-      meta: { requiresAuth: true, adminOnly: true }
-    },
-    {
-      path: '/admin/users',
-      name: 'admin-users',
-      component: () => import('../views/AdminUsersView.vue'),
+      name: 'admin-orders',
+      component: () => import('../views/AdminDashboard.vue'),
       meta: { requiresAuth: true, isAdmin: true }
     }
   ]
