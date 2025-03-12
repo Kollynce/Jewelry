@@ -37,7 +37,7 @@
                   <div v-else class="space-y-2">
                     <div class="-m-2 block p-2 font-medium text-gray-900">{{ authStore.user.displayName || authStore.user.email }}</div>
                     <RouterLink to="/account" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Account</RouterLink>
-                    <RouterLink to="/admin" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Shop Manager</RouterLink>
+                    <RouterLink v-if="isAdmin" to="/admin" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Shop Manager</RouterLink>
                     <button @click="logout" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4 w-full text-left">Logout</button>
                   </div>
                 </div>
@@ -48,7 +48,8 @@
       </Dialog>
     </TransitionRoot>
 
-    <header class="sticky top-0 z-40 bg-white">
+    <!-- Updated header with enhanced sticky behavior -->
+    <header class="sticky top-0 z-50 w-full bg-white">
       <p class="flex h-10 items-center justify-center bg-gray-800 px-4 text-sm font-medium text-white sm:px-6 lg:px-8" aria-live="polite">Free shipping on orders over $100</p>
 
       <div class="border-b border-gray-200 bg-white shadow-sm transition-shadow duration-300" :class="{'shadow-md': isScrolled}">
@@ -125,7 +126,7 @@
                       <MenuItem v-slot="{ active }">
                         <RouterLink to="/account" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Account</RouterLink>
                       </MenuItem>
-                      <MenuItem v-slot="{ active }">
+                      <MenuItem v-if="isAdmin" v-slot="{ active }">
                         <RouterLink to="/admin" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Shop Manager</RouterLink>
                       </MenuItem>
                       <MenuItem v-slot="{ active }">
@@ -166,7 +167,8 @@
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useCartStore } from '@/stores/cart'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watchEffect } from 'vue'
+import { firebaseService } from '@/services/firebaseService'
 import {
   Dialog,
   DialogPanel,
@@ -192,8 +194,36 @@ const authStore = useAuthStore()
 const cartStore = useCartStore()
 const mobileMenuOpen = ref(false)
 const isScrolled = ref(false)
+const userProfile = ref(null)
 
 const itemCount = computed(() => cartStore.itemCount)
+
+const isAdmin = computed(() => {
+  // Check multiple possible admin indicators for compatibility
+  return userProfile.value && (
+    userProfile.value.isAdmin === true || 
+    userProfile.value.role === 'admin' || 
+    (userProfile.value.roles && (
+      userProfile.value.roles.includes('admin') || 
+      userProfile.value.roles === 'admin'
+    ))
+  )
+})
+
+// Fetch user profile data whenever the auth state changes
+watchEffect(async () => {
+  if (authStore.user) {
+    try {
+      const profile = await firebaseService.getUserProfile(authStore.user.uid)
+      userProfile.value = profile
+      console.log('User profile loaded:', profile)
+    } catch (error) {
+      console.error('Error loading user profile:', error)
+    }
+  } else {
+    userProfile.value = null
+  }
+})
 
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value

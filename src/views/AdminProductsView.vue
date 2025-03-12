@@ -1,5 +1,6 @@
 <template>
-  <div class="admin-products container mx-auto px-4 py-8">
+  <div class="bg-gray-100">
+    <div class="admin-products container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Manage Products</h1>
       <router-link 
@@ -47,7 +48,7 @@
             </tr>
             <tr v-for="product in filteredProducts" :key="product.id" class="border-b hover:bg-gray-50">
               <td class="py-3 px-4">
-                <img :src="product.images[0]" :alt="product.name" class="w-16 h-16 object-cover rounded">
+                <img :src="processImageUrl(product.images[0])" :alt="product.name" class="w-16 h-16 object-cover rounded" @error="handleImageError">
               </td>
               <td class="py-3 px-4">{{ product.name }}</td>
               <td class="py-3 px-4">{{ product.category }}</td>
@@ -108,6 +109,8 @@
       </template>
     </Modal>
   </div>
+  </div>
+  
 </template>
 
 <script setup>
@@ -178,10 +181,58 @@ const deleteProduct = async () => {
     // Show error notification (you can add this functionality)
   }
 };
+
+// Process image URL function to handle base64 and other formats
+const processImageUrl = (imageUrl) => {
+  if (!imageUrl) return 'https://via.placeholder.com/300x300?text=No+Image';
+  
+  if (typeof imageUrl === 'string') {
+    // Handle base64 images
+    if (imageUrl.startsWith('base64://')) {
+      return imageUrl.replace('base64://', '');
+    }
+    // Handle temp images
+    if (imageUrl.startsWith('temp://')) {
+      return imageUrl.replace('temp://', '');
+    }
+  }
+  
+  return imageUrl;
+};
+
+// Handle image errors
+const handleImageError = (event) => {
+  console.error('Image failed to load:', event.target.src);
+  event.target.src = '/images/no-image.jpg';
+  
+  // If the local fallback fails, use inline SVG
+  event.target.onerror = function() {
+    const parent = event.target.parentNode;
+    if (parent) {
+      const svgElement = document.createElement('div');
+      svgElement.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <path d="M12 6v12M6 12h12" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+      svgElement.className = 'broken-image w-16 h-16';
+      parent.replaceChild(svgElement, event.target);
+    }
+  };
+};
 </script>
 
 <style scoped>
 .admin-products {
   min-height: 80vh;
+}
+
+.broken-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-radius: 4px;
 }
 </style>

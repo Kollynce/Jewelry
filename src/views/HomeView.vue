@@ -60,32 +60,36 @@
       </div>
     </div>
 
-    <!-- Collection Section -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12">Our Collections</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Collection Card for each category -->
-          <div v-for="collection in collections" :key="collection.name" 
-            class="collection-card relative overflow-hidden rounded-lg shadow-lg group h-80">
-            
-            <!-- Collection Image -->
-            <img :src="processImageUrl(collection.image)" 
-                 :alt="collection.name" 
-                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                 @error="handleImageError">
-            
-            <!-- Overlay with content that appears on hover -->
-            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex flex-col justify-center items-center p-6">
+    <!-- Collection Section - Modified to be truly full width -->
+    <section class="py-16 bg-gray-50 w-full">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold">Our Collections</h2>
+      </div>
+      <div class="w-full px-4 sm:px-6 lg:px-8 max-w-none mx-auto">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Collection Card for each category -->
+            <div v-for="collection in collections" :key="collection.name" 
+              class="collection-card relative overflow-hidden rounded-lg shadow-lg group h-80">
               
-              <!-- Collection name and description - visible on hover -->
-              <div class="text-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <h3 class="text-white text-2xl font-bold mb-2">{{ collection.name }}</h3>
-                <p class="text-white text-sm mb-4">{{ collection.description }}</p>
-                <router-link :to="`/products?category=${collection.category}`" 
-                  class="inline-block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-300">
-                  View Collection
-                </router-link>
+              <!-- Collection Image -->
+              <img :src="processImageUrl(collection.image)" 
+                   :alt="collection.name" 
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                   @error="handleImageError">
+              
+              <!-- Overlay with content that appears on hover -->
+              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex flex-col justify-center items-center p-6">
+                
+                <!-- Collection name and description - visible on hover -->
+                <div class="text-center transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <h3 class="text-white text-2xl font-bold mb-2">{{ collection.name }}</h3>
+                  <p class="text-white text-sm mb-4">{{ collection.description }}</p>
+                  <router-link :to="`/products?category=${collection.category}`" 
+                    class="inline-block bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-300">
+                    View Collection
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -150,97 +154,94 @@
     </section>
 
     <!-- Newsletter Signup -->
-    <section class="relative py-16 bg-gradient-to-r from-indigo-600 to-purple-600 overflow-hidden">
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00TTAgMGg0djRIMHoiLz48L2c+PC9nPjwvc3ZnPg==')]"></div>
-      </div>
-      
-      <div class="container relative mx-auto px-6 max-w-5xl">
-        <div class="flex flex-col md:flex-row gap-12 items-center">
-          <!-- Left side - Text content -->
-          <div class="w-full md:w-1/2 text-white">
-            <span class="inline-block px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm font-semibold mb-4">
-              Stay Connected
-            </span>
-            <h3 class="text-3xl md:text-4xl font-bold mb-4">Join Our Jewelry Community</h3>
-            <p class="text-white text-opacity-90 mb-6 max-w-md">
-              Subscribe to receive updates on new collections, exclusive offers, and styling tips directly to your inbox.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-6">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 mr-2">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                  </svg>
-                </div>
-                <p class="text-sm">Early access to sales</p>
-              </div>
-              <div class="flex items-center">
-                <div class="flex-shrink-0 mr-2">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                  </svg>
-                </div>
-                <p class="text-sm">Exclusive offers</p>
-              </div>
-              <div class="flex items-center">
-                <div class="flex-shrink-0 mr-2">
-                  <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                  </svg>
-                </div>
-                <p class="text-sm">Jewelry care tips</p>
-              </div>
-            </div>
+    <section class="relative py-16 overflow-hidden">
+      <div class="mx-auto max-w-2xl lg:max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-xl overflow-hidden">
+          <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00TTAgMGg0djRIMHoiLz48L2c+PC9nPjwvc3ZnPg==')]"></div>
           </div>
           
-          <!-- Right side - Form -->
-          <div class="w-full md:w-1/2">
-            <div class="bg-white rounded-xl shadow-xl p-6 md:p-8">
-              <form @submit.prevent="subscribeToNewsletter" class="space-y-4">
-                <h4 class="text-gray-800 text-xl font-semibold mb-4">Subscribe to our newsletter</h4>
-                <div>
-                  <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <input 
-                    type="text" 
-                    id="fullName" 
-                    v-model="newsletter.name" 
-                    placeholder="Enter your name" 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                  >
-                </div>
-                <div>
-                  <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    v-model="newsletter.email" 
-                    required
-                    placeholder="Enter your email" 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                  >
-                </div>
-                <div class="pt-2">
-                  <button 
-                    type="submit" 
-                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-md transition-all duration-300 flex items-center justify-center"
-                    :class="{'opacity-75 cursor-not-allowed': newsletter.loading}"
-                    :disabled="newsletter.loading"
-                  >
-                    <svg v-if="newsletter.loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>{{ newsletter.loading ? 'Subscribing...' : 'Subscribe Now' }}</span>
-                  </button>
-                </div>
-                <p v-if="newsletter.message" :class="{'text-green-600': newsletter.success, 'text-red-600': !newsletter.success}" class="text-sm mt-2 text-center">
-                  {{ newsletter.message }}
+          <div class="relative py-10 px-6 md:px-10">
+            <!-- Newsletter content - Using a layout that works better for wider section -->
+            <div class="flex flex-col md:flex-row gap-8">
+              <!-- Left side - Text content -->
+              <div class="w-full md:w-1/2 text-white">
+                <span class="inline-block px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm font-semibold mb-4">
+                  Stay Connected
+                </span>
+                <h3 class="text-2xl md:text-3xl font-bold mb-4">Join Our Jewelry Community</h3>
+                <p class="text-white text-opacity-90 mb-6">
+                  Subscribe to receive updates on new collections, exclusive offers, and styling tips.
                 </p>
-                <p class="text-xs text-gray-500 text-center mt-4">
-                  By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.
-                </p>
-              </form>
+                <div class="flex flex-wrap gap-4 mb-6">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 mr-2">
+                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <p class="text-sm">Early access to sales</p>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 mr-2">
+                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <p class="text-sm">Exclusive offers</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Right side - Form -->
+              <div class="w-full md:w-1/2">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                  <form @submit.prevent="subscribeToNewsletter" class="space-y-4">
+                    <h4 class="text-gray-800 text-xl font-semibold mb-4">Subscribe to our newsletter</h4>
+                    <div>
+                      <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                      <input 
+                        type="text" 
+                        id="fullName" 
+                        v-model="newsletter.name" 
+                        placeholder="Enter your name" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                      >
+                    </div>
+                    <div>
+                      <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                      <input 
+                        type="email" 
+                        id="email" 
+                        v-model="newsletter.email" 
+                        required
+                        placeholder="Enter your email" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                      >
+                    </div>
+                    <div class="pt-2">
+                      <button 
+                        type="submit" 
+                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium py-3 px-4 rounded-md transition-all duration-300 flex items-center justify-center"
+                        :class="{'opacity-75 cursor-not-allowed': newsletter.loading}"
+                        :disabled="newsletter.loading"
+                      >
+                        <svg v-if="newsletter.loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>{{ newsletter.loading ? 'Subscribing...' : 'Subscribe Now' }}</span>
+                      </button>
+                    </div>
+                    <p v-if="newsletter.message" :class="{'text-green-600': newsletter.success, 'text-red-600': !newsletter.success}" class="text-sm mt-2 text-center">
+                      {{ newsletter.message }}
+                    </p>
+                    <p class="text-xs text-gray-500 text-center mt-4">
+                      By subscribing, you agree to our Privacy Policy.
+                    </p>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
