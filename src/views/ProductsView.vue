@@ -377,11 +377,23 @@ const setSort = (option) => {
 onMounted(async () => {
   loading.value = true;
   try {
-    // Load products using mockDataLoader
-    const loadedProducts = await mockDataLoader.getProducts();
-    allProducts.value = loadedProducts || [];
-    products.value = loadedProducts || []; // Initial set before any filtering
-    console.log('Loaded products:', products.value.length);
+    // First try to load products directly from Firestore
+    const firestoreProducts = await loadFirestoreProducts();
+    
+    // If we have products from Firestore, use them
+    if (firestoreProducts.length > 0) {
+      console.log('Loaded products from Firestore:', firestoreProducts.length);
+      allProducts.value = firestoreProducts;
+      products.value = firestoreProducts;
+    } else {
+      // Fall back to mock data if no products in Firestore
+      console.log('No products in Firestore, using mock data');
+      const mockProducts = await mockDataLoader.getProducts();
+      allProducts.value = mockProducts || [];
+      products.value = mockProducts || [];
+    }
+    
+    console.log('Total products loaded:', products.value.length);
   } catch (error) {
     console.error('Error loading products:', error);
     // Fallback to empty array if there's an error
@@ -391,6 +403,46 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+// Function to load products directly from Firestore (not using the fallback in firebaseService)
+const loadFirestoreProducts = async () => {
+  try {
+    const db = firebaseService.getFirestore();
+    if (!db) return []; // Safety check
+    
+    const productsCollection = firebaseService.getCollection('products');
+    const productsSnapshot = await firebaseService.getDocuments(productsCollection);
+    
+    if (productsSnapshot.empty) {
+      return [];
+    }
+    
+    // Process all products and standardize their format
+    return productsSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        // Ensure all products have required fields for display
+        name: data.name || 'Unnamed Product',
+        price: data.price || 0,
+        category: data.category || 'Uncategorized',
+        description: data.description || '',
+        images: data.images || [],
+        // Use first image as main image for product card
+        image: data.images && data.images.length > 0 ? 
+          // Handle base64 images
+          (data.images[0].startsWith('base64://') ? 
+            data.images[0].replace('base64://', '') : 
+            data.images[0]) : 
+          'https://via.placeholder.com/300x300?text=No+Image'
+      };
+    });
+  } catch (error) {
+    console.error('Error loading products from Firestore:', error);
+    return []; // Return empty array in case of error
+  }
+};
 
 const addToCart = async (product) => {
   // Get button position as starting point

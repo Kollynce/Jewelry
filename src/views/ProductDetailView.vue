@@ -20,6 +20,19 @@ const expandedSections = ref(['Description'])
 
 const productId = computed(() => route.params.id)
 
+// Add a function to process image URLs properly
+const processImageUrl = (url) => {
+  if (!url) return null;
+  
+  // Handle base64 images with the incorrect prefix
+  if (typeof url === 'string' && url.startsWith('base64://')) {
+    return url.replace('base64://', '');
+  }
+  
+  // For normal URLs
+  return url;
+}
+
 const fetchProduct = async () => {
   loading.value = true
   error.value = null
@@ -54,6 +67,35 @@ const fetchProduct = async () => {
     }
     
     console.log("Product loaded:", product.value)
+    
+    // Use local default image instead of relying on external placeholder service
+    const defaultImage = '/images/no-image.jpg';
+    const productImage = processImageUrl(product.value.imageUrl || product.value.image) || defaultImage;
+    console.log("Product image source:", productImage);
+    
+    // Fix image structure handling
+    if (!product.value.images || !Array.isArray(product.value.images) || product.value.images.length === 0) {
+      console.log("Creating image structure with:", productImage);
+      product.value.images = [
+        {
+          main: productImage,
+          thumb: productImage
+        }
+      ];
+    } else {
+      console.log("Product already has images:", product.value.images);
+      // Process existing images to ensure they're in correct format
+      product.value.images = product.value.images.map(img => {
+        if (typeof img === 'string') {
+          const processedUrl = processImageUrl(img);
+          return { main: processedUrl, thumb: processedUrl };
+        }
+        return {
+          main: processImageUrl(img.main || img.imageUrl || img.image) || defaultImage,
+          thumb: processImageUrl(img.thumb || img.main || img.imageUrl || img.image) || defaultImage
+        };
+      });
+    }
     
     // Ensure product has the necessary structure for beaded jewelry display
     if (!product.value.images) {
@@ -140,6 +182,31 @@ const fetchProduct = async () => {
   }
 }
 
+// Improve image error handler with better fallbacks
+const handleImageError = (event) => {
+  console.error('Image failed to load:', event.target.src);
+  
+  // Use a locally hosted fallback image instead of an external service
+  event.target.src = '/images/no-image.jpg';
+  
+  // If local fallback fails, use inline SVG as final fallback
+  event.target.onerror = function() {
+    const parent = event.target.parentNode;
+    if (parent) {
+      // Replace with a minimal SVG showing a broken image
+      const svgElement = document.createElement('div');
+      svgElement.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <path d="M12 6v12M6 12h12" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+      svgElement.className = 'broken-image';
+      parent.replaceChild(svgElement, event.target);
+    }
+  };
+};
+
 onMounted(fetchProduct)
 
 // Re-fetch when route params change
@@ -195,11 +262,12 @@ const goBack = () => {
       <!-- Left Column: Product Images -->
       <div class="flex flex-col">
         <!-- Main product image with hover zoom effect -->
-        <div class="relative overflow-hidden rounded-lg shadow-md border border-gray-100 mb-4">
+        <div class="product-image-container relative overflow-hidden rounded-lg shadow-md border border-gray-100 mb-4 aspect-square">
           <img
-            :src="product.images[selectedImageIndex].main"
+            :src="processImageUrl(product.images[selectedImageIndex]?.main) || processImageUrl(product.imageUrl) || processImageUrl(product.image) || '/images/no-image.jpg'"
             :alt="product.name"
-            class="w-full h-auto rounded-lg transform hover:scale-110 transition-transform duration-500"
+            class="product-image w-full h-full object-contain rounded-lg"
+            @error="handleImageError"
           />
           <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
             <button @click="selectedImageIndex = (selectedImageIndex + 1) % product.images.length" 
@@ -211,6 +279,12 @@ const goBack = () => {
           </div>
         </div>
         
+        <!-- Debug info - Remove in production -->
+        <!-- <div class="text-xs text-gray-500 mb-2">
+          <p>Selected Image: {{ selectedImageIndex }}</p>
+          <p>Image Source: {{ product.images[selectedImageIndex]?.main }}</p>
+        </div> -->
+        
         <!-- Thumbnails -->
         <div class="flex space-x-2 overflow-x-auto pb-2">
           <div
@@ -218,14 +292,15 @@ const goBack = () => {
             :key="index"
             @click="selectedImageIndex = index"
             :class="[
-              'w-20 h-20 cursor-pointer rounded-md overflow-hidden border-2',
+              'w-20 h-20 cursor-pointer rounded-md overflow-hidden border-2 flex-shrink-0',
               index === selectedImageIndex ? 'border-purple-600' : 'border-transparent'
             ]"
           >
             <img
-              :src="image.thumb"
+              :src="processImageUrl(image.thumb) || processImageUrl(image.main) || '/images/no-image.jpg'"
               :alt="`Thumbnail ${index + 1}`"
               class="w-full h-full object-cover"
+              @error="handleImageError"
             />
           </div>
         </div>
@@ -371,13 +446,41 @@ const goBack = () => {
 .product-image-container {
   overflow: hidden;
   border-radius: 0.5rem;
+  position: relative;
+  max-height: 500px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .product-image {
   transition: transform 0.4s ease;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-.product-image:hover {
+.product-image-container:hover .product-image {
   transform: scale(1.05);
+}
+
+/* Add a loading state indicator */
+.product-image-container::before {
+  content: "Loading...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ccc;
+  z-index: -1;
+}
+
+.broken-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

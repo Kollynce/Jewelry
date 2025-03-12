@@ -10,8 +10,8 @@
     
     <router-link :to="`/product/${product.id}`" class="cursor-pointer block">
       <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-lg">
-        <img :src="product.imageUrl || product.image" :alt="product.name"
-            class="h-60 w-full object-cover object-center group-hover:opacity-90">
+        <img :src="processImageUrl(product.imageUrl || product.image)" :alt="product.name"
+            class="h-60 w-full object-cover object-center group-hover:opacity-90" @error="handleImageError">
       </div>
       <div class="p-4">
         <div class="flex justify-between items-start">
@@ -36,10 +36,15 @@
 import { ref, nextTick } from 'vue';
 import { useCartStore } from '@/stores/cart';
 
-const props = defineProps({
+// Update component props to accept processImageUrl function
+defineProps({
   product: {
     type: Object,
     required: true
+  },
+  processImageUrl: {
+    type: Function,
+    default: url => url // Default function just returns the URL unchanged
   }
 });
 
@@ -94,6 +99,46 @@ const addToCart = async (product) => {
     cartStore.addToCart(product, 1);
   }
 }
+
+// Handle image errors
+const handleImageError = (event) => {
+  console.error('Image failed to load:', event.target.src);
+  event.target.src = '/images/no-image.jpg';
+  
+  // If the local fallback fails, use inline SVG
+  event.target.onerror = function() {
+    const parent = event.target.parentNode;
+    if (parent) {
+      const svgElement = document.createElement('div');
+      svgElement.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <path d="M12 6v12M6 12h12" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+      svgElement.className = 'broken-image';
+      parent.replaceChild(svgElement, event.target);
+    }
+  };
+}
+
+// Helper function to handle different image formats
+const getImageSrc = (imageUrl) => {
+  if (!imageUrl) return 'https://via.placeholder.com/300x300?text=No+Image';
+  
+  if (typeof imageUrl === 'string') {
+    // Handle base64 images
+    if (imageUrl.startsWith('base64://')) {
+      return imageUrl.replace('base64://', '');
+    }
+    // Handle temp images
+    if (imageUrl.startsWith('temp://')) {
+      return imageUrl.replace('temp://', '');
+    }
+  }
+  
+  return imageUrl;
+};
 </script>
 
 <style scoped>
@@ -108,5 +153,13 @@ const addToCart = async (product) => {
   z-index: 9999;
   position: fixed;
   pointer-events: none;
+}
+
+.broken-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

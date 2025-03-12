@@ -56,6 +56,43 @@ const router = createRouter({
       path: '/contact',
       name: 'contact',
       component: () => import('../views/ContactView.vue')
+    },
+    // Admin Routes
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/AdminDashboard.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      path: '/admin/products',
+      name: 'admin-products',
+      component: () => import('../views/AdminProductsView.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      path: '/admin/products/new',
+      name: 'admin-product-new',
+      component: () => import('../views/AdminProductForm.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      path: '/admin/products/edit/:id',
+      name: 'admin-product-edit',
+      component: () => import('../views/AdminProductForm.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      path: '/admin/categories',
+      name: 'admin-categories',
+      component: () => import('../views/AdminDashboard.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
+      path: '/admin/orders',
+      name: 'admin-orders',
+      component: () => import('../views/AdminDashboard.vue'),
+      meta: { requiresAuth: true, isAdmin: true }
     }
   ]
 })
@@ -66,9 +103,28 @@ router.beforeEach((to, from, next) => {
   
   if (to.meta.requiresAuth && !authStore.user) {
     next('/login')
+  } else if (to.meta.isAdmin && !isUserAdmin(authStore.user)) {
+    // Redirect non-admin users trying to access admin pages
+    next('/')
   } else {
     next()
   }
 })
+
+// Helper function to check if user is an admin
+function isUserAdmin(user) {
+  // This implementation depends on your user management system
+  if (!user) return false
+  
+  // For development/testing - allow any authenticated user to be admin
+  return true
+  
+  // // For production, use one of these approaches:
+  // // Option 1: Check against an admin email from environment variables
+  // return user.email === import.meta.env.VITE_ADMIN_EMAIL
+  
+  // // Option 2: Check if user has admin flag in their profile
+  // return user.isAdmin === true
+}
 
 export default router

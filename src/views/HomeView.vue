@@ -5,7 +5,7 @@
       v-if="animatingItem" 
       class="cart-animation fixed pointer-events-none z-50" 
       ref="cartAnimationEl"
-      :style="{ backgroundImage: `url(${animatingItem?.imageUrl || animatingItem?.image})` }">
+      :style="{ backgroundImage: `url(${animatingItem?.image || animatingItem?.imageUrl || '/images/no-image.jpg'})` }">
     </div>
     
     <!-- Hero Section -->
@@ -70,8 +70,10 @@
             class="collection-card relative overflow-hidden rounded-lg shadow-lg group h-80">
             
             <!-- Collection Image -->
-            <img :src="collection.image" :alt="collection.name" 
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img :src="processImageUrl(collection.image)" 
+                 :alt="collection.name" 
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                 @error="handleImageError">
             
             <!-- Overlay with content that appears on hover -->
             <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex flex-col justify-center items-center p-6">
@@ -110,11 +112,17 @@
         </div>
         
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <ProductCard 
-            v-for="product in featuredProducts" 
-            :key="product.id" 
-            :product="product" 
-          />
+          <div v-for="product in featuredProducts" :key="product.id" class="relative">
+            <!-- Debugging info (can be removed in production) -->
+            <!-- <div class="absolute top-0 right-0 bg-black bg-opacity-75 text-white text-xs p-1 z-10">
+              {{ product.image ? product.image.substring(0, 20) + '...' : 'No image' }}
+            </div> -->
+            
+            <ProductCard 
+              :product="product" 
+              :processImageUrl="processImageUrl"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -248,6 +256,46 @@ import { useCartStore } from '@/stores/cart'
 import { mockDataLoader } from '../utils/mockDataLoader'
 import ProductCard from '@/components/ProductCard.vue'
 
+// Update utility function to process image URLs
+const processImageUrl = (url) => {
+  if (!url) return 'https://via.placeholder.com/300x300?text=No+Image';
+  
+  // Handle base64 images with the incorrect prefix
+  if (typeof url === 'string' && url.startsWith('base64://')) {
+    return url.replace('base64://', '');
+  }
+  
+  // Handle Firebase storage URLs that might need special processing
+  if (typeof url === 'string' && url.includes('firebasestorage.googleapis.com')) {
+    return url; // Ensure Firebase URLs pass through correctly
+  }
+  
+  // For normal URLs
+  return url;
+}
+
+// Function to handle image errors
+const handleImageError = (event) => {
+  console.error('Image failed to load:', event.target.src);
+  event.target.src = '/images/no-image.jpg';
+  
+  // If the local fallback fails, use inline SVG
+  event.target.onerror = function() {
+    const parent = event.target.parentNode;
+    if (parent) {
+      const svgElement = document.createElement('div');
+      svgElement.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
+          <rect width="100%" height="100%" fill="#f0f0f0"/>
+          <path d="M12 6v12M6 12h12" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+      svgElement.className = 'broken-image';
+      parent.replaceChild(svgElement, event.target);
+    }
+  };
+}
+
 const newCollection = ref([])
 const trending = ref([])
 const featuredProducts = ref([])
@@ -376,10 +424,20 @@ onMounted(async () => {
   try {
     let products;
     
-    // Try to get products from Firebase first
+    // First try to load products directly from Firestore
     try {
-      products = await firebaseService.getProducts();
-      console.log('Products loaded from Firebase:', products);
+      const firestoreProducts = await loadFirestoreProducts();
+      
+      // If we have products from Firestore, use them
+      if (firestoreProducts.length > 0) {
+        console.log('Loaded products from Firestore:', firestoreProducts.length);
+        products = firestoreProducts;
+      } else {
+        // Fall back to firebaseService or mock data
+        console.log('No products in Firestore, using service fallback');
+        products = await firebaseService.getProducts();
+      }
+      
     } catch (firebaseError) {
       console.warn('Firebase fetch failed, using mock data:', firebaseError);
       products = await mockDataLoader.getProducts();
@@ -387,28 +445,19 @@ onMounted(async () => {
     
     // Make sure we have products before proceeding
     if (!products || products.length === 0) {
-      console.warn('No products found in primary source, using fallback data');
+      console.warn('No products found in any source, using fallback data');
       products = getFallbackProducts();
     }
     
-    // Map products to ensure they have all required fields
-    const mappedProducts = products.map(product => ({
-      ...product,
-      // Ensure all necessary fields exist with fallbacks
-      id: product.id || `prod-${Math.random().toString(36).substr(2, 9)}`,
-      name: product.name || 'Unnamed Product',
-      category: product.category || 'general',
-      price: product.price || 99.99,
-      imageUrl: product.imageUrl || product.image || 'https://via.placeholder.com/400x300?text=Product+Image'
-    }));
+    console.log('Total products loaded:', products.length);
     
-    newCollection.value = mappedProducts.slice(0, 4);
-    trending.value = mappedProducts.slice(4, 8);
-    featuredProducts.value = mappedProducts
+    // Process the products and assign them
+    newCollection.value = products.slice(0, 4);
+    trending.value = products.slice(4, 8);
+    featuredProducts.value = products
       .filter(product => product.featured || Math.random() > 0.5)
       .slice(0, 8);
       
-    console.log('Featured products:', featuredProducts.value);
   } catch (error) {
     console.error('Error loading products:', error);
     featuredProducts.value = getFallbackProducts();
@@ -416,6 +465,46 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
+// Add the loadFirestoreProducts function from ProductsView.vue
+const loadFirestoreProducts = async () => {
+  try {
+    const db = firebaseService.getFirestore();
+    if (!db) return []; // Safety check
+    
+    const productsCollection = firebaseService.getCollection('products');
+    const productsSnapshot = await firebaseService.getDocuments(productsCollection);
+    
+    if (productsSnapshot.empty) {
+      return [];
+    }
+    
+    // Process all products and standardize their format
+    return productsSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        // Ensure all products have required fields for display
+        name: data.name || 'Unnamed Product',
+        price: data.price || 0,
+        category: data.category || 'Uncategorized',
+        description: data.description || '',
+        images: data.images || [],
+        // Use first image as main image for product card
+        image: data.images && data.images.length > 0 ? 
+          // Handle base64 images
+          (data.images[0].startsWith('base64://') ? 
+            data.images[0].replace('base64://', '') : 
+            data.images[0]) : 
+          'https://via.placeholder.com/300x300?text=No+Image'
+      };
+    });
+  } catch (error) {
+    console.error('Error loading products from Firestore:', error);
+    return []; // Return empty array in case of error
+  }
+};
 
 // Newsletter form data
 const newsletter = ref({
@@ -471,7 +560,7 @@ const addToCart = async (product) => {
     endY = cartRect.top + (cartRect.height / 2);
   }
   
-  // Start animation
+  // Start animation with product (image should already be processed)
   animatingItem.value = product;
   
   await nextTick();
@@ -525,5 +614,14 @@ const addToCart = async (product) => {
   z-index: 9999;
   position: fixed;
   pointer-events: none;
+}
+
+.broken-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
 }
 </style>

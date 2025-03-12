@@ -37,7 +37,7 @@
                   <div v-else class="space-y-2">
                     <div class="-m-2 block p-2 font-medium text-gray-900">{{ authStore.user.displayName || authStore.user.email }}</div>
                     <RouterLink to="/account" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Account</RouterLink>
-                    <RouterLink to="/manage-shop" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Manage Shop</RouterLink>
+                    <RouterLink to="/admin" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4" @click="closeMobileMenu">Shop Manager</RouterLink>
                     <button @click="logout" class="-m-2 block p-2 text-sm text-gray-600 hover:text-gray-900 pl-4 w-full text-left">Logout</button>
                   </div>
                 </div>
@@ -126,7 +126,7 @@
                         <RouterLink to="/account" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Account</RouterLink>
                       </MenuItem>
                       <MenuItem v-slot="{ active }">
-                        <RouterLink to="/manage-shop" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Manage Shop</RouterLink>
+                        <RouterLink to="/admin" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Shop Manager</RouterLink>
                       </MenuItem>
                       <MenuItem v-slot="{ active }">
                         <button @click="logout" :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-700']">Logout</button>
