@@ -1,3 +1,203 @@
+<template>
+  <div class="container mx-auto p-4 bg-light-primary dark:bg-dark-primary">
+    <!-- Breadcrumb navigation -->
+    <nav class="text-sm mb-6">
+      <ol class="flex items-center space-x-2">
+        <li><router-link to="/" class="text-light-neutral-500 dark:text-dark-neutral-500 hover:text-accent-primary">Home</router-link></li>
+        <li><span class="text-light-neutral-400 dark:text-dark-neutral-600 mx-1">›</span></li>
+        <li><router-link to="/" class="text-light-neutral-500 dark:text-dark-neutral-500 hover:text-accent-primary">Shop</router-link></li>
+        <li><span class="text-light-neutral-400 dark:text-dark-neutral-600 mx-1">›</span></li>
+        <li class="text-accent-primary font-medium">{{ product?.name || 'Product' }}</li>
+      </ol>
+    </nav>
+    
+    <div v-if="loading" class="text-center py-8">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent-primary mb-2"></div>
+      <p class="text-light-text-primary dark:text-dark-text-primary">Loading your beautiful jewelry...</p>
+    </div>
+    
+    <div v-else-if="error" class="bg-red-100 dark:bg-red-900/20 p-4 rounded mb-6">
+      <p class="text-red-700 dark:text-red-400">{{ error }}</p>
+      <button @click="goBack" class="mt-2 text-sm text-accent-primary hover:underline">← Return to previous page</button>
+    </div>
+    
+    <div v-else-if="product" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <!-- Left Column: Product Images -->
+      <div class="flex flex-col">
+        <!-- Main product image with hover zoom effect -->
+        <div class="product-image-container relative overflow-hidden rounded-lg shadow-md border border-light-neutral-100 dark:border-dark-neutral-700 mb-4 aspect-square bg-light-secondary dark:bg-dark-secondary">
+          <img
+            :src="processImageUrl(product.images[selectedImageIndex]?.main) || processImageUrl(product.imageUrl) || processImageUrl(product.image) || '/images/no-image.jpg'"
+            :alt="product.name"
+            class="product-image w-full h-full object-contain rounded-lg"
+            @error="handleImageError"
+          />
+          <div class="absolute top-3 right-3 bg-light-secondary dark:bg-dark-neutral-700 rounded-full p-2 shadow-md">
+            <button @click="selectedImageIndex = (selectedImageIndex + 1) % product.images.length" 
+              class="text-light-neutral-600 dark:text-dark-neutral-400 hover:text-accent-primary dark:hover:text-accent-primary" title="Next image">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Thumbnails -->
+        <div class="flex space-x-2 overflow-x-auto pb-2">
+          <div
+            v-for="(image, index) in product.images"
+            :key="index"
+            @click="selectedImageIndex = index"
+            :class="[
+              'w-20 h-20 cursor-pointer rounded-md overflow-hidden border-2 flex-shrink-0',
+              index === selectedImageIndex ? 'border-accent-primary' : 'border-transparent'
+            ]"
+          >
+            <img
+              :src="processImageUrl(image.thumb) || processImageUrl(image.main) || '/images/no-image.jpg'"
+              :alt="`Thumbnail ${index + 1}`"
+              class="w-full h-full object-cover"
+              @error="handleImageError"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Product Details -->
+      <div class="flex flex-col space-y-6">
+        <!-- Product Name -->
+        <h1 class="text-3xl font-bold text-light-text-primary dark:text-dark-text-primary">{{ product.name }}</h1>
+
+        <!-- Price -->
+        <div class="flex items-center">
+          <p class="text-2xl text-light-text-primary dark:text-dark-text-primary">${{ product.price.toFixed(2) }}</p>
+        </div>
+        
+        <!-- Jewelry Specific Details -->
+        <div class="grid grid-cols-2 gap-4 mt-2 text-sm bg-light-secondary dark:bg-dark-secondary p-4 rounded-lg">
+          <div>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Material:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.material }}</p>
+          </div>
+          <div>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Bead Size:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.beadSize }}</p>
+          </div>
+          <div>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Length:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.length }}</p>
+          </div>
+          <div>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Closure:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.closure }}</p>
+          </div>
+        </div>
+
+        <!-- Product Description -->
+        <p class="text-base text-light-text-secondary dark:text-dark-text-secondary">{{ product.description }}</p>
+
+        <!-- Color Options -->
+        <div v-if="product.colors && product.colors.length > 0">
+          <p class="text-lg font-medium text-light-text-primary dark:text-dark-text-primary mb-3">Color Options</p>
+          <div class="flex flex-wrap gap-3">
+            <button
+              v-for="(color, index) in product.colors"
+              :key="index"
+              @click="selectedColorIndex = index"
+              :class="[
+                'w-12 h-12 rounded-full focus:outline-none transition-all duration-200',
+                color.class,
+                { 'ring-2 ring-accent-primary ring-offset-2 scale-110': index === selectedColorIndex }
+              ]"
+              :title="color.name"
+            >
+              <span class="sr-only">{{ color.name }}</span>
+            </button>
+          </div>
+          <p class="mt-2 text-sm text-light-text-secondary dark:text-dark-text-secondary">Selected: {{ product.colors[selectedColorIndex].name }}</p>
+        </div>
+        
+        <!-- Quantity Selection -->
+        <div>
+          <p class="text-lg font-medium text-light-text-primary dark:text-dark-text-primary mb-3">Quantity</p>
+          <div class="flex">
+            <button 
+              @click="quantity > 1 ? quantity-- : null"
+              class="px-4 py-2 bg-light-neutral-200 dark:bg-dark-neutral-700 hover:bg-light-neutral-300 dark:hover:bg-dark-neutral-600 rounded-l text-light-text-primary dark:text-dark-text-primary"
+            >−</button>
+            <input 
+              id="quantity" 
+              v-model="quantity" 
+              type="number" 
+              min="1" 
+              class="w-16 text-center border-light-neutral-200 dark:border-dark-neutral-700 border-t border-b focus:ring-accent-primary focus:border-accent-primary bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary"
+            >
+            <button 
+              @click="quantity++"
+              class="px-4 py-2 bg-light-neutral-200 dark:bg-dark-neutral-700 hover:bg-light-neutral-300 dark:hover:bg-dark-neutral-600 rounded-r text-light-text-primary dark:text-dark-text-primary"
+            >+</button>
+          </div>
+        </div>
+
+        <!-- Add to Cart Button -->
+        <button
+          @click="addToCart"
+          class="w-full bg-btn-primary hover:bg-btn-primary-hover dark:hover:bg-btn-primary-dark text-white px-6 py-3 rounded-md transition font-medium flex items-center justify-center space-x-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span>Add to Cart</span>
+        </button>
+
+        <!-- Handcrafted Badge -->
+        <div class="flex items-center space-x-2 text-sm text-light-text-secondary dark:text-dark-text-secondary border-t border-b border-light-neutral-200 dark:border-dark-neutral-700 py-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+          </svg>
+          <span>Handcrafted with care | Unique Piece | Artisan Made</span>
+        </div>
+
+        <!-- Expandable Sections -->
+        <div class="space-y-2 mt-4">
+          <div
+            v-for="section in product.sections"
+            :key="section.name"
+            class="border border-light-neutral-200 dark:border-dark-neutral-700 rounded-lg overflow-hidden"
+          >
+            <div
+              @click="toggleSection(section.name)"
+              class="flex justify-between items-center p-4 cursor-pointer hover:bg-light-neutral-100 dark:hover:bg-dark-secondary"
+            >
+              <h2 class="text-lg font-medium text-light-text-primary dark:text-dark-text-primary">{{ section.name }}</h2>
+              <span class="text-xl text-light-text-secondary dark:text-dark-text-secondary">
+                {{ expandedSections.includes(section.name) ? '−' : '+' }}
+              </span>
+            </div>
+            <div
+              v-if="expandedSections.includes(section.name)"
+              class="p-4 bg-light-neutral-100 dark:bg-dark-secondary border-t border-light-neutral-200 dark:border-dark-neutral-700"
+            >
+              <ul
+                v-if="Array.isArray(section.content)"
+                class="list-disc pl-5 space-y-1"
+              >
+                <li v-for="(item, idx) in section.content" :key="idx" class="text-light-text-secondary dark:text-dark-text-secondary">{{ item }}</li>
+              </ul>
+              <p v-else class="text-light-text-secondary dark:text-dark-text-secondary">{{ section.content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div v-else class="text-center py-8">
+      <p class="text-light-text-primary dark:text-dark-text-primary">Product not found.</p>
+      <button @click="goBack" class="mt-4 bg-btn-primary hover:bg-btn-primary-hover dark:hover:bg-btn-primary-dark text-white px-4 py-2 rounded">Return to Shop</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -235,212 +435,6 @@ const goBack = () => {
 // Remove toggleWishlist method
 </script>
 
-<template>
-  <div class="container mx-auto p-4">
-    <!-- Breadcrumb navigation -->
-    <nav class="text-sm mb-6">
-      <ol class="flex items-center space-x-2">
-        <li><router-link to="/" class="text-gray-500 hover:text-purple-600">Home</router-link></li>
-        <li><span class="text-gray-400 mx-1">›</span></li>
-        <li><router-link to="/" class="text-gray-500 hover:text-purple-600">Shop</router-link></li>
-        <li><span class="text-gray-400 mx-1">›</span></li>
-        <li class="text-purple-600 font-medium">{{ product?.name || 'Product' }}</li>
-      </ol>
-    </nav>
-    
-    <div v-if="loading" class="text-center py-8">
-      <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-600 mb-2"></div>
-      <p>Loading your beautiful jewelry...</p>
-    </div>
-    
-    <div v-else-if="error" class="bg-red-100 p-4 rounded mb-6">
-      <p class="text-red-700">{{ error }}</p>
-      <button @click="goBack" class="mt-2 text-sm text-purple-600 hover:underline">← Return to previous page</button>
-    </div>
-    
-    <div v-else-if="product" class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      <!-- Left Column: Product Images -->
-      <div class="flex flex-col">
-        <!-- Main product image with hover zoom effect -->
-        <div class="product-image-container relative overflow-hidden rounded-lg shadow-md border border-gray-100 mb-4 aspect-square">
-          <img
-            :src="processImageUrl(product.images[selectedImageIndex]?.main) || processImageUrl(product.imageUrl) || processImageUrl(product.image) || '/images/no-image.jpg'"
-            :alt="product.name"
-            class="product-image w-full h-full object-contain rounded-lg"
-            @error="handleImageError"
-          />
-          <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-            <button @click="selectedImageIndex = (selectedImageIndex + 1) % product.images.length" 
-              class="text-gray-600 hover:text-purple-600" title="Next image">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Debug info - Remove in production -->
-        <!-- <div class="text-xs text-gray-500 mb-2">
-          <p>Selected Image: {{ selectedImageIndex }}</p>
-          <p>Image Source: {{ product.images[selectedImageIndex]?.main }}</p>
-        </div> -->
-        
-        <!-- Thumbnails -->
-        <div class="flex space-x-2 overflow-x-auto pb-2">
-          <div
-            v-for="(image, index) in product.images"
-            :key="index"
-            @click="selectedImageIndex = index"
-            :class="[
-              'w-20 h-20 cursor-pointer rounded-md overflow-hidden border-2 flex-shrink-0',
-              index === selectedImageIndex ? 'border-purple-600' : 'border-transparent'
-            ]"
-          >
-            <img
-              :src="processImageUrl(image.thumb) || processImageUrl(image.main) || '/images/no-image.jpg'"
-              :alt="`Thumbnail ${index + 1}`"
-              class="w-full h-full object-cover"
-              @error="handleImageError"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Product Details -->
-      <div class="flex flex-col space-y-6">
-        <!-- Product Name -->
-        <h1 class="text-3xl font-bold text-gray-900">{{ product.name }}</h1>
-
-        <!-- Price -->
-        <div class="flex items-center">
-          <p class="text-2xl text-gray-900">${{ product.price.toFixed(2) }}</p>
-        </div>
-        
-        <!-- Jewelry Specific Details -->
-        <div class="grid grid-cols-2 gap-4 mt-2 text-sm bg-gray-50 p-4 rounded-lg">
-          <div>
-            <span class="font-medium text-gray-700">Material:</span>
-            <p>{{ product.material }}</p>
-          </div>
-          <div>
-            <span class="font-medium text-gray-700">Bead Size:</span>
-            <p>{{ product.beadSize }}</p>
-          </div>
-          <div>
-            <span class="font-medium text-gray-700">Length:</span>
-            <p>{{ product.length }}</p>
-          </div>
-          <div>
-            <span class="font-medium text-gray-700">Closure:</span>
-            <p>{{ product.closure }}</p>
-          </div>
-        </div>
-
-        <!-- Product Description -->
-        <p class="text-base text-gray-600">{{ product.description }}</p>
-
-        <!-- Color Options -->
-        <div v-if="product.colors && product.colors.length > 0">
-          <p class="text-lg font-medium text-gray-900 mb-3">Color Options</p>
-          <div class="flex flex-wrap gap-3">
-            <button
-              v-for="(color, index) in product.colors"
-              :key="index"
-              @click="selectedColorIndex = index"
-              :class="[
-                'w-12 h-12 rounded-full focus:outline-none transition-all duration-200',
-                color.class,
-                { 'ring-2 ring-purple-600 ring-offset-2 scale-110': index === selectedColorIndex }
-              ]"
-              :title="color.name"
-            >
-              <span class="sr-only">{{ color.name }}</span>
-            </button>
-          </div>
-          <p class="mt-2 text-sm text-gray-600">Selected: {{ product.colors[selectedColorIndex].name }}</p>
-        </div>
-        
-        <!-- Quantity Selection -->
-        <div>
-          <p class="text-lg font-medium text-gray-900 mb-3">Quantity</p>
-          <div class="flex">
-            <button 
-              @click="quantity > 1 ? quantity-- : null"
-              class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-l text-gray-700"
-            >−</button>
-            <input 
-              id="quantity" 
-              v-model="quantity" 
-              type="number" 
-              min="1" 
-              class="w-16 text-center border-gray-200 border-t border-b focus:ring-purple-500 focus:border-purple-500"
-            >
-            <button 
-              @click="quantity++"
-              class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-r text-gray-700"
-            >+</button>
-          </div>
-        </div>
-
-        <!-- Add to Cart Button -->
-        <button
-          @click="addToCart"
-          class="w-full bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 transition font-medium flex items-center justify-center space-x-2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-          <span>Add to Cart</span>
-        </button>
-
-        <!-- Handcrafted Badge -->
-        <div class="flex items-center space-x-2 text-sm text-gray-600 border-t border-b border-gray-200 py-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-          </svg>
-          <span>Handcrafted with care | Unique Piece | Artisan Made</span>
-        </div>
-
-        <!-- Expandable Sections -->
-        <div class="space-y-2 mt-4">
-          <div
-            v-for="section in product.sections"
-            :key="section.name"
-            class="border border-gray-200 rounded-lg overflow-hidden"
-          >
-            <div
-              @click="toggleSection(section.name)"
-              class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50"
-            >
-              <h2 class="text-lg font-medium text-gray-900">{{ section.name }}</h2>
-              <span class="text-xl text-gray-600">
-                {{ expandedSections.includes(section.name) ? '−' : '+' }}
-              </span>
-            </div>
-            <div
-              v-if="expandedSections.includes(section.name)"
-              class="p-4 bg-gray-50 border-t border-gray-200"
-            >
-              <ul
-                v-if="Array.isArray(section.content)"
-                class="list-disc pl-5 space-y-1"
-              >
-                <li v-for="(item, idx) in section.content" :key="idx" class="text-gray-600">{{ item }}</li>
-              </ul>
-              <p v-else class="text-gray-600">{{ section.content }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div v-else class="text-center py-8">
-      <p>Product not found.</p>
-      <button @click="goBack" class="mt-4 bg-purple-600 text-white px-4 py-2 rounded">Return to Shop</button>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 /* Add subtle animation for hover states */
 .product-image-container {
@@ -448,7 +442,6 @@ const goBack = () => {
   border-radius: 0.5rem;
   position: relative;
   max-height: 500px;
-  background-color: #f9f9f9;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -472,7 +465,7 @@ const goBack = () => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #ccc;
+  opacity: 0.5;
   z-index: -1;
 }
 

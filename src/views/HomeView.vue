@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-light-primary dark:bg-dark-primary">
     <!-- Animation element for cart add effect -->
     <div 
       v-if="animatingItem" 
@@ -9,12 +9,12 @@
     </div>
     
     <!-- Hero Section -->
-    <div class="relative overflow-hidden bg-white">
+    <div class="relative overflow-hidden bg-light-secondary dark:bg-dark-secondary">
       <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
         <div class="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <div class="sm:max-w-lg">
-            <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Stylish Beaded Jewelry Collection</h1>
-            <p class="mt-4 text-xl text-gray-500">Our handcrafted beaded jewelry pieces combine artistry and elegance, adding the perfect colorful accent to enhance any outfit.</p>
+            <h1 class="text-4xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary sm:text-6xl">Stylish Beaded Jewelry Collection</h1>
+            <p class="mt-4 text-xl text-light-text-secondary dark:text-dark-text-secondary">Our handcrafted beaded jewelry pieces combine artistry and elegance, adding the perfect colorful accent to enhance any outfit.</p>
           </div>
           <div>
             <div class="mt-10">
@@ -53,7 +53,7 @@
                 </div>
               </div>
 
-              <router-link to="/products" class="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700">Shop Collection</router-link>
+              <router-link to="/products" class="inline-block rounded-md border border-transparent bg-btn-primary hover:bg-btn-primary-hover dark:hover:bg-btn-primary-dark px-8 py-3 text-center font-medium text-white">Shop Collection</router-link>
             </div>
           </div>
         </div>
@@ -61,9 +61,9 @@
     </div>
 
     <!-- Collection Section - Modified to be truly full width -->
-    <section class="py-16 bg-gray-50 w-full">
+    <section class="py-16 bg-light-primary dark:bg-dark-primary w-full">
       <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold">Our Collections</h2>
+        <h2 class="text-3xl font-bold text-light-text-primary dark:text-dark-text-primary">Our Collections</h2>
       </div>
       <div class="w-full px-4 sm:px-6 lg:px-8 max-w-none mx-auto">
         <div class="max-w-7xl mx-auto">
@@ -98,21 +98,21 @@
     </section>
 
     <!-- Featured Products Section -->
-    <section class="bg-white py-16">
+    <section class="bg-light-secondary dark:bg-dark-secondary py-16">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center mb-10">
-          <h2 class="text-3xl font-bold text-gray-900">Featured Products</h2>
-          <router-link to="/products" class="text-indigo-600 hover:text-indigo-800 font-medium">
+          <h2 class="text-3xl font-bold text-light-text-primary dark:text-dark-text-primary">Featured Products</h2>
+          <router-link to="/products" class="text-accent-primary hover:text-accent-secondary font-medium">
             View all products <span aria-hidden="true">&rarr;</span>
           </router-link>
         </div>
         
         <div v-if="loading" class="flex justify-center py-12">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent-primary"></div>
         </div>
         
         <div v-else-if="featuredProducts.length === 0" class="text-center py-12">
-          <p class="text-gray-500">No products found. Please check back later.</p>
+          <p class="text-light-neutral-600 dark:text-dark-neutral-600">No products found. Please check back later.</p>
         </div>
         
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -132,23 +132,23 @@
     </section>
 
     <!-- Product Features Section -->
-    <section class="bg-white">
+    <section class="bg-light-secondary dark:bg-dark-secondary">
       <div class="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-16 px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
         <div>
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Craftsmanship Details</h2>
-          <p class="mt-4 text-gray-500">Our handcrafted beaded jewelry combines traditional techniques with modern design. Each piece is meticulously created using premium materials, ensuring both beauty and durability for everyday wear.</p>
+          <h2 class="text-3xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl">Craftsmanship Details</h2>
+          <p class="mt-4 text-light-text-secondary dark:text-dark-text-secondary">Our handcrafted beaded jewelry combines traditional techniques with modern design. Each piece is meticulously created using premium materials, ensuring both beauty and durability for everyday wear.</p>
           <dl class="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
-            <div v-for="feature in features" :key="feature.name" class="border-t border-gray-200 pt-4">
-              <dt class="font-medium text-gray-900">{{ feature.name }}</dt>
-              <dd class="mt-2 text-sm text-gray-500">{{ feature.description }}</dd>
+            <div v-for="feature in features" :key="feature.name" class="border-t border-light-neutral-300 dark:border-dark-neutral-700 pt-4">
+              <dt class="font-medium text-light-text-primary dark:text-dark-text-primary">{{ feature.name }}</dt>
+              <dd class="mt-2 text-sm text-light-text-secondary dark:text-dark-text-secondary">{{ feature.description }}</dd>
             </div>
           </dl>
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-01.jpg" alt="Close-up of beaded bracelet showing intricate pattern work." class="rounded-lg bg-gray-100" />
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-02.jpg" alt="Detail view of beaded necklace clasp and finishing." class="rounded-lg bg-gray-100" />
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-03.jpg" alt="Arrangement of colorful beads used in our jewelry collection." class="rounded-lg bg-gray-100" />
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-04.jpg" alt="Handcrafting process showing artisan creating a beaded piece." class="rounded-lg bg-gray-100" />
+          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-01.jpg" alt="Close-up of beaded bracelet showing intricate pattern work." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-02.jpg" alt="Detail view of beaded necklace clasp and finishing." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-03.jpg" alt="Arrangement of colorful beads used in our jewelry collection." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-04.jpg" alt="Handcrafting process showing artisan creating a beaded piece." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
         </div>
       </div>
     </section>
@@ -156,7 +156,7 @@
     <!-- Newsletter Signup -->
     <section class="relative py-16 overflow-hidden">
       <div class="mx-auto max-w-2xl lg:max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-accent-quaternary to-accent-secondary rounded-xl shadow-xl overflow-hidden">
           <div class="absolute inset-0 opacity-10">
             <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIgMS44LTQgNC00czQgMS44IDQgNC0xLjggNC00IDQtNC0xLjgtNC00TTAgMGg0djRIMHoiLz48L2c+PC9nPjwvc3ZnPg==')]"></div>
           </div>
@@ -286,7 +286,7 @@ const handleImageError = (event) => {
     if (parent) {
       const svgElement = document.createElement('div');
       svgElement.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
+        <svg xmlns="http://www.w3.org/200/svg" viewBox="0 0 24 24" width="100%" height="100%">
           <rect width="100%" height="100%" fill="#f0f0f0"/>
           <path d="M12 6v12M6 12h12" stroke="#aaa" stroke-width="2" stroke-linecap="round"/>
         </svg>
@@ -610,8 +610,6 @@ const addToCart = async (product) => {
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   z-index: 9999;
   position: fixed;
   pointer-events: none;

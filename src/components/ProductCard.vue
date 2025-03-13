@@ -1,5 +1,5 @@
 <template>
-  <div class="group relative bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
+  <div class="group relative bg-light-primary dark:bg-dark-primary rounded-lg shadow hover:shadow-lg transition-all duration-300">
     <!-- Animation element for cart add effect -->
     <div 
       v-if="animatingItem" 
@@ -14,18 +14,16 @@
             class="h-60 w-full object-cover object-center group-hover:opacity-90" @error="handleImageError">
       </div>
       <div class="p-4">
-        <div class="flex justify-between items-start">
-          <div>
-            <h3 class="text-lg font-medium text-gray-900 hover:text-indigo-600">{{ product.name }}</h3>
-            <p class="text-sm text-gray-500">{{ product.category }}</p>
-          </div>
-          <p class="text-lg font-medium text-gray-900">${{ (product.price || 0).toFixed(2) }}</p>
+        <div class="items-start">
+          <h3 class="text-light-text-primary dark:text-dark-text-primary text-lg font-medium hover:text-accent-primary">{{ product.name }}</h3>
+          <p class="text-light-text-secondary dark:text-dark-text-secondary text-sm">{{ product.category }}</p>
+          <p class="text-light-text-primary dark:text-dark-text-primary text-lg font-medium">${{ (product.price || 0).toFixed(2) }}</p>
         </div>
       </div>
     </router-link>
     <div class="px-4 pb-4">
       <button @click="addToCart(product)" 
-          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md text-sm font-medium transition-all">
+          class="w-full bg-btn-primary hover:bg-btn-primary-hover active:bg-btn-primary-dark text-white py-2 rounded-btn shadow-btn hover:shadow-btn-hover transition-btn text-sm font-medium">
         Add to cart
       </button>
     </div>
@@ -149,6 +147,7 @@ const getImageSrc = (imageUrl) => {
   background-position: center;
   border-radius: 50%;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  @apply bg-light-primary dark:bg-dark-primary;
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   z-index: 9999;
   position: fixed;
@@ -161,5 +160,6 @@ const getImageSrc = (imageUrl) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  @apply bg-light-neutral-200 dark:bg-dark-neutral-200;
 }
 </style>

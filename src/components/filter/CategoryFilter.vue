@@ -26,8 +26,8 @@ const selectCategory = (category) => {
     <RadioGroup :value="selectedCategory" @change="selectCategory" class="space-y-2">
       <RadioGroupOption v-slot="{ checked }" :value="''">
         <button 
-          class="text-left w-full hover:text-gray-800"
-          :class="{ 'font-semibold': checked }"
+          class="text-left w-full text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary transition-colors"
+          :class="{ 'font-semibold text-light-text-primary dark:text-dark-text-primary': checked }"
         >
           All Products
         </button>
@@ -40,8 +40,8 @@ const selectCategory = (category) => {
         :value="category.id"
       >
         <button 
-          class="text-left w-full hover:text-gray-800"
-          :class="{ 'font-semibold': checked }"
+          class="text-left w-full text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary transition-colors"
+          :class="{ 'font-semibold text-light-text-primary dark:text-dark-text-primary': checked }"
         >
           {{ category.name }}
         </button>

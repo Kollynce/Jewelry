@@ -83,15 +83,15 @@ const router = createRouter({
       meta: { requiresAuth: true, isAdmin: true }
     },
     {
-      path: '/admin/categories',
-      name: 'admin-categories',
-      component: () => import('../views/AdminDashboard.vue'),
+      path: '/admin/orders',
+      name: 'admin-orders',
+      component: () => import('../views/AdminOrders.vue'),
       meta: { requiresAuth: true, isAdmin: true }
     },
     {
-      path: '/admin/orders',
-      name: 'admin-orders',
-      component: () => import('../views/AdminDashboard.vue'),
+      path: '/admin/users',
+      name: 'admin-users',
+      component: () => import('../views/AdminUsersView.vue'),
       meta: { requiresAuth: true, isAdmin: true }
     }
   ]

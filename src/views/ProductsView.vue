@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white">
+  <div class="min-h-screen bg-light-primary dark:bg-dark-secondary">
     <!-- Animation element for cart add effect -->
     <div 
       v-if="animatingItem" 
@@ -18,28 +18,28 @@
 
           <div class="fixed inset-0 z-40 flex">
             <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="translate-x-full">
-              <DialogPanel class="relative ml-auto flex size-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+              <DialogPanel class="relative ml-auto flex size-full max-w-xs flex-col overflow-y-auto bg-light-secondary dark:bg-dark-secondary py-4 pb-12 shadow-xl">
                 <div class="flex items-center justify-between px-4">
-                  <h2 class="text-lg font-medium text-gray-900">Filters</h2>
-                  <button type="button" class="-mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-400" @click="mobileFiltersOpen = false">
+                  <h2 class="text-lg font-medium text-light-text-primary dark:text-dark-text-primary">Filters</h2>
+                  <button type="button" class="-mr-2 flex size-10 items-center justify-center rounded-md bg-light-secondary dark:bg-dark-secondary p-2 text-light-neutral-500 dark:text-dark-neutral-500" @click="mobileFiltersOpen = false">
                     <span class="sr-only">Close menu</span>
                     <XMarkIcon class="size-6" aria-hidden="true" />
                   </button>
                 </div>
 
                 <!-- Filters -->
-                <form class="mt-4 border-t border-gray-200">
+                <form class="mt-4 border-t border-light-neutral-200 dark:border-dark-neutral-700">
                   <h3 class="sr-only">Categories</h3>
-                  <ul role="list" class="px-2 py-3 font-medium text-gray-900">
+                  <ul role="list" class="px-2 py-3 font-medium text-light-text-primary dark:text-dark-text-primary">
                     <li v-for="category in subCategories" :key="category.name">
                       <a href="#" @click.prevent="selectCategory(category.value)" class="block px-2 py-3">{{ category.name }}</a>
                     </li>
                   </ul>
 
-                  <Disclosure as="div" v-for="section in filters" :key="section.id" class="border-t border-gray-200 px-4 py-6" v-slot="{ open }">
+                  <Disclosure as="div" v-for="section in filters" :key="section.id" class="border-t border-light-neutral-200 dark:border-dark-neutral-700 px-4 py-6" v-slot="{ open }">
                     <h3 class="-mx-2 -my-3 flow-root">
-                      <DisclosureButton class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                        <span class="font-medium text-gray-900">{{ section.name }}</span>
+                      <DisclosureButton class="flex w-full items-center justify-between bg-light-secondary dark:bg-dark-secondary px-2 py-3 text-light-neutral-500 dark:text-dark-neutral-500 hover:text-light-neutral-700 dark:hover:text-dark-neutral-300">
+                        <span class="font-medium text-light-text-primary dark:text-dark-text-primary">{{ section.name }}</span>
                         <span class="ml-6 flex items-center">
                           <PlusIcon v-if="!open" class="size-5" aria-hidden="true" />
                           <MinusIcon v-else class="size-5" aria-hidden="true" />
@@ -58,15 +58,15 @@
                                 type="checkbox" 
                                 :checked="option.checked"
                                 @change="toggleFilter(section.id, option.value)"
-                                class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto" 
+                                class="col-start-1 row-start-1 appearance-none rounded-sm border border-light-neutral-300 dark:border-dark-neutral-700 bg-light-secondary dark:bg-dark-secondary checked:border-accent-primary checked:bg-accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary disabled:border-light-neutral-300 dark:disabled:border-dark-neutral-700 disabled:bg-light-neutral-100 dark:disabled:bg-dark-neutral-800" 
                               />
-                              <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
+                              <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-light-neutral-900/25 dark:group-has-disabled:stroke-dark-neutral-100/25" viewBox="0 0 14 14" fill="none">
                                 <path class="opacity-0 group-has-checked:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 <path class="opacity-0 group-has-indeterminate:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                               </svg>
                             </div>
                           </div>
-                          <label :for="`filter-mobile-${section.id}-${optionIdx}`" class="min-w-0 flex-1 text-gray-500">{{ option.label }}</label>
+                          <label :for="`filter-mobile-${section.id}-${optionIdx}`" class="min-w-0 flex-1 text-light-neutral-600 dark:text-dark-neutral-400">{{ option.label }}</label>
                         </div>
                       </div>
                     </DisclosurePanel>
@@ -79,26 +79,26 @@
       </TransitionRoot>
 
       <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-          <h1 class="text-4xl font-bold tracking-tight text-gray-900">Our Jewelry Collection</h1>
+        <div class="flex items-baseline justify-between border-b border-light-neutral-200 dark:border-dark-neutral-700 pt-24 pb-6">
+          <h1 class="text-4xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary">Our Jewelry Collection</h1>
 
           <div class="flex items-center">
             <Menu as="div" class="relative inline-block text-left">
               <div>
-                <MenuButton class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                <MenuButton class="group inline-flex justify-center text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary">
                   Sort
-                  <ChevronDownIcon class="-mr-1 ml-1 size-5 shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                  <ChevronDownIcon class="-mr-1 ml-1 size-5 shrink-0 text-light-neutral-400 dark:text-dark-neutral-600 group-hover:text-light-neutral-500 dark:group-hover:text-dark-neutral-500" aria-hidden="true" />
                 </MenuButton>
               </div>
 
               <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                <MenuItems class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white ring-1 shadow-2xl ring-black/5 focus:outline-hidden">
+                <MenuItems class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-light-secondary dark:bg-dark-secondary ring-1 shadow-2xl ring-black/5 focus:outline-hidden">
                   <div class="py-1">
                     <MenuItem v-for="option in sortOptions" :key="option.name" v-slot="{ active }">
                       <a 
                         href="#" 
                         @click.prevent="setSort(option)"
-                        :class="[option.current ? 'font-medium text-gray-900' : 'text-gray-500', active ? 'bg-gray-100 outline-hidden' : '', 'block px-4 py-2 text-sm']"
+                        :class="[option.current ? 'font-medium text-light-text-primary dark:text-dark-text-primary' : 'text-light-text-secondary dark:text-dark-text-secondary', active ? 'bg-light-neutral-100 dark:bg-dark-neutral-800 outline-hidden' : '', 'block px-4 py-2 text-sm']"
                       >
                         {{ option.name }}
                       </a>
@@ -108,11 +108,11 @@
               </transition>
             </Menu>
 
-            <button type="button" class="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+            <button type="button" class="-m-2 ml-5 p-2 text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500 sm:ml-7">
               <span class="sr-only">View grid</span>
               <Squares2X2Icon class="size-5" aria-hidden="true" />
             </button>
-            <button type="button" class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden" @click="mobileFiltersOpen = true">
+            <button type="button" class="-m-2 ml-4 p-2 text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500 sm:ml-6 lg:hidden" @click="mobileFiltersOpen = true">
               <span class="sr-only">Filters</span>
               <FunnelIcon class="size-5" aria-hidden="true" />
             </button>
@@ -126,21 +126,21 @@
             <!-- Filters -->
             <form class="hidden lg:block">
               <h3 class="sr-only">Categories</h3>
-              <ul role="list" class="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
+              <ul role="list" class="space-y-4 border-b border-light-neutral-200 dark:border-dark-neutral-700 pb-6 text-sm font-medium text-light-text-primary dark:text-dark-text-primary">
                 <li v-for="category in subCategories" :key="category.name">
                   <a href="#" @click.prevent="selectCategory(category.value)">{{ category.name }}</a>
                 </li>
                 <li class="mt-2">
-                  <a href="#" @click.prevent="products = allProducts" class="text-indigo-600 hover:text-indigo-800">
+                  <a href="#" @click.prevent="products = allProducts" class="text-accent-primary hover:text-accent-secondary">
                     View All
                   </a>
                 </li>
               </ul>
 
-              <Disclosure as="div" v-for="section in filters" :key="section.id" class="border-b border-gray-200 py-6" v-slot="{ open }">
+              <Disclosure as="div" v-for="section in filters" :key="section.id" class="border-b border-light-neutral-200 dark:border-dark-neutral-700 py-6" v-slot="{ open }">
                 <h3 class="-my-3 flow-root">
-                  <DisclosureButton class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                    <span class="font-medium text-gray-900">{{ section.name }}</span>
+                  <DisclosureButton class="flex w-full items-center justify-between bg-light-secondary dark:bg-dark-secondary py-3 text-sm text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500">
+                    <span class="font-medium text-light-text-primary dark:text-dark-text-primary">{{ section.name }}</span>
                     <span class="ml-6 flex items-center">
                       <PlusIcon v-if="!open" class="size-5" aria-hidden="true" />
                       <MinusIcon v-else class="size-5" aria-hidden="true" />
@@ -159,15 +159,15 @@
                             type="checkbox" 
                             :checked="option.checked"
                             @change="toggleFilter(section.id, option.value)"
-                            class="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto" 
+                            class="col-start-1 row-start-1 appearance-none rounded-sm border border-light-neutral-300 dark:border-dark-neutral-700 bg-light-secondary dark:bg-dark-secondary checked:border-accent-primary checked:bg-accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-primary disabled:border-light-neutral-300 dark:disabled:border-dark-neutral-700 disabled:bg-light-neutral-100 dark:disabled:bg-dark-neutral-800" 
                           />
-                          <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25" viewBox="0 0 14 14" fill="none">
+                          <svg class="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-light-neutral-900/25 dark:group-has-disabled:stroke-dark-neutral-100/25" viewBox="0 0 14 14" fill="none">
                             <path class="opacity-0 group-has-checked:opacity-100" d="M3 8L6 11L11 3.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             <path class="opacity-0 group-has-indeterminate:opacity-100" d="M3 7H11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                           </svg>
                         </div>
                       </div>
-                      <label :for="`filter-${section.id}-${optionIdx}`" class="text-sm text-gray-600">{{ option.label }}</label>
+                      <label :for="`filter-${section.id}-${optionIdx}`" class="text-sm text-light-text-secondary dark:text-dark-text-secondary">{{ option.label }}</label>
                     </div>
                   </div>
                 </DisclosurePanel>
@@ -177,11 +177,11 @@
             <!-- Product grid -->
             <div class="lg:col-span-3">
               <div v-if="loading" class="text-center py-8">
-                <p>Loading products...</p>
+                <p class="text-light-text-secondary dark:text-dark-text-secondary">Loading products...</p>
               </div>
               
               <div v-else-if="products.length === 0" class="text-center py-8">
-                <p>No products found.</p>
+                <p class="text-light-text-secondary dark:text-dark-text-secondary">No products found.</p>
               </div>
               
               <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -396,6 +396,48 @@ export const firebaseService = {
     }
   },
 
+  // User management methods
+  async getAllUsers() {
+    try {
+      const usersRef = collection(db, 'users');
+      const usersSnap = await getDocs(usersRef);
+      
+      return usersSnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date()
+      }));
+    } catch (error) {
+      console.error('Error getting all users:', error);
+      throw error;
+    }
+  },
+
+  async updateUser(userId, userData) {
+    try {
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, {
+        ...userData,
+        updatedAt: serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw error;
+    }
+  },
+
+  async deleteUser(userId) {
+    try {
+      const userRef = doc(db, 'users', userId);
+      await deleteDoc(userRef);
+      return true;
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      throw error;
+    }
+  },
+
   // Order operations
   async createOrder(orderData) {
     try {
@@ -471,7 +513,7 @@ export const firebaseService = {
       return []; // Return empty array instead of throwing, better for UI
     }
   },
-  
+
   // Get all orders for admin
   async getAllOrders() {
     try {

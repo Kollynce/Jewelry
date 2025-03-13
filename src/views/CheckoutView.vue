@@ -4,7 +4,7 @@
     <div class="bg-white shadow-sm py-6 mb-8">
       <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold text-gray-900">Checkout</h1>
-        
+
         <!-- Checkout progress indicator -->
         <div class="mt-4 hidden sm:block">
           <div class="flex items-center">
@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Success message -->
     <div v-if="successMsg" class="container mx-auto px-4">
       <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Error message -->
     <div v-else-if="errorMsg" class="container mx-auto px-4 mb-8">
       <div class="max-w-3xl mx-auto bg-red-50 border border-red-200 p-4 rounded-lg flex items-start">
@@ -86,7 +86,7 @@
         </button>
       </div>
     </div>
-    
+
     <!-- Main checkout content -->
     <div v-else class="container mx-auto px-4">
       <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
@@ -106,87 +106,87 @@
                   <h2 class="text-xl font-bold text-gray-900">Shipping Information</h2>
                 </div>
               </div>
-              
+
               <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                    <input 
-                      v-model="shippingInfo.firstName" 
-                      type="text" 
-                      required 
+                    <input
+                      v-model="shippingInfo.firstName"
+                      type="text"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
-                  
+
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                    <input 
-                      v-model="shippingInfo.lastName" 
-                      type="text" 
-                      required 
+                    <input
+                      v-model="shippingInfo.lastName"
+                      type="text"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
-                  
+
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input 
-                      v-model="shippingInfo.email" 
-                      type="email" 
-                      required 
+                    <input
+                      v-model="shippingInfo.email"
+                      type="email"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
-                  
+
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                    <input 
-                      v-model="shippingInfo.phone" 
-                      type="tel" 
-                      required 
+                    <input
+                      v-model="shippingInfo.phone"
+                      type="tel"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
                 </div>
-                
+
                 <div class="mb-6">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                  <input 
-                    v-model="shippingInfo.address" 
-                    type="text" 
-                    required 
+                  <input
+                    v-model="shippingInfo.address"
+                    type="text"
+                    required
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                   >
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                    <input 
-                      v-model="shippingInfo.city" 
-                      type="text" 
-                      required 
+                    <input
+                      v-model="shippingInfo.city"
+                      type="text"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
-                  
+
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                    <input 
-                      v-model="shippingInfo.state" 
-                      type="text" 
-                      required 
+                    <input
+                      v-model="shippingInfo.state"
+                      type="text"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
-                  
+
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
-                    <input 
-                      v-model="shippingInfo.zipCode" 
-                      type="text" 
-                      required 
+                    <input
+                      v-model="shippingInfo.zipCode"
+                      type="text"
+                      required
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                     >
                   </div>
@@ -194,9 +194,9 @@
 
                 <div class="mt-6">
                   <div class="flex items-center">
-                    <input 
-                      id="save-info" 
-                      type="checkbox" 
+                    <input
+                      id="save-info"
+                      type="checkbox"
                       v-model="saveInfo"
                       class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     >
@@ -207,7 +207,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Payment Information -->
             <div class="bg-white shadow rounded-lg overflow-hidden mb-8">
               <div class="bg-gray-50 py-4 px-6 border-b border-gray-200">
@@ -220,7 +220,7 @@
                   <h2 class="text-xl font-bold text-gray-900">Payment Information</h2>
                 </div>
               </div>
-              
+
               <div class="p-6">
                 <div class="mb-8">
                   <div class="flex items-center justify-between mb-4">
@@ -238,25 +238,25 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="mb-6">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Name on Card</label>
-                  <input 
-                    v-model="paymentInfo.cardName" 
-                    type="text" 
-                    required 
+                  <input
+                    v-model="paymentInfo.cardName"
+                    type="text"
+                    required
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                   >
                 </div>
-                
+
                 <div class="mb-6">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
                   <div class="relative">
-                    <input 
-                      v-model="paymentInfo.cardNumber" 
-                      type="text" 
-                      required 
-                      placeholder="1234 5678 9012 3456" 
+                    <input
+                      v-model="paymentInfo.cardNumber"
+                      type="text"
+                      required
+                      placeholder="1234 5678 9012 3456"
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                       v-mask="'#### #### #### ####'"
                     >
@@ -267,36 +267,36 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Expiration Date</label>
-                    <input 
-                      v-model="paymentInfo.expirationDate" 
-                      type="text" 
-                      required 
-                      placeholder="MM/YY" 
+                    <input
+                      v-model="paymentInfo.expirationDate"
+                      type="text"
+                      required
+                      placeholder="MM/YY"
                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                       v-mask="'##/##'"
                     >
                   </div>
-                  
+
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
                     <div class="relative">
-                      <input 
-                        v-model="paymentInfo.cvv" 
-                        type="text" 
-                        required 
-                        placeholder="123" 
+                      <input
+                        v-model="paymentInfo.cvv"
+                        type="text"
+                        required
+                        placeholder="123"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                         v-mask="'###'"
                         maxlength="3"
                       >
                       <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                        <button 
+                        <button
                           type="button"
-                          @click="showCvvHelp = !showCvvHelp" 
+                          @click="showCvvHelp = !showCvvHelp"
                           class="text-gray-400 hover:text-gray-500 focus:outline-none"
                         >
                           <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -312,8 +312,8 @@
                 </div>
               </div>
             </div>
-            
-            <button 
+
+            <button
               type="submit"
               class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-medium rounded-md transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               :class="{'opacity-75 cursor-not-allowed': loading}"
@@ -327,14 +327,14 @@
             </button>
           </form>
         </div>
-        
+
         <!-- Order summary -->
         <div class="mt-10 lg:mt-0">
           <div class="bg-white shadow rounded-lg overflow-hidden sticky top-6">
             <div class="bg-gray-50 py-4 px-6 border-b border-gray-200">
               <h2 class="text-lg font-bold text-gray-900">Order Summary</h2>
             </div>
-            
+
             <div class="px-6 py-4">
               <div class="flow-root">
                 <ul class="-my-4 divide-y divide-gray-200">
@@ -360,24 +360,24 @@
                 </ul>
               </div>
             </div>
-            
+
             <div class="border-t border-gray-200 px-6 py-4 space-y-3">
               <div class="flex justify-between text-sm text-gray-600">
                 <p>Subtotal</p>
                 <p>${{ subtotal.toFixed(2) }}</p>
               </div>
-              
+
               <div class="flex justify-between text-sm text-gray-600">
                 <p>Shipping</p>
                 <p v-if="shippingCost > 0">${{ shippingCost.toFixed(2) }}</p>
                 <p v-else class="text-green-600">Free</p>
               </div>
-              
+
               <div class="flex justify-between text-sm text-gray-600">
                 <p>Taxes (estimated)</p>
                 <p>${{ (subtotal * 0.08).toFixed(2) }}</p>
               </div>
-              
+
               <div class="pt-3 border-t border-gray-200">
                 <div class="flex justify-between text-base font-medium text-gray-900">
                   <p>Total</p>
@@ -386,7 +386,7 @@
                 <p class="mt-1 text-sm text-gray-500">Shipping and taxes calculated at checkout</p>
               </div>
             </div>
-            
+
             <div class="px-6 pb-6 pt-2">
               <div class="mt-2">
                 <div class="border border-gray-300 rounded-md p-4 bg-gray-50">
@@ -404,7 +404,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="mt-4 flex justify-center">
                 <div class="flex items-center space-x-2">
                   <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -474,7 +474,7 @@ onMounted(async () => {
     try {
       const profile = await firebaseService.getUserProfile(authStore.user.uid)
       userProfile.value = profile
-      
+
       if (profile) {
         shippingInfo.value = {
           ...shippingInfo.value,
@@ -492,7 +492,7 @@ onMounted(async () => {
     // Redirect if not logged in
     router.push('/login?redirect=checkout')
   }
-  
+
   // Redirect if cart is empty
   if (cart.value.length === 0) {
     router.push('/cart')
@@ -503,18 +503,18 @@ onMounted(async () => {
 const placeOrder = async () => {
   loading.value = true
   errorMsg.value = ''
-  
+
   // Basic validation
   if (cart.value.length === 0) {
     errorMsg.value = 'Your cart is empty'
     loading.value = false
     return
   }
-  
+
   try {
     const timestamp = new Date()
     const orderNumber = `ORD-${Date.now().toString().slice(-6)}`
-    
+
     // Create order in Firestore
     const orderData = {
       userId: authStore.user.uid,
@@ -537,15 +537,15 @@ const placeOrder = async () => {
       orderDate: timestamp,
       estimatedDelivery: new Date(timestamp.setDate(timestamp.getDate() + 7))
     }
-    
+
     const orderRef = await firebaseService.createOrder(orderData)
-    
+
     // Clear the cart
     cartStore.clearCart()
-    
+
     // Show success message
     successMsg.value = `Order placed successfully! Your order number is ${orderNumber}.`
-    
+
     // Redirect to orders page after a delay
     setTimeout(() => {
       router.push('/account')
@@ -561,7 +561,7 @@ const placeOrder = async () => {
 // Helper function to determine card type based on first digits
 const getCardType = (cardNumber) => {
   const cleanedNumber = cardNumber.replace(/\D/g, '')
-  
+
   if (/^4/.test(cleanedNumber)) return 'Visa'
   if (/^5[1-5]/.test(cleanedNumber)) return 'MasterCard'
   if (/^3[47]/.test(cleanedNumber)) return 'American Express'
@@ -575,13 +575,13 @@ const directive = {
     el.addEventListener('input', (e) => {
       const { value } = binding
       if (!value || !value.value) return  // Guard against undefined value
-      
+
       const inputValue = e.target.value.replace(/\D/g, '')
       const mask = value.value
-      
+
       let result = ''
       let currentIndex = 0
-      
+
       for (let i = 0; i < mask.length && currentIndex < inputValue.length; i++) {
         if (mask[i] === '#') {
           result += inputValue[currentIndex]
@@ -590,7 +590,7 @@ const directive = {
           result += mask[i]
         }
       }
-      
+
       e.target.value = result
     })
   }
@@ -610,12 +610,16 @@ const vMask = vMaskDirective
 </script>
 
 <style scoped>
-.form-input, .form-select {
-  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all;
+.form-input {
+  @apply w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+    bg-light-secondary dark:bg-dark-secondary
+    text-light-text-primary dark:text-dark-text-primary
+    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+    outline-none transition-all;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+  @apply block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1;
 }
 
 .btn {
@@ -623,10 +627,11 @@ const vMask = vMaskDirective
 }
 
 .btn-primary {
-  @apply bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  @apply bg-orange-500 hover:bg-orange-600 text-white focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:bg-orange-600 dark:hover:bg-orange-500;
 }
 
 .btn-secondary {
-  @apply bg-gray-200 hover:bg-gray-300 text-gray-800;
+  @apply bg-light-neutral-200 hover:bg-light-neutral-300 text-light-text-primary 
+    dark:bg-dark-neutral-700 dark:text-dark-text-primary dark:hover:bg-dark-neutral-600;
 }
 </style>

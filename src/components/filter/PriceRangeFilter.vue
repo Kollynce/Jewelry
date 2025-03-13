@@ -47,40 +47,43 @@ watch(() => props.initialMax, (newVal) => {
 
 <template>
   <div>
-    <h3 class="font-medium mb-3">Price Range</h3>
+    <h3 class="font-medium mb-3 text-light-text-primary dark:text-dark-text-primary">Price Range</h3>
     
     <div class="grid grid-cols-2 gap-2 mb-4">
       <div>
-        <label class="text-sm text-gray-600 block">Min</label>
+        <label class="text-sm text-light-text-secondary dark:text-dark-text-secondary block">Min</label>
         <div class="relative">
-          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary">$</span>
           <input 
             type="number"
             v-model="min"
             :min="minPrice"
             :max="maxPrice"
-            class="form-input pl-6"
+            class="w-full pl-6 p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
           />
         </div>
       </div>
       
       <div>
-        <label class="text-sm text-gray-600 block">Max</label>
+        <label class="text-sm text-light-text-secondary dark:text-dark-text-secondary block">Max</label>
         <div class="relative">
-          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary">$</span>
           <input 
             type="number"
             v-model="max"
             :min="minPrice"
             :max="maxPrice"
-            class="form-input pl-6"
+            class="w-full pl-6 p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
           />
         </div>
       </div>
     </div>
     
-    <Button @click="applyFilter" class="btn btn-primary w-full">
+    <button 
+      @click="applyFilter" 
+      class="w-full bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-500 text-white py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+    >
       Apply Filter
-    </Button>
+    </button>
   </div>
 </template>

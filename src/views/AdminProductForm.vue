@@ -1,39 +1,39 @@
 <template>
-  <div class="admin-product-form container mx-auto px-4 py-8">
+  <div class="admin-product-form container mx-auto px-4 py-8 bg-light-primary dark:bg-dark-primary min-h-screen">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h1>
+      <h1 class="text-2xl font-bold text-light-text-primary dark:text-dark-text-primary">{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h1>
       <router-link 
         to="/admin/products" 
-        class="text-gray-600 hover:text-gray-800"
+        class="text-light-text-secondary dark:text-dark-text-secondary hover:text-accent-primary dark:hover:text-accent-primary transition-colors"
       >
         Back to Products
       </router-link>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div class="bg-light-secondary dark:bg-dark-secondary rounded-lg shadow-md p-6 mb-6 border border-light-neutral-300 dark:border-dark-neutral-700">
       <form @submit.prevent="saveProduct">
         <!-- Basic Information -->
         <div class="mb-6">
-          <h2 class="text-lg font-semibold mb-4">Basic Information</h2>
+          <h2 class="text-lg font-semibold mb-4 text-light-text-primary dark:text-dark-text-primary">Basic Information</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+              <label for="name" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Product Name</label>
               <input 
                 type="text" 
                 id="name" 
                 v-model="product.name" 
                 required
-                class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
               >
             </div>
             
             <div>
-              <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label for="category" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Category</label>
               <select 
                 id="category" 
                 v-model="product.category" 
                 required
-                class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
               >
                 <option value="">Select a category</option>
                 <option value="Beaded Jewelry">Beaded Jewelry</option>
@@ -49,7 +49,7 @@
             </div>
             
             <div>
-              <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+              <label for="price" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Price ($)</label>
               <input 
                 type="number" 
                 id="price" 
@@ -57,19 +57,19 @@
                 min="0.01" 
                 step="0.01"
                 required
-                class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
               >
             </div>
             
             <div>
-              <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+              <label for="stock" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Stock Quantity</label>
               <input 
                 type="number" 
                 id="stock" 
                 v-model.number="product.stock" 
                 min="0" 
                 required
-                class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
               >
             </div>
           </div>
@@ -77,24 +77,24 @@
         
         <!-- Description -->
         <div class="mb-6">
-          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <label for="description" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Description</label>
           <textarea 
             id="description" 
             v-model="product.description" 
             rows="4"
             required
-            class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+            class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary resize-y"
           ></textarea>
         </div>
         
         <!-- Images -->
         <div class="mb-6">
-          <h2 class="text-lg font-semibold mb-4">Product Images</h2>
+          <h2 class="text-lg font-semibold mb-4 text-light-text-primary dark:text-dark-text-primary">Product Images</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <div 
               v-for="(image, index) in product.images" 
               :key="index"
-              class="relative border rounded p-2"
+              class="relative border border-light-neutral-300 dark:border-dark-neutral-600 rounded p-2 bg-light-primary dark:bg-dark-primary"
             >
               <img 
                 :src="getImageSrc(image)" 
@@ -104,35 +104,35 @@
               <button 
                 type="button"
                 @click="removeImage(index)" 
-                class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                class="absolute top-1 right-1 bg-orange-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-orange-700 transition-colors"
               >
                 ×
               </button>
             </div>
             
-            <div class="border border-dashed rounded-lg p-4 flex flex-col items-center justify-center min-h-[8rem]">
+            <div class="border border-dashed border-light-neutral-400 dark:border-dark-neutral-500 rounded-lg p-4 flex flex-col items-center justify-center min-h-[8rem] bg-light-neutral-100/50 dark:bg-dark-neutral-800/50">
               <div class="mb-2 w-full">
-                <label class="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
+                <label class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Upload Image</label>
                 <input 
                   type="file" 
                   id="image-upload"
                   @change="handleFileUpload"
                   accept="image/*"
-                  class="w-full mb-2 text-sm"
+                  class="w-full mb-2 text-sm text-light-text-primary dark:text-dark-text-primary"
                 />
-                <div class="text-sm text-gray-500 mb-2 text-center">-- OR --</div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Enter Image URL</label>
+                <div class="text-sm text-light-neutral-500 dark:text-dark-neutral-400 mb-2 text-center">-- OR --</div>
+                <label class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Enter Image URL</label>
                 <input 
                   type="url" 
                   v-model="newImageUrl" 
                   placeholder="Enter image URL"
-                  class="w-full p-2 border border-gray-300 rounded mb-2"
+                  class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded mb-2 bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
                 >
                 <div class="flex justify-center">
                   <button 
                     type="button"
                     @click="addImage" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded"
+                    class="bg-accent-quaternary hover:bg-accent-quaternary/90 text-white py-1 px-3 rounded-btn shadow-btn hover:shadow-btn-hover transition-all"
                     :disabled="isUploading || !newImageUrl.trim()"
                   >
                     Add URL
@@ -143,62 +143,43 @@
           </div>
           
           <!-- Upload progress/status -->
-          <div v-if="isUploading" class="mt-2 bg-blue-50 text-blue-700 px-4 py-2 rounded">
+          <div v-if="isUploading" class="mt-2 bg-accent-quaternary/10 text-accent-quaternary px-4 py-2 rounded border border-accent-quaternary/20">
             <div class="flex items-center">
               <span class="inline-block animate-spin mr-2">⟳</span>
               <span>{{ uploadStatus }}</span>
             </div>
           </div>
           
-          <!-- Placeholder images -->
-          <div class="mt-4">
-            <h3 class="text-md font-medium mb-2">Or choose from placeholder images:</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-              <div 
-                v-for="(placeholder, index) in placeholderImages" 
-                :key="'placeholder-'+index"
-                class="border rounded cursor-pointer hover:border-blue-500 transition-colors"
-                @click="addPlaceholderImage(placeholder)"
-              >
-                <img 
-                  :src="placeholder" 
-                  class="w-full h-16 object-cover rounded" 
-                  alt="Placeholder image"
-                >
-              </div>
-            </div>
-          </div>
-          
-          <p class="text-sm text-gray-500 mt-2">
+          <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">
             Add at least one product image. For best results, use images with a 1:1 aspect ratio.
             <br>
-            <span class="text-green-600 font-medium">High-resolution images will be automatically resized to optimize performance.</span>
+            <span class="text-accent-tertiary dark:text-accent-tertiary font-medium">High-resolution images will be automatically resized to optimize performance.</span>
           </p>
         </div>
         
         <!-- Additional Details -->
         <div class="mb-6">
-          <h2 class="text-lg font-semibold mb-4">Additional Details</h2>
+          <h2 class="text-lg font-semibold mb-4 text-light-text-primary dark:text-dark-text-primary">Additional Details</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label for="materials" class="block text-sm font-medium text-gray-700 mb-1">Materials</label>
+              <label for="materials" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Materials</label>
               <input 
                 type="text" 
                 id="materials" 
                 v-model="product.materials" 
                 placeholder="e.g. Sterling silver, glass beads, etc."
-                class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
               >
             </div>
             
             <div>
-              <label for="dimensions" class="block text-sm font-medium text-gray-700 mb-1">Dimensions</label>
+              <label for="dimensions" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Dimensions</label>
               <input 
                 type="text" 
                 id="dimensions" 
                 v-model="product.dimensions" 
                 placeholder="e.g. 18 inches, 2.5cm diameter, etc."
-                class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                class="w-full p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-primary dark:bg-dark-primary text-light-text-primary dark:text-dark-text-primary focus:ring-accent-primary focus:border-accent-primary"
               >
             </div>
           </div>
@@ -209,26 +190,26 @@
                 type="checkbox" 
                 id="featured" 
                 v-model="product.featured"
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                class="h-4 w-4 text-accent-primary focus:ring-accent-primary border-light-neutral-300 dark:border-dark-neutral-600 rounded"
               >
-              <label for="featured" class="ml-2 block text-sm text-gray-700">
+              <label for="featured" class="ml-2 block text-sm text-light-text-primary dark:text-dark-text-primary">
                 Featured product (display on homepage)
               </label>
             </div>
           </div>
         </div>
         
-        <div class="border-t pt-6 flex justify-end space-x-4">
+        <div class="border-t border-light-neutral-300 dark:border-dark-neutral-700 pt-6 flex justify-end space-x-4">
           <button 
             type="button" 
             @click="$router.go(-1)" 
-            class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="py-2 px-4 border border-light-neutral-300 dark:border-dark-neutral-600 rounded-btn shadow-btn text-sm font-medium text-light-text-primary dark:text-dark-text-primary hover:bg-light-neutral-100 dark:hover:bg-dark-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary transition-all"
           >
             Cancel
           </button>
           <button 
             type="submit" 
-            class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="py-2 px-4 border border-transparent rounded-btn shadow-btn text-sm font-medium text-white bg-btn-primary hover:bg-btn-primary-hover dark:hover:bg-btn-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-btn-primary transition-all"
             :disabled="isSaving"
           >
             {{ isSaving ? 'Saving...' : 'Save Product' }}
@@ -238,7 +219,7 @@
     </div>
 
     <!-- Error Alert -->
-    <div v-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 relative">
+    <div v-if="error" class="bg-orange-100 dark:bg-orange-900/30 border border-orange-400 dark:border-orange-700 text-orange-700 dark:text-orange-400 px-4 py-3 rounded mb-4 relative">
       <strong class="font-bold mr-1">Error:</strong>
       <span class="block sm:inline">{{ error }}</span>
       <span 
@@ -250,7 +231,7 @@
     </div>
     
     <!-- Warning for temporary images -->
-    <div v-if="hasTempImages" class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+    <div v-if="hasTempImages" class="bg-accent-primary/10 dark:bg-accent-primary/20 border border-accent-primary/30 dark:border-accent-primary/30 text-light-text-primary dark:text-dark-text-primary px-4 py-3 rounded mb-4">
       <strong class="font-bold">Warning:</strong>
       <span class="block sm:inline">
         Some images are temporarily stored locally due to CORS restrictions.
@@ -259,7 +240,7 @@
     </div>
 
     <!-- Size warning -->
-    <div v-if="showSizeWarning" class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+    <div v-if="showSizeWarning" class="bg-accent-primary/10 dark:bg-accent-primary/20 border border-accent-primary/30 dark:border-accent-primary/30 text-light-text-primary dark:text-dark-text-primary px-4 py-3 rounded mb-4">
       <strong class="font-bold">Warning:</strong>
       <span class="block sm:inline">
         Some uploaded images may be stored as base64 strings in the database, which has size limitations.
@@ -303,17 +284,6 @@ const uploadStatus = ref('Processing image...');
 const hasTempImages = computed(() => {
   return product.value.images.some(img => img.startsWith('temp://'));
 });
-
-// Placeholder images - add URLs to real placeholder images
-const placeholderImages = [
-  'https://via.placeholder.com/400x400?text=Jewelry+Item',
-  'https://via.placeholder.com/400x400?text=Necklace',
-  'https://via.placeholder.com/400x400?text=Earrings',
-  'https://via.placeholder.com/400x400?text=Bracelet',
-  'https://via.placeholder.com/400x400?text=Ring',
-  'https://placehold.co/400x400/gold/white?text=Jewelry',
-  'https://placehold.co/400x400/silver/black?text=Silver+Jewelry'
-];
 
 // Load product data from server or localStorage
 onMounted(async () => {
@@ -375,13 +345,6 @@ const getImageSrc = (url) => {
     return url.replace('temp://', '');
   }
   return url;
-};
-
-// Add a placeholder image
-const addPlaceholderImage = (url) => {
-  if (!product.value.images.includes(url)) {
-    product.value.images.push(url);
-  }
 };
 
 // Handle file upload with better error handling and resize feedback
