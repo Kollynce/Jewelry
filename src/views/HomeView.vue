@@ -256,6 +256,7 @@ import { firebaseService } from '../services/firebaseService'
 import { useCartStore } from '@/stores/cart'
 import { mockDataLoader } from '../utils/mockDataLoader'
 import ProductCard from '@/components/ProductCard.vue'
+import { formatCurrency } from '@/utils/currency'
 
 // Update utility function to process image URLs
 const processImageUrl = (url) => {

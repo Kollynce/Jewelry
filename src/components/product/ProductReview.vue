@@ -1,5 +1,6 @@
 <script setup>
 import StarRating from './StarRating.vue'
+import { formatCurrency } from '@/utils/currency'
 
 defineProps({
   review: {

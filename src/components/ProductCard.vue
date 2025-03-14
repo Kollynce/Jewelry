@@ -17,7 +17,11 @@
         <div class="items-start">
           <h3 class="text-light-text-primary dark:text-dark-text-primary text-lg font-medium hover:text-accent-primary">{{ product.name }}</h3>
           <p class="text-light-text-secondary dark:text-dark-text-secondary text-sm">{{ product.category }}</p>
-          <p class="text-light-text-primary dark:text-dark-text-primary text-lg font-medium">${{ (product.price || 0).toFixed(2) }}</p>
+          <div class="mt-2 flex items-center justify-between">
+            <p class="text-lg font-medium text-light-text-primary dark:text-dark-text-primary">
+              {{ formatCurrency(product.price) }}
+            </p>
+          </div>
         </div>
       </div>
     </router-link>
@@ -33,6 +37,7 @@
 <script setup>
 import { ref, nextTick } from 'vue';
 import { useCartStore } from '@/stores/cart';
+import { formatCurrency } from '@/utils/currency';
 
 // Update component props to accept processImageUrl function
 defineProps({
@@ -140,26 +145,32 @@ const getImageSrc = (imageUrl) => {
 </script>
 
 <style scoped>
-.cart-animation {
-  width: 50px;
-  height: 50px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  @apply bg-light-primary dark:bg-dark-primary;
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 9999;
-  position: fixed;
-  pointer-events: none;
-}
-
 .broken-image {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  @apply bg-light-neutral-200 dark:bg-dark-neutral-200;
+  background-color: rgb(243 244 246);
+}
+
+.dark .broken-image {
+  background-color: rgb(31 41 55);
+}
+
+.cart-animation {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  background-color: rgb(255 255 255);
+  z-index: 9999;
+  position: fixed;
+  pointer-events: none;
+}
+
+.dark .cart-animation {
+  background-color: rgb(17 24 39);
 }
 </style>

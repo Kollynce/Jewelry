@@ -220,6 +220,7 @@ import {
 } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/vue/20/solid'
+import { formatCurrency } from '@/utils/currency'
 
 const products = ref([])
 const allProducts = ref([]) // Keep original unfiltered list
@@ -285,10 +286,10 @@ const filters = [
     id: 'price',
     name: 'Price Range',
     options: [
-      { value: 'under-50', label: 'Under $50', checked: false },
-      { value: '50-100', label: '$50 - $100', checked: false },
-      { value: '100-200', label: '$100 - $200', checked: false },
-      { value: '200-plus', label: '$200+', checked: false },
+      { value: 'under-5000', label: 'Under KES 5,000', checked: false },
+      { value: '5000-10000', label: 'KES 5,000 - 10,000', checked: false },
+      { value: '10000-20000', label: 'KES 10,000 - 20,000', checked: false },
+      { value: '20000-plus', label: 'KES 20,000+', checked: false },
     ],
   },
 ]
@@ -315,10 +316,10 @@ const filteredProducts = computed(() => {
     result = result.filter(product => {
       const price = product.price;
       return selectedFilters.price.some(range => {
-        if (range === 'under-100') return price < 100;
-        if (range === '100-500') return price >= 100 && price <= 500;
-        if (range === '500-1000') return price >= 500 && price <= 1000;
-        if (range === '1000-plus') return price > 1000;
+        if (range === 'under-5000') return price < 5000;
+        if (range === '5000-10000') return price >= 5000 && price <= 10000;
+        if (range === '10000-20000') return price >= 10000 && price <= 20000;
+        if (range === '20000-plus') return price > 20000;
         return false;
       });
     });

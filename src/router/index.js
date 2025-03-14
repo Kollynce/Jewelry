@@ -113,18 +113,8 @@ router.beforeEach((to, from, next) => {
 
 // Helper function to check if user is an admin
 function isUserAdmin(user) {
-  // This implementation depends on your user management system
   if (!user) return false
-  
-  // For development/testing - allow any authenticated user to be admin
-  return true
-  
-  // // For production, use one of these approaches:
-  // // Option 1: Check against an admin email from environment variables
-  // return user.email === import.meta.env.VITE_ADMIN_EMAIL
-  
-  // // Option 2: Check if user has admin flag in their profile
-  // return user.isAdmin === true
+  return user.isAdmin === true
 }
 
 export default router

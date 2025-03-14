@@ -40,7 +40,7 @@
         <!-- Revenue card -->
         <div class="flex flex-col h-full bg-gradient-to-br from-light-secondary to-blue-500/10 dark:from-dark-secondary dark:to-blue-500/20 rounded-xl shadow-lg p-6 border-2 border-blue-500/20">
           <h3 class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Revenue</h3>
-          <p class="text-3xl font-bold text-blue-500">${{ totalRevenue.toFixed(2) }}</p>
+          <p class="text-3xl font-bold text-blue-500">{{ formatCurrency(totalRevenue) }}</p>
           <p class="text-xs text-accent-tertiary mt-1">
             <span class="inline-block transform rotate-45">↗</span> {{ revenueIncrease }}% from last month
           </p>
@@ -130,7 +130,7 @@
               <td class="px-6 py-4 font-medium">{{ order.orderNumber || `#${order.id.substring(0, 6)}` }}</td>
               <td class="px-6 py-4">{{ formatDate(order.orderDate) }}</td>
               <td class="px-6 py-4">{{ order.customerName || 'Unknown' }}</td>
-              <td class="px-6 py-4">${{ order.total?.toFixed(2) || '0.00' }}</td>
+              <td class="px-6 py-4">{{ formatCurrency(order.total) }}</td>
               <td class="px-6 py-4">
                 <span
                   :class="{
@@ -216,7 +216,7 @@
                         {{ capitalizeFirstLetter(selectedOrder?.status) }}
                       </span>
                     </p>
-                    <p><span class="text-gray-500">Total:</span> ${{ selectedOrder?.total?.toFixed(2) || '0.00' }}</p>
+                    <p><span class="text-gray-500">Total:</span> {{ formatCurrency(selectedOrder?.total) }}</p>
                   </div>
                   <div class="bg-light-secondary dark:bg-dark-secondary p-4 rounded-lg">
                     <h3 class="font-medium text-light-text-primary dark:text-dark-text-primary mb-2">Customer Information</h3>
@@ -352,6 +352,7 @@
 import { ref, computed, onMounted } from 'vue';
 import Breadcrumbs from '../components/ui/Breadcrumbs.vue';
 import { firebaseService } from '../services/firebaseService';
+import { formatCurrency } from '@/utils/currency';
 
 // State
 const orders = ref([]);
@@ -496,6 +497,11 @@ onMounted(() => {
 
 <style scoped>
 .hover-card {
-  @apply transition-all duration-300 hover:scale-102 hover:shadow-lg;
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 </style>

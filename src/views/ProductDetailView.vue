@@ -70,7 +70,7 @@
 
         <!-- Price -->
         <div class="flex items-center">
-          <p class="text-2xl text-light-text-primary dark:text-dark-text-primary">${{ product.price.toFixed(2) }}</p>
+          <p class="text-2xl text-light-text-primary dark:text-dark-text-primary">{{ formatCurrency(product.price) }}</p>
         </div>
         
         <!-- Jewelry Specific Details -->
@@ -207,6 +207,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { firebaseService } from '../services/firebaseService'
 import { useCartStore } from '../stores/cart'
 import { mockDataLoader } from '../utils/mockDataLoader'
+import { formatCurrency } from '@/utils/currency'
 
 const route = useRoute()
 const router = useRouter()

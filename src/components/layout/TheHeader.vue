@@ -37,7 +37,7 @@
                   <div v-else class="space-y-2">
                     <div class="-m-2 block p-2 font-medium text-light-text-primary dark:text-dark-text-primary">{{ authStore.user.displayName || authStore.user.email }}</div>
                     <RouterLink to="/account" class="-m-2 block p-2 text-sm text-light-text-secondary dark:text-dark-neutral-700 hover:text-light-text-primary dark:hover:text-dark-text-primary pl-4" @click="closeMobileMenu">Account</RouterLink>
-                    <RouterLink to="/admin" class="-m-2 block p-2 text-sm text-light-text-secondary dark:text-dark-neutral-700 hover:text-light-text-primary dark:hover:text-dark-text-primary pl-4" @click="closeMobileMenu">Shop Manager</RouterLink>
+                    <RouterLink v-if="isAdmin" to="/admin" class="-m-2 block p-2 text-sm text-light-text-secondary dark:text-dark-neutral-700 hover:text-light-text-primary dark:hover:text-dark-text-primary pl-4" @click="closeMobileMenu">Shop Manager</RouterLink>
                     <button @click="logout" class="-m-2 block p-2 text-sm text-light-text-secondary dark:text-dark-neutral-700 hover:text-light-text-primary dark:hover:text-dark-text-primary pl-4 w-full text-left">Logout</button>
                   </div>
                 </div>
@@ -62,7 +62,7 @@
 
     <header class="sticky top-0 z-40 bg-light-primary dark:bg-dark-primary transition-colors duration-200">
       <!-- Announcement Bar - 10% accent color -->
-      <p class="flex h-10 items-center justify-center bg-orange-600 dark:bg-orange-700 px-4 text-sm font-medium text-white sm:px-6 lg:px-8" aria-live="polite">Free shipping on orders over $100</p>
+      <p class="flex h-10 items-center justify-center bg-orange-600 dark:bg-orange-700 px-4 text-sm font-medium text-white sm:px-6 lg:px-8" aria-live="polite">Free shipping on orders over KES 10,000</p>
 
       <div class="border-b border-light-neutral-300 dark:border-dark-neutral-600 bg-light-primary dark:bg-dark-primary shadow-sm transition-shadow duration-300" :class="{'shadow-md': isScrolled}">
         <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -138,7 +138,7 @@
                       <MenuItem v-slot="{ active }">
                         <RouterLink to="/account" :class="[active ? 'bg-light-neutral-100 dark:bg-dark-neutral-700' : '', 'block px-4 py-2 text-sm text-light-text-primary dark:text-dark-text-primary']">Account</RouterLink>
                       </MenuItem>
-                      <MenuItem v-slot="{ active }">
+                      <MenuItem v-if="isAdmin" v-slot="{ active }">
                         <RouterLink to="/admin" :class="[active ? 'bg-light-neutral-100 dark:bg-dark-neutral-700' : '', 'block px-4 py-2 text-sm text-light-text-primary dark:text-dark-text-primary']">Shop Manager</RouterLink>
                       </MenuItem>
                       <MenuItem v-slot="{ active }">
@@ -248,6 +248,10 @@ const isCurrentRoute = (path) => {
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20
 }
+
+const isAdmin = computed(() => {
+  return authStore.user?.isAdmin === true
+})
 
 // Close mobile menu when route changes or on large screens
 onMounted(() => {

@@ -53,13 +53,13 @@ watch(() => props.initialMax, (newVal) => {
       <div>
         <label class="text-sm text-light-text-secondary dark:text-dark-text-secondary block">Min</label>
         <div class="relative">
-          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary">$</span>
+          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary">KES</span>
           <input 
             type="number"
             v-model="min"
             :min="minPrice"
             :max="maxPrice"
-            class="w-full pl-6 p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
+            class="w-full pl-12 p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
           />
         </div>
       </div>
@@ -67,13 +67,13 @@ watch(() => props.initialMax, (newVal) => {
       <div>
         <label class="text-sm text-light-text-secondary dark:text-dark-text-secondary block">Max</label>
         <div class="relative">
-          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary">$</span>
+          <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary">KES</span>
           <input 
             type="number"
             v-model="max"
             :min="minPrice"
             :max="maxPrice"
-            class="w-full pl-6 p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
+            class="w-full pl-12 p-2 border border-light-neutral-300 dark:border-dark-neutral-600 rounded bg-light-secondary dark:bg-dark-secondary text-light-text-primary dark:text-dark-text-primary focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
           />
         </div>
       </div>

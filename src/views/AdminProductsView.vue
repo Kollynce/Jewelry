@@ -46,7 +46,7 @@
 
         <div class="flex flex-col h-full bg-gradient-to-br from-light-secondary to-cyan-500/10 dark:from-dark-secondary dark:to-cyan-500/20 rounded-xl shadow-lg p-6 border-2 border-cyan-500/20">
           <h3 class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Total Value</h3>
-          <p class="text-3xl font-bold text-cyan-500">${{ totalInventoryValue.toFixed(2) }}</p>
+          <p class="text-3xl font-bold text-cyan-500">{{ formatCurrency(totalInventoryValue) }}</p>
           <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-1">Inventory worth</p>
         </div>
       </div>
@@ -211,6 +211,7 @@ import { firebaseService } from '../services/firebaseService';
 import LoadingSpinner from '../components/ui/LoadingSpinner.vue';
 import Modal from '../components/ui/Modal.vue';
 import Button from '../components/ui/Button.vue';
+import { formatCurrency } from '@/utils/currency';
 
 const router = useRouter();
 const products = ref([]);
@@ -365,15 +366,24 @@ onMounted(fetchProducts);
 
 <style scoped>
 .broken-image {
-  @apply bg-light-neutral-200 dark:bg-dark-neutral-200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(243 244 246);
+}
+
+.dark .broken-image {
+  background-color: rgb(31 41 55);
 }
 
 .image-container {
-  @apply relative overflow-hidden bg-light-neutral-100 dark:bg-dark-neutral-800;
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(243 244 246);
   transition: transform 0.2s ease-in-out;
+}
+
+.dark .image-container {
+  background-color: rgb(31 41 55);
 }
 
 .image-container:hover {

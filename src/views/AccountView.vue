@@ -275,7 +275,7 @@
                               </div>
 
                               <div class="flex flex-col items-end mt-2 sm:mt-0">
-                                <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">${{ order.displayTotal }}</p>
+                                <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">{{ formatCurrency(order.total) }}</p>
                                 <span :class="['text-xs px-3 py-1 rounded-full mt-1 inline-flex items-center', getStatusColor(order.status || 'Processing')]">
                                   <span class="w-1.5 h-1.5 rounded-full mr-1"
                                     :class="{'bg-amber-500': (order.status || 'Processing') === 'Processing',
@@ -322,7 +322,7 @@
                                           {{ item.quantity }}
                                         </span>
                                         <span class="text-xs text-gray-500 md:hidden">
-                                          ${{ item.price?.toFixed(2) || '0.00' }} each
+                                          {{ formatCurrency(item.price) }} each
                                         </span>
                                       </div>
                                     </div>
@@ -331,10 +331,10 @@
                                   <!-- Item price (for desktop) -->
                                   <div class="flex flex-col items-end">
                                     <span class="text-gray-900 font-medium">
-                                      ${{ (item.price * item.quantity).toFixed(2) }}
+                                      {{ formatCurrency(item.price * item.quantity) }}
                                     </span>
                                     <span class="text-xs text-gray-500 hidden md:block">
-                                      ${{ item.price?.toFixed(2) || '0.00' }} each
+                                      {{ formatCurrency(item.price) }} each
                                     </span>
                                   </div>
                                 </div>
@@ -348,7 +348,7 @@
                                 </div>
                                 <div class="flex justify-between text-gray-800">
                                   <span>Total:</span>
-                                  <span class="text-gray-800">${{ order.displayTotal }}</span>
+                                  <span class="text-gray-800">{{ formatCurrency(order.total) }}</span>
                                 </div>
                               </div>
                             </DisclosurePanel>
@@ -372,6 +372,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { firebaseService } from '../services/firebaseService'
+import { formatCurrency } from '@/utils/currency'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels, TransitionRoot, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { CheckIcon, XMarkIcon, PencilIcon, ShoppingBagIcon, CalendarIcon, ChevronRightIcon, PhotoIcon } from '@heroicons/vue/24/outline'
 
@@ -588,6 +589,9 @@ const handleImageError = (event) => {
 
 <style scoped>
 .field-label {
-  @apply text-gray-800;
+  color: rgb(31 41 55);
+}
+.dark .field-label {
+  color: rgb(209 213 219);
 }
 </style>

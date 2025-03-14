@@ -371,7 +371,7 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {{ loading ? 'Processing...' : `Complete Order - $${total.toFixed(2)}` }}
+              {{ loading ? 'Processing...' : `Complete Order - ${formatCurrency(total)}` }}
             </button>
           </form>
         </div>
@@ -394,7 +394,7 @@
                       <div>
                         <div class="flex justify-between text-sm font-medium text-light-text-primary dark:text-dark-text-primary">
                           <h3>{{ item.name }}</h3>
-                          <p class="ml-4">${{ (item.price * item.quantity).toFixed(2) }}</p>
+                          <p class="ml-4">{{ formatCurrency(item.price * item.quantity) }}</p>
                         </div>
                         <p class="mt-1 text-sm text-light-text-secondary dark:text-dark-text-secondary">
                           {{ item.category || 'Jewelry' }}
@@ -412,24 +412,24 @@
             <div class="border-t border-light-neutral-200 dark:border-dark-neutral-700 px-6 py-4 space-y-3">
               <div class="flex justify-between text-sm text-light-text-secondary dark:text-dark-text-secondary">
                 <p>Subtotal</p>
-                <p>${{ subtotal.toFixed(2) }}</p>
+                <p>{{ formatCurrency(subtotal) }}</p>
               </div>
 
               <div class="flex justify-between text-sm text-light-text-secondary dark:text-dark-text-secondary">
                 <p>Shipping</p>
-                <p v-if="shippingCost > 0">${{ shippingCost.toFixed(2) }}</p>
+                <p v-if="shippingCost > 0">{{ formatCurrency(shippingCost) }}</p>
                 <p v-else class="text-green-600 dark:text-green-400">Free</p>
               </div>
 
               <div class="flex justify-between text-sm text-light-text-secondary dark:text-dark-text-secondary">
                 <p>Taxes (estimated)</p>
-                <p>${{ (subtotal * 0.08).toFixed(2) }}</p>
+                <p>{{ formatCurrency(subtotal * 0.08) }}</p>
               </div>
 
               <div class="pt-3 border-t border-light-neutral-200 dark:border-dark-neutral-700">
                 <div class="flex justify-between text-base font-medium text-light-text-primary dark:text-dark-text-primary">
                   <p>Total</p>
-                  <p>${{ (total + (subtotal * 0.08)).toFixed(2) }}</p>
+                  <p>{{ formatCurrency(total + (subtotal * 0.08)) }}</p>
                 </div>
                 <p class="mt-1 text-sm text-light-text-secondary dark:text-dark-text-secondary">Shipping and taxes calculated at checkout</p>
               </div>
@@ -475,6 +475,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useCartStore } from '../stores/cart'
 import { firebaseService } from '../services/firebaseService'
+import { formatCurrency } from '@/utils/currency'
 
 // Remove the conflicting import and implement the directive locally
 // import { vMask } from "@vuelidate/validators"

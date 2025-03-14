@@ -3,6 +3,7 @@ import { useCartStore } from '../stores/cart'
 import { computed, ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { XMarkIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
+import { formatCurrency } from '@/utils/currency'
 
 const cartStore = useCartStore()
 const isUpdating = ref(false)
@@ -13,9 +14,9 @@ const cart = computed(() => cartStore.cart)
 const subtotal = computed(() => cartStore.subtotal)
 const itemCount = computed(() => cartStore.itemCount)
 
-// Shipping cost calculation (free over $100)
+// Shipping cost calculation (free over KES 10,000)
 const shippingCost = computed(() => {
-  return subtotal.value >= 100 ? 0 : 10
+  return subtotal.value >= 10000 ? 0 : 1000
 })
 
 // Total cost calculation
@@ -88,17 +89,17 @@ const removeItem = () => {
             <div class="space-y-2 text-sm">
               <div class="flex justify-between text-light-text-primary dark:text-dark-text-primary">
                 <span>Subtotal</span>
-                <span>${{ subtotal.toFixed(2) }}</span>
+                <span>{{ formatCurrency(subtotal) }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-light-text-primary dark:text-dark-text-primary">Shipping</span>
-                <span v-if="shippingCost > 0" class="text-light-text-primary dark:text-dark-text-primary">${{ shippingCost.toFixed(2) }}</span>
+                <span v-if="shippingCost > 0" class="text-light-text-primary dark:text-dark-text-primary">{{ formatCurrency(shippingCost) }}</span>
                 <span v-else class="text-accent-tertiary">Free</span>
               </div>
               <div class="border-t border-light-neutral-300 dark:border-dark-neutral-600 pt-2 mt-2">
                 <div class="flex justify-between font-bold text-light-text-primary dark:text-dark-text-primary">
                   <span>Total</span>
-                  <span>${{ total.toFixed(2) }}</span>
+                  <span>{{ formatCurrency(total) }}</span>
                 </div>
               </div>
             </div>
@@ -123,7 +124,7 @@ const removeItem = () => {
                           :aria-label="`View ${item.name} details`">
                 {{ item.name }}
               </router-link>
-              <p class="text-light-text-secondary dark:text-dark-text-secondary mt-1">${{ item.price.toFixed(2) }} each</p>
+              <p class="text-light-text-secondary dark:text-dark-text-secondary mt-1">{{ formatCurrency(item.price) }} each</p>
               
               <div class="flex items-center mt-3">
                 <div class="flex items-center border border-light-neutral-300 dark:border-dark-neutral-600 rounded-md shadow-sm">
@@ -155,7 +156,7 @@ const removeItem = () => {
             </div>
             
             <div class="text-right">
-              <p class="font-semibold text-light-text-primary dark:text-dark-text-primary">${{ (item.price * item.quantity).toFixed(2) }}</p>
+              <p class="font-semibold text-light-text-primary dark:text-dark-text-primary">{{ formatCurrency(item.price * item.quantity) }}</p>
             </div>
           </li>
         </transition-group>
@@ -168,24 +169,24 @@ const removeItem = () => {
         <div class="space-y-4">
           <div class="flex justify-between text-light-text-primary dark:text-dark-text-primary">
             <span>Subtotal ({{ itemCount }} {{ itemCount === 1 ? 'item' : 'items' }})</span>
-            <span>${{ subtotal.toFixed(2) }}</span>
+            <span>{{ formatCurrency(subtotal) }}</span>
           </div>
           
           <div class="flex justify-between text-light-text-primary dark:text-dark-text-primary">
             <span>Shipping</span>
-            <span v-if="shippingCost > 0">${{ shippingCost.toFixed(2) }}</span>
+            <span v-if="shippingCost > 0">{{ formatCurrency(shippingCost) }}</span>
             <span v-else class="text-accent-tertiary font-medium">Free</span>
           </div>
           
           <div v-if="shippingCost > 0" class="text-sm bg-accent-quaternary/10 text-accent-quaternary p-3 rounded-md">
-            <p>Free shipping on orders over $100</p>
-            <p class="mt-1">Add ${{ (100 - subtotal).toFixed(2) }} more to qualify</p>
+            <p>Free shipping on orders over KES 10,000</p>
+            <p class="mt-1">Add {{ formatCurrency(10000 - subtotal) }} more to qualify</p>
           </div>
           
           <div class="border-t border-light-neutral-300 dark:border-dark-neutral-600 pt-4 mt-2">
             <div class="flex justify-between font-bold text-lg text-light-text-primary dark:text-dark-text-primary">
               <span>Total</span>
-              <span>${{ total.toFixed(2) }}</span>
+              <span>{{ formatCurrency(total) }}</span>
             </div>
           </div>
         </div>

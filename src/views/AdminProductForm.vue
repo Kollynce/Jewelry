@@ -49,7 +49,7 @@
             </div>
             
             <div>
-              <label for="price" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Price ($)</label>
+              <label for="price" class="block text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary mb-1">Price (KES)</label>
               <input 
                 type="number" 
                 id="price" 
@@ -254,6 +254,7 @@
 import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { firebaseService } from '../services/firebaseService';
+import { formatCurrency } from '@/utils/currency';
 
 const router = useRouter();
 const route = useRoute();

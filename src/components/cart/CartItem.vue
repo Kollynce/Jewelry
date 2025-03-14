@@ -2,6 +2,7 @@
 import { useCartStore } from '@/stores/cart'
 import QuantitySelector from '@/components/product/QuantitySelector.vue'
 import { Button } from '@headlessui/vue'
+import { formatCurrency } from '../../utils/currency'
 
 const props = defineProps({
   item: {
@@ -22,16 +23,12 @@ const removeItem = () => {
 </script>
 
 <template>
-  <div class="flex items-center py-4 border-b">
-    <div class="w-20 h-20 flex-shrink-0">
-      <img :src="item.image" :alt="item.name" class="w-full h-full object-cover rounded">
-    </div>
+  <div class="flex items-center py-6 border-b border-light-neutral-200 dark:border-dark-neutral-700">
+    <img :src="item.image" :alt="item.name" class="w-20 h-20 object-cover rounded-md">
     
-    <div class="flex-grow ml-4">
-      <router-link :to="`/product/${item.id}`" class="font-medium hover:text-gray-700">
-        {{ item.name }}
-      </router-link>
-      <p class="text-sm text-gray-600">${{ item.price.toFixed(2) }}</p>
+    <div class="ml-4 flex-grow">
+      <h3 class="text-base font-medium text-light-text-primary dark:text-dark-text-primary">{{ item.name }}</h3>
+      <p class="text-sm text-gray-600">{{ formatCurrency(item.price) }}</p>
     </div>
     
     <div class="flex items-center ml-4">
@@ -52,7 +49,7 @@ const removeItem = () => {
     </div>
     
     <div class="text-right ml-4 w-24">
-      <p class="font-medium">${{ (item.price * item.quantity).toFixed(2) }}</p>
+      <p class="font-medium">{{ formatCurrency(item.price * item.quantity) }}</p>
     </div>
   </div>
 </template>
