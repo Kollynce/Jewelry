@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
+  base: '/Jewelry/', // Add this line - should match your repository name
   plugins: [vue()],
   resolve: {
     alias: {
