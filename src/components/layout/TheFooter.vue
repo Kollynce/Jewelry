@@ -75,10 +75,10 @@ import { RouterLink } from 'vue-router';
           
           <!-- Address and contact - Secondary color (30%) -->
           <div class="text-sm text-light-text-secondary dark:text-dark-neutral-700 space-y-1">
-            <p>123 Jewelry Lane</p>
-            <p>Sparkle City, SC 29601</p>
-            <p class="mt-2">info@beabedart.com</p>
-            <p>+1 (555) 123-4567</p>
+            <p>Kitengela</p>
+            <p>Nairobi Kenya, Kitengela</p>
+            <p class="mt-2">hello@kreativekanvas.shop</p>
+            <p>+2547 4141 4261</p>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@
     <div class="relative overflow-hidden">
       <div class="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
+          src="/public/images/Neeon Moon 1.jpeg"
           alt="Jewelry crafting"
           class="h-full w-full object-cover object-center"
         />
@@ -131,10 +131,12 @@
               </RouterLink>
             </div>
           </div>
-          <div class="relative mt-16 h-80 lg:mt-8">
-            <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-light-neutral-100 dark:bg-dark-neutral-800 
-              ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700 shadow-xl" 
-              src="https://images.unsplash.com/photo-1459247414692-500e1dc323b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80" 
+          <div class="relative my-8">
+            <img 
+              class="w-[48rem] max-h-[30rem] object-cover rounded-xl shadow-xl 
+                ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700 
+                sm:w-[57rem] md:-ml-4 lg:-ml-0" 
+              src="/public/images/Golden black.jpeg" 
               alt="Jewelry workshop" />
           </div>
         </div>

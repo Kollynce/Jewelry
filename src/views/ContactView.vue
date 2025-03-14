@@ -98,8 +98,8 @@
                     <MapPinIcon class="h-6 w-5 text-light-neutral-500 dark:text-dark-neutral-500" aria-hidden="true" />
                   </dt>
                   <dd class="text-light-text-secondary dark:text-dark-text-secondary">
-                    <p>123 Bead Street</p>
-                    <p>Artisan City, AC 12345</p>
+                    <p>Nairobi Kenya</p>
+                    <p>Kitengela</p>
                   </dd>
                 </div>
                 <div class="flex gap-x-4">
@@ -108,7 +108,7 @@
                     <PhoneIcon class="h-6 w-5 text-light-neutral-500 dark:text-dark-neutral-500" aria-hidden="true" />
                   </dt>
                   <dd>
-                    <a class="text-light-text-primary dark:text-dark-text-primary hover:text-accent-primary" href="tel:+1 (555) 234-5678">+1 (555) 234-5678</a>
+                    <a class="text-light-text-primary dark:text-dark-text-primary hover:text-accent-primary" href="tel:+2547 4141 4271">+2547 4141 4261</a>
                   </dd>
                 </div>
                 <div class="flex gap-x-4">
@@ -117,7 +117,7 @@
                     <EnvelopeIcon class="h-6 w-5 text-light-neutral-500 dark:text-dark-neutral-500" aria-hidden="true" />
                   </dt>
                   <dd>
-                    <a class="text-light-text-primary dark:text-dark-text-primary hover:text-accent-primary" href="mailto:info@beabedart.com">info@beabedart.com</a>
+                    <a class="text-light-text-primary dark:text-dark-text-primary hover:text-accent-primary" href="mailto:hello@kreativekanvas.shop">hello@kreativekanvas.shop</a>
                   </dd>
                 </div>
               </dl>
@@ -125,7 +125,7 @@
 
             <!-- Opening hours -->
             <div class="bg-light-primary dark:bg-dark-primary rounded-lg shadow-sm ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700 p-8">
-              <h3 class="text-base font-semibold leading-7 text-light-text-primary dark:text-dark-text-primary">Studio Hours</h3>
+              <h3 class="text-base font-semibold leading-7 text-light-text-primary dark:text-dark-text-primary">Kreation Studio Hours</h3>
               <dl class="mt-4 space-y-4 text-sm leading-6">
                 <div class="flex gap-x-4">
                   <dt class="flex-none">
@@ -141,10 +141,36 @@
               </dl>
             </div>
 
-            <!-- Map placeholder -->
-            <div class="bg-light-neutral-100 dark:bg-dark-neutral-800 rounded-lg overflow-hidden h-64 flex items-center justify-center">
-              <MapPinIcon class="h-12 w-12 text-light-neutral-400 dark:text-dark-neutral-500" aria-hidden="true" />
-              <span class="ml-2 text-light-text-secondary dark:text-dark-text-secondary">Map location</span>
+            <!-- Real Google Map -->
+            <div class="rounded-lg overflow-hidden shadow-sm ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700">
+              <div class="relative h-72">
+                <!-- Map will be rendered here -->
+                <div id="map" ref="mapContainer" class="w-full h-full"></div>
+                
+                <!-- Loading indicator -->
+                <div v-if="mapLoading" class="absolute inset-0 flex items-center justify-center bg-light-neutral-100 dark:bg-dark-neutral-800 bg-opacity-75 dark:bg-opacity-75">
+                  <div class="text-center">
+                    <svg class="animate-spin h-10 w-10 text-accent-primary mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-light-text-secondary dark:text-dark-text-secondary">Loading map...</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Find directions link -->
+              <div class="p-3 bg-light-primary dark:bg-dark-neutral-700 text-center">
+                <a 
+                  :href="directionsUrl" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="text-accent-primary hover:text-accent-secondary transition-colors inline-flex items-center"
+                >
+                  <MapPinIcon class="h-4 w-4 mr-1" />
+                  Get Directions
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -154,7 +180,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { 
   MapPinIcon, 
   PhoneIcon, 
@@ -181,6 +207,20 @@ const errors = reactive({
 
 const isSubmitting = ref(false);
 const formSubmitted = ref(false);
+const mapContainer = ref(null);
+const mapLoading = ref(true);
+
+// Kitengela, Nairobi coordinates
+const storeLocation = {
+  lat: -1.4774,
+  lng: 36.9584,
+  address: 'Kitengela, Nairobi, Kenya'
+};
+
+// Computed URL for directions
+const directionsUrl = computed(() => {
+  return `https://www.google.com/maps/dir/?api=1&destination=${storeLocation.lat},${storeLocation.lng}&destination_place_id=Kitengela+Nairobi+Kenya`;
+});
 
 const validateForm = () => {
   let valid = true;
@@ -244,6 +284,144 @@ const submitForm = async () => {
     isSubmitting.value = false;
   }
 };
+
+// Initialize Google Maps with standard approach
+function initMap() {
+  try {
+    // Check if the map container exists
+    if (!mapContainer.value) {
+      console.error('Map container not found');
+      mapLoading.value = false;
+      return;
+    }
+    
+    // Check if Google Maps is loaded
+    if (!window.google || !window.google.maps) {
+      console.error('Google Maps API not loaded');
+      mapLoading.value = false;
+      return;
+    }
+
+    // Define map options
+    const mapOptions = {
+      center: { lat: storeLocation.lat, lng: storeLocation.lng },
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: false,
+      zoomControl: true,
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: true,
+      styles: [
+        {
+          "featureType": "administrative",
+          "elementType": "geometry",
+          "stylers": [{"visibility": "off"}]
+        },
+        {
+          "featureType": "poi",
+          "stylers": [{"visibility": "off"}]
+        },
+        {
+          "featureType": "transit",
+          "elementType": "labels.icon",
+          "stylers": [{"visibility": "off"}]
+        }
+      ]
+    };
+
+    // Create new map instance
+    const map = new google.maps.Map(mapContainer.value, mapOptions);
+
+    // Create marker
+    const marker = new google.maps.Marker({
+      position: { lat: storeLocation.lat, lng: storeLocation.lng },
+      map: map,
+      title: 'Kreative Kanvas Jewelry',
+      animation: google.maps.Animation.DROP
+    });
+
+    // Create info window content
+    const contentString = `
+      <div class="p-3">
+        <h3 class="font-bold text-base mb-1">Kreative Kanvas Jewelry</h3>
+        <p class="text-sm">${storeLocation.address}</p>
+        <p class="text-sm mt-1">
+          <a href="tel:+2547 4141 4271" class="text-blue-600 hover:text-blue-800">
+            +2547 4141 4271
+          </a>
+        </p>
+      </div>
+    `;
+
+    // Create info window
+    const infoWindow = new google.maps.InfoWindow({
+      content: contentString,
+      maxWidth: 250
+    });
+    
+    // Open info window by default after a short delay
+    setTimeout(() => {
+      infoWindow.open({
+        anchor: marker,
+        map
+      });
+    }, 500);
+
+    // Add event listener to marker
+    marker.addListener('click', () => {
+      infoWindow.open({
+        anchor: marker,
+        map
+      });
+    });
+    
+    // Hide loading indicator
+    mapLoading.value = false;
+  } catch (error) {
+    console.error('Error initializing map:', error);
+    mapLoading.value = false;
+  }
+}
+
+// Load Google Maps API
+const loadGoogleMapsApi = () => {
+  // Check if Google Maps API is already loaded
+  if (window.google && window.google.maps) {
+    initMap();
+    return;
+  }
+  
+  // Create script element
+  const googleMapsApiScript = document.createElement('script');
+  
+  // Use a public API key or replace with your own
+  const apiKey = 'AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk'; // This is a public testing key
+  
+  // Set script attributes
+  googleMapsApiScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+  googleMapsApiScript.async = true;
+  googleMapsApiScript.defer = true;
+  
+  // Set up callbacks
+  googleMapsApiScript.onload = () => {
+    // Initialize map when API is loaded
+    initMap();
+  };
+  
+  googleMapsApiScript.onerror = (event) => {
+    console.error('Failed to load Google Maps API:', event);
+    mapLoading.value = false;
+  };
+  
+  // Add script to document
+  document.head.appendChild(googleMapsApiScript);
+};
+
+onMounted(() => {
+  // Initialize map
+  loadGoogleMapsApi();
+});
 </script>
 
 <style scoped>
@@ -286,5 +464,19 @@ const submitForm = async () => {
   color: var(--dark-text-primary);
 }
 
-/* Rest of the styles are handled by utility classes in the template */
+/* Google Maps custom styles */
+:deep(.gm-style .gm-style-iw-c) {
+  padding: 12px;
+  border-radius: 8px;
+}
+
+:deep(.gm-style .gm-style-iw-d) {
+  overflow: auto !important;
+  max-height: none !important;
+}
+
+:deep(.gm-style-iw button.gm-ui-hover-effect) {
+  top: 2px !important;
+  right: 2px !important;
+}
 </style>

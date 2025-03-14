@@ -76,25 +76,28 @@
         <!-- Jewelry Specific Details -->
         <div class="grid grid-cols-2 gap-4 mt-2 text-sm bg-light-secondary dark:bg-dark-secondary p-4 rounded-lg">
           <div>
-            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Material:</span>
-            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.material }}</p>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Materials:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.materials || 'Not specified' }}</p>
           </div>
           <div>
-            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Bead Size:</span>
-            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.beadSize }}</p>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Dimensions:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.dimensions || 'Not specified' }}</p>
           </div>
           <div>
-            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Length:</span>
-            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.length }}</p>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Category:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.category }}</p>
           </div>
           <div>
-            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Closure:</span>
-            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.closure }}</p>
+            <span class="font-medium text-light-text-primary dark:text-dark-text-primary">Stock:</span>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary">{{ product.stock }} pieces available</p>
           </div>
         </div>
 
         <!-- Product Description -->
-        <p class="text-base text-light-text-secondary dark:text-dark-text-secondary">{{ product.description }}</p>
+        <div class="space-y-2">
+          <h3 class="text-lg font-medium text-light-text-primary dark:text-dark-text-primary">Description</h3>
+          <p class="text-base text-light-text-secondary dark:text-dark-text-secondary whitespace-pre-line">{{ product.description }}</p>
+        </div>
 
         <!-- Color Options -->
         <div v-if="product.colors && product.colors.length > 0">
@@ -252,17 +255,12 @@ const fetchProduct = async () => {
         name: "Sample Jewelry Piece",
         description: "This is a placeholder for a product that couldn't be found.",
         price: 99.99,
-        image: 'https://via.placeholder.com/400x400?text=Sample+Product',
-        category: 'necklaces',
-        material: 'Mixed materials',
-        beadSize: 'Various',
-        length: '18 inches',
-        closure: 'Standard clasp',
-        colors: [
-          { name: 'Natural', class: 'bg-amber-200' },
-          { name: 'Rose', class: 'bg-rose-300' },
-          { name: 'Turquoise', class: 'bg-cyan-400' }
-        ]
+        stock: 0,
+        category: '',
+        materials: 'Not specified',
+        dimensions: 'Not specified',
+        images: [],
+        featured: false
       }
     }
     
@@ -316,30 +314,38 @@ const fetchProduct = async () => {
       ]
     }
     
-    // Add beaded jewelry specific attributes
-    if (!product.value.material) {
-      product.value.material = 'Natural gemstone beads'
+    // Remove old jewelry specific defaults that don't match the form
+    if (!product.value.materials) {
+      product.value.materials = 'Not specified'
     }
     
-    if (!product.value.beadSize) {
-      product.value.beadSize = '6mm'
+    if (!product.value.dimensions) {
+      product.value.dimensions = 'Not specified'
     }
     
-    if (!product.value.length) {
-      product.value.length = '18 inches'
-    }
-    
-    if (!product.value.closure) {
-      product.value.closure = 'Secure lobster clasp'
+    if (!product.value.stock) {
+      product.value.stock = 0
     }
     
     if (!product.value.sections) {
       product.value.sections = []
       
+      // Add description section
       product.value.sections.push({ 
         name: 'Description', 
-        content: product.value.description || 'Handcrafted with care using premium beads for a unique piece that complements any style.' 
+        content: product.value.description || 'Product description not available.' 
       })
+      
+      // Add materials section if available
+      if (product.value.materials) {
+        product.value.sections.push({ 
+          name: 'Materials & Dimensions', 
+          content: [
+            `Materials: ${product.value.materials}`,
+            `Dimensions: ${product.value.dimensions}`
+          ]
+        })
+      }
       
       if (product.value.features) {
         product.value.sections.push({ name: 'Features', content: product.value.features })

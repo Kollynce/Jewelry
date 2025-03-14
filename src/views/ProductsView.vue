@@ -139,7 +139,7 @@
 
               <Disclosure as="div" v-for="section in filters" :key="section.id" class="border-b border-light-neutral-200 dark:border-dark-neutral-700 py-6" v-slot="{ open }">
                 <h3 class="-my-3 flow-root">
-                  <DisclosureButton class="flex w-full items-center justify-between bg-light-secondary dark:bg-dark-secondary py-3 text-sm text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500">
+                  <DisclosureButton class="flex w-full items-center justify-between dark:bg-dark-secondary py-3 text-sm text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500">
                     <span class="font-medium text-light-text-primary dark:text-dark-text-primary">{{ section.name }}</span>
                     <span class="ml-6 flex items-center">
                       <PlusIcon v-if="!open" class="size-5" aria-hidden="true" />
@@ -248,42 +248,47 @@ const sortOptions = [
 const activeSortOption = ref(sortOptions[0])
 
 const subCategories = [
-  { name: 'Rings', href: '#', value: 'rings' },
-  { name: 'Necklaces', href: '#', value: 'necklaces' },
-  { name: 'Earrings', href: '#', value: 'earrings' },
-  { name: 'Bracelets', href: '#', value: 'bracelets' },
-  { name: 'Watches', href: '#', value: 'watches' },
+  { name: 'Beaded Jewelry', href: '#', value: 'Beaded Jewelry' },
+  { name: 'String Jewelry', href: '#', value: 'String Jewelry' },
+  { name: 'Metal Jewelry', href: '#', value: 'Metal Jewelry' },
+  { name: 'Gemstones', href: '#', value: 'Gemstones' },
+  { name: 'Earrings', href: '#', value: 'Earrings' },
+  { name: 'Necklaces', href: '#', value: 'Necklaces' },
+  { name: 'Bracelets', href: '#', value: 'Bracelets' },
+  { name: 'Rings', href: '#', value: 'Rings' }
 ]
 
 const filters = [
   {
     id: 'metal',
-    name: 'Metal',
+    name: 'Metal Type',
     options: [
       { value: 'gold', label: 'Gold', checked: false },
-      { value: 'silver', label: 'Silver', checked: false },
+      { value: 'silver', label: 'Sterling Silver', checked: false },
       { value: 'rose-gold', label: 'Rose Gold', checked: false },
-      { value: 'platinum', label: 'Platinum', checked: false },
+      { value: 'beads', label: 'Glass Beads', checked: false },
+      { value: 'gemstones', label: 'Gemstones', checked: false },
+      { value: 'pearls', label: 'Pearls', checked: false }
     ],
   },
   {
-    id: 'category',
-    name: 'Category',
+    id: 'style',
+    name: 'Style',
     options: [
-      { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-      { value: 'sale', label: 'Sale', checked: false },
-      { value: 'luxury', label: 'Luxury', checked: false },
-      { value: 'trending', label: 'Trending', checked: false },
+      { value: 'handcrafted', label: 'Handcrafted', checked: false },
+      { value: 'modern', label: 'Modern', checked: false },
+      { value: 'traditional', label: 'Traditional', checked: false },
+      { value: 'luxury', label: 'Luxury', checked: false }
     ],
   },
   {
     id: 'price',
     name: 'Price Range',
     options: [
-      { value: 'under-100', label: 'Under $100', checked: false },
-      { value: '100-500', label: '$100 - $500', checked: false },
-      { value: '500-1000', label: '$500 - $1000', checked: false },
-      { value: '1000-plus', label: '$1000+', checked: false },
+      { value: 'under-50', label: 'Under $50', checked: false },
+      { value: '50-100', label: '$50 - $100', checked: false },
+      { value: '100-200', label: '$100 - $200', checked: false },
+      { value: '200-plus', label: '$200+', checked: false },
     ],
   },
 ]

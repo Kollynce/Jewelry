@@ -1,11 +1,23 @@
 <script setup>
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
+const categories = [
+  { id: 'beaded-jewelry', name: 'Beaded Jewelry' },
+  { id: 'string-jewelry', name: 'String Jewelry' },
+  { id: 'metal-jewelry', name: 'Metal Jewelry' },
+  { id: 'gemstones', name: 'Gemstones' },
+  { id: 'earrings', name: 'Earrings' },
+  { id: 'necklaces', name: 'Necklaces' },
+  { id: 'bracelets', name: 'Bracelets' },
+  { id: 'rings', name: 'Rings' }
+].map(category => ({
+  ...category,
+  id: category.id,
+  name: category.name,
+  value: category.name // Use the name as the value to match with product categories
+}))
+
 defineProps({
-  categories: {
-    type: Array,
-    required: true
-  },
   selectedCategory: {
     type: String,
     default: ''
