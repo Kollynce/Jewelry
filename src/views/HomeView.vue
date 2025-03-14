@@ -5,7 +5,7 @@
       v-if="animatingItem" 
       class="cart-animation fixed pointer-events-none z-50" 
       ref="cartAnimationEl"
-      :style="{ backgroundImage: `url(${animatingItem?.image || animatingItem?.imageUrl || '/images/no-image.jpg'})` }">
+      :style="{ backgroundImage: `url(${animatingItem?.image || animatingItem?.imageUrl || './images/no-image.jpg'})` }">
     </div>
     
     <!-- Hero Section -->
@@ -229,10 +229,10 @@
           </dl>
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
-          <img src="/images/Auqa Sand.jpeg" alt="Close-up of beaded bracelet showing intricate pattern work." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
-          <img src="/images/Golden black.jpeg" alt="Detail view of beaded necklace clasp and finishing." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
-          <img src="/images/Golden Green.jpeg" alt="Arrangement of colorful beads used in our jewelry collection." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
-          <img src="/images/Neeon Moon 3.jpeg" alt="Handcrafting process showing artisan creating a beaded piece." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="./images/Auqa Sand.jpeg" alt="Close-up of beaded bracelet showing intricate pattern work." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="./images/Golden black.jpeg" alt="Detail view of beaded necklace clasp and finishing." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="./images/Golden Green.jpeg" alt="Arrangement of colorful beads used in our jewelry collection." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="./images/Neeon Moon 3.jpeg" alt="Handcrafting process showing artisan creating a beaded piece." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
         </div>
       </div>
     </section>
@@ -344,7 +344,7 @@ import { formatCurrency } from '@/utils/currency'
 
 // Update utility function to process image URLs
 const processImageUrl = (url) => {
-  if (!url) return 'https://via.placeholder.com/300x300?text=No+Image';
+  if (!url) return './images/no-image.jpg'; // Changed to relative path
   
   // Handle base64 images with the incorrect prefix
   if (typeof url === 'string' && url.startsWith('base64://')) {
@@ -353,7 +353,12 @@ const processImageUrl = (url) => {
   
   // Handle Firebase storage URLs that might need special processing
   if (typeof url === 'string' && url.includes('firebasestorage.googleapis.com')) {
-    return url; // Ensure Firebase URLs pass through correctly
+    return url;
+  }
+  
+  // For local images, ensure they use relative paths
+  if (typeof url === 'string' && url.startsWith('/')) {
+    return '.' + url;
   }
   
   // For normal URLs
@@ -363,7 +368,7 @@ const processImageUrl = (url) => {
 // Function to handle image errors
 const handleImageError = (event) => {
   console.error('Image failed to load:', event.target.src);
-  event.target.src = '/images/no-image.jpg';
+  event.target.src = './images/no-image.jpg'; // Changed to relative path
   
   // If the local fallback fails, use inline SVG
   event.target.onerror = function() {
@@ -583,7 +588,7 @@ const loadFirestoreProducts = async () => {
           (data.images[0].startsWith('base64://') ? 
             data.images[0].replace('base64://', '') : 
             data.images[0]) : 
-          'https://via.placeholder.com/300x300?text=No+Image'
+          './images/no-image.jpg'
       };
     });
   } catch (error) {

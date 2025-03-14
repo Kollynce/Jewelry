@@ -106,7 +106,7 @@ const addToCart = async (product) => {
 // Handle image errors
 const handleImageError = (event) => {
   console.error('Image failed to load:', event.target.src);
-  event.target.src = '/images/no-image.jpg';
+  event.target.src = './images/no-image.jpg'; // Changed to relative path
   
   // If the local fallback fails, use inline SVG
   event.target.onerror = function() {
@@ -127,7 +127,7 @@ const handleImageError = (event) => {
 
 // Helper function to handle different image formats
 const getImageSrc = (imageUrl) => {
-  if (!imageUrl) return 'https://via.placeholder.com/300x300?text=No+Image';
+  if (!imageUrl) return './images/no-image.jpg'; // Changed to relative path
   
   if (typeof imageUrl === 'string') {
     // Handle base64 images
@@ -137,6 +137,10 @@ const getImageSrc = (imageUrl) => {
     // Handle temp images
     if (imageUrl.startsWith('temp://')) {
       return imageUrl.replace('temp://', '');
+    }
+    // Handle local images
+    if (imageUrl.startsWith('/')) {
+      return '.' + imageUrl;
     }
   }
   
