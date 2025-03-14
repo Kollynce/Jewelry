@@ -1,43 +1,50 @@
 <template>
   <div class="bg-light-primary dark:bg-dark-primary min-h-screen pb-16">
-    <!-- Page header -->
-    <div class="bg-light-secondary dark:bg-dark-secondary shadow-sm py-6 mb-8">
+    <!-- Improved checkout steps -->
+    <div class="bg-light-secondary dark:bg-dark-secondary shadow-sm py-8 mb-8">
       <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold text-light-text-primary dark:text-dark-text-primary">Checkout</h1>
+        <div class="max-w-4xl mx-auto">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Step 1 -->
+            <div class="flex items-center w-full sm:w-auto">
+              <div class="relative">
+                <div class="w-12 h-12 rounded-full bg-btn-primary text-white flex items-center justify-center font-semibold text-lg">
+                  1
+                </div>
+                <div class="absolute -right-4 top-1/2 h-1 w-8 bg-btn-primary hidden sm:block"></div>
+              </div>
+              <div class="ml-4">
+                <p class="font-medium text-btn-primary">Cart</p>
+                <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Review items</p>
+              </div>
+            </div>
 
-        <!-- Checkout progress indicator -->
-        <div class="mt-4 hidden sm:block">
-          <div class="flex items-center">
-            <div class="flex-1">
-              <div class="flex items-center">
-                <div class="bg-accent-primary rounded-full h-8 w-8 flex items-center justify-center">
-                  <span class="text-white font-medium text-sm">1</span>
+            <!-- Step 2 -->
+            <div class="flex items-center w-full sm:w-auto">
+              <div class="relative">
+                <div class="w-12 h-12 rounded-full bg-btn-primary text-white flex items-center justify-center font-semibold text-lg">
+                  2
                 </div>
-                <div class="ml-3">
-                  <p class="text-sm font-medium text-accent-primary">Shopping cart</p>
-                </div>
+                <div class="absolute -right-4 top-1/2 h-1 w-8 bg-btn-primary hidden sm:block"></div>
+                <div class="absolute -left-4 top-1/2 h-1 w-8 bg-btn-primary hidden sm:block"></div>
+              </div>
+              <div class="ml-4">
+                <p class="font-medium text-btn-primary">Checkout</p>
+                <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Payment details</p>
               </div>
             </div>
-            <div class="flex-1">
-              <div class="flex items-center relative">
-                <div class="h-0.5 flex-1 bg-accent-primary"></div>
-                <div class="bg-accent-primary rounded-full h-8 w-8 flex items-center justify-center">
-                  <span class="text-white font-medium text-sm">2</span>
+
+            <!-- Step 3 -->
+            <div class="flex items-center w-full sm:w-auto">
+              <div class="relative">
+                <div class="w-12 h-12 rounded-full bg-light-neutral-300 dark:bg-dark-neutral-600 text-light-neutral-600 dark:text-dark-neutral-300 flex items-center justify-center font-semibold text-lg">
+                  3
                 </div>
-                <div class="ml-3">
-                  <p class="text-sm font-medium text-accent-primary">Checkout</p>
-                </div>
+                <div class="absolute -left-4 top-1/2 h-1 w-8 bg-light-neutral-300 dark:bg-dark-neutral-600 hidden sm:block"></div>
               </div>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center">
-                <div class="h-0.5 flex-1 bg-light-neutral-300 dark:bg-dark-neutral-700"></div>
-                <div class="bg-light-neutral-300 dark:bg-dark-neutral-700 rounded-full h-8 w-8 flex items-center justify-center">
-                  <span class="text-white font-medium text-sm">3</span>
-                </div>
-                <div class="ml-3">
-                  <p class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary">Confirmation</p>
-                </div>
+              <div class="ml-4">
+                <p class="font-medium text-light-neutral-500 dark:text-dark-neutral-400">Confirmation</p>
+                <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Order complete</p>
               </div>
             </div>
           </div>
@@ -116,10 +123,11 @@
                       type="text"
                       required
                       class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
+                        bg-light-secondary dark:bg-dark-secondary
+                        text-light-text-primary dark:text-dark-text-primary
+                        rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                        outline-none transition-all"
+                      placeholder="Your first name"
                     >
                   </div>
 
@@ -130,10 +138,11 @@
                       type="text"
                       required
                       class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
+                        bg-light-secondary dark:bg-dark-secondary
+                        text-light-text-primary dark:text-dark-text-primary
+                        rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                        outline-none transition-all"
+                      placeholder="Your last name"
                     >
                   </div>
 
@@ -144,10 +153,11 @@
                       type="email"
                       required
                       class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
+                        bg-light-secondary dark:bg-dark-secondary
+                        text-light-text-primary dark:text-dark-text-primary
+                        rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                        outline-none transition-all"
+                      placeholder="your.email@example.com"
                     >
                   </div>
 
@@ -158,70 +168,89 @@
                       type="tel"
                       required
                       class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
+                        bg-light-secondary dark:bg-dark-secondary
+                        text-light-text-primary dark:text-dark-text-primary
+                        rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                        outline-none transition-all"
+                      placeholder="254XXXXXXXXX"
                     >
                   </div>
                 </div>
 
                 <div class="mb-6">
-                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Address</label>
-                  <input
-                    v-model="shippingInfo.address"
-                    type="text"
+                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Delivery Method</label>
+                  <select
+                    v-model="shippingInfo.deliveryMethod"
                     required
                     class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
+                      bg-light-secondary dark:bg-dark-secondary
+                      text-light-text-primary dark:text-dark-text-primary
+                      rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                      outline-none transition-all"
+                    @change="handleDeliveryMethodChange"
                   >
+                    <option value="">Select delivery method</option>
+                    <option value="delivery">Home/Office Delivery</option>
+                    <option value="pickup">Pickup Point</option>
+                  </select>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">City</label>
-                    <input
-                      v-model="shippingInfo.city"
-                      type="text"
-                      required
-                      class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
-                    >
-                  </div>
+                <!-- City Selection -->
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">City</label>
+                  <select
+                    v-model="shippingInfo.city"
+                    required
+                    class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+                      bg-light-secondary dark:bg-dark-secondary
+                      text-light-text-primary dark:text-dark-text-primary
+                      rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                      outline-none transition-all"
+                    @change="handleCityChange"
+                  >
+                    <option value="">Select city</option>
+                    <option v-for="city in cities" :key="city" :value="city">
+                      {{ city }}
+                    </option>
+                  </select>
+                </div>
 
-                  <div>
-                    <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">State</label>
-                    <input
-                      v-model="shippingInfo.state"
-                      type="text"
-                      required
-                      class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
-                    >
-                  </div>
+                <!-- Pickup Point (shown only when delivery method is pickup) -->
+                <div v-if="shippingInfo.deliveryMethod === 'pickup'" class="mb-6">
+                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Pickup Point</label>
+                  <select
+                    v-model="shippingInfo.pickupPoint"
+                    required
+                    class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+                      bg-light-secondary dark:bg-dark-secondary
+                      text-light-text-primary dark:text-dark-text-primary
+                      rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                      outline-none transition-all"
+                  >
+                    <option value="">Select pickup point</option>
+                    <option v-for="point in availablePickupPoints" :key="point" :value="point">
+                      {{ point }}
+                    </option>
+                  </select>
+                </div>
 
-                  <div>
-                    <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">ZIP Code</label>
-                    <input
-                      v-model="shippingInfo.zipCode"
-                      type="text"
-                      required
-                      class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
-                    >
-                  </div>
+                <!-- Detailed Address (shown only when delivery method is delivery) -->
+                <div v-if="shippingInfo.deliveryMethod === 'delivery'" class="mb-6">
+                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Detailed Address</label>
+                  <textarea
+                    v-model="shippingInfo.address"
+                    required
+                    rows="3"
+                    class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+                      bg-light-secondary dark:bg-dark-secondary
+                      text-light-text-primary dark:text-dark-text-primary
+                      rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                      outline-none transition-all"
+                    placeholder="Enter your detailed address (e.g., House/Apartment number, Street name, Estate/Area)"
+                  ></textarea>
+                  <p class="mt-1 text-sm text-light-text-secondary dark:text-dark-text-secondary">
+                    Please provide landmarks or additional directions to help locate your address
+                  </p>
                 </div>
 
                 <div class="mt-6">
@@ -240,7 +269,7 @@
               </div>
             </div>
 
-            <!-- Payment Information -->
+            <!-- Payment Method Tabs -->
             <div class="bg-light-secondary dark:bg-dark-secondary shadow rounded-lg overflow-hidden mb-8">
               <div class="bg-light-neutral-100 dark:bg-dark-neutral-800 py-4 px-6 border-b border-light-neutral-200 dark:border-dark-neutral-700">
                 <div class="flex items-center">
@@ -249,129 +278,228 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
                   </div>
-                  <h2 class="text-xl font-bold text-light-text-primary dark:text-dark-text-primary">Payment Information</h2>
+                  <h2 class="text-xl font-bold text-light-text-primary dark:text-dark-text-primary">Payment Method</h2>
                 </div>
               </div>
 
               <div class="p-6">
-                <div class="mb-8">
-                  <div class="flex items-center justify-between mb-4">
-                    <p class="text-sm font-medium text-light-text-primary dark:text-dark-text-primary">Accepted Cards</p>
-                    <div class="flex space-x-2">
-                      <div class="h-8 w-12 rounded border bg-light-neutral-100 dark:bg-dark-neutral-800 flex items-center justify-center">
-                        <span class="text-xs font-bold text-blue-700">VISA</span>
-                      </div>
-                      <div class="h-8 w-12 rounded border bg-light-neutral-100 dark:bg-dark-neutral-800 flex items-center justify-center">
-                        <span class="text-xs font-bold text-red-700">MC</span>
-                      </div>
-                      <div class="h-8 w-12 rounded border bg-light-neutral-100 dark:bg-dark-neutral-800 flex items-center justify-center">
-                        <span class="text-xs font-bold text-blue-900">AMEX</span>
-                      </div>
+                <!-- Payment Method Selector -->
+                <div class="border-b border-light-neutral-200 dark:border-dark-neutral-700">
+                  <nav class="-mb-px flex space-x-8">
+                    <button
+                      v-for="tab in paymentTabs"
+                      :key="tab.id"
+                      @click="selectedPaymentMethod = tab.id"
+                      :class="[
+                        selectedPaymentMethod === tab.id
+                          ? 'border-accent-primary text-accent-primary'
+                          : 'border-transparent text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary hover:border-light-neutral-300 dark:hover:border-dark-neutral-700',
+                        'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
+                      ]"
+                    >
+                      {{ tab.name }}
+                    </button>
+                  </nav>
+                </div>
+
+                <!-- Mobile Money (M-Pesa) -->
+                <div v-if="selectedPaymentMethod === 'mobile-money'" class="mt-6">
+                  <div class="mb-6">
+                    <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Phone Number</label>
+                    <input
+                      v-model="mpesaInfo.phoneNumber"
+                      type="tel"
+                      required
+                      placeholder="254XXXXXXXXX"
+                      class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+                        bg-light-secondary dark:bg-dark-secondary
+                        text-light-text-primary dark:text-dark-text-primary
+                        rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+                        outline-none transition-all"
+                    >
+                  </div>
+                  <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">
+                    You will receive an M-Pesa prompt on your phone to complete the payment.
+                  </p>
+                </div>
+
+                <!-- Cash on Delivery -->
+                <div v-if="selectedPaymentMethod === 'cash'" class="mt-6">
+                  <div class="bg-light-neutral-100 dark:bg-dark-neutral-800 p-4 rounded-md">
+                    <p class="text-sm text-light-text-primary dark:text-dark-text-primary">
+                      You will pay in cash when your order is delivered. Please have the exact amount ready.
+                    </p>
+                    <div class="mt-4">
+                      <label class="flex items-center">
+                        <input
+                          type="checkbox"
+                          v-model="cashOnDeliveryAgreed"
+                          class="h-4 w-4 text-accent-primary focus:ring-accent-primary border-light-neutral-300 dark:border-dark-neutral-600 rounded"
+                        >
+                        <span class="ml-2 text-sm text-light-text-primary dark:text-dark-text-primary">
+                          I agree to pay the full amount of {{ formatCurrency(total + (subtotal * 0.08)) }} upon delivery
+                        </span>
+                      </label>
                     </div>
                   </div>
                 </div>
 
-                <div class="mb-6">
-                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Name on Card</label>
-                  <input
-                    v-model="paymentInfo.cardName"
-                    type="text"
-                    required
-                    class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
-                  >
-                </div>
-
-                <div class="mb-6">
-                  <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Card Number</label>
-                  <div class="relative">
-                    <input
-                      v-model="paymentInfo.cardNumber"
-                      type="text"
-                      required
-                      placeholder="1234 5678 9012 3456"
-                      class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
-                      v-mask="'#### #### #### ####'"
-                    >
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <svg class="h-5 w-5 text-light-neutral-400 dark:text-dark-neutral-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
+                <!-- Credit Card -->
+                <div v-if="selectedPaymentMethod === 'card'" class="mt-6">
+                  <!-- Existing card payment form -->
+                  <div class="p-6">
+                    <div class="mb-8">
+                      <div class="flex items-center justify-between mb-4">
+                        <p class="text-sm font-medium text-light-text-primary dark:text-dark-text-primary">Accepted Cards</p>
+                        <div class="flex space-x-2">
+                          <div class="h-8 w-12 rounded border bg-light-neutral-100 dark:bg-dark-neutral-800 flex items-center justify-center">
+                            <span class="text-xs font-bold text-blue-700">VISA</span>
+                          </div>
+                          <div class="h-8 w-12 rounded border bg-light-neutral-100 dark:bg-dark-neutral-800 flex items-center justify-center">
+                            <span class="text-xs font-bold text-red-700">MC</span>
+                          </div>
+                          <div class="h-8 w-12 rounded border bg-light-neutral-100 dark:bg-dark-neutral-800 flex items-center justify-center">
+                            <span class="text-xs font-bold text-blue-900">AMEX</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Expiration Date</label>
-                    <input
-                      v-model="paymentInfo.expirationDate"
-                      type="text"
-                      required
-                      placeholder="MM/YY"
-                      class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
-    bg-light-secondary dark:bg-dark-secondary
-    text-light-text-primary dark:text-dark-text-primary
-    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
-    outline-none transition-all"
-                      v-mask="'##/##'"
-                    >
-                  </div>
-
-                  <div>
-                    <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">CVV</label>
-                    <div class="relative">
+                    <div class="mb-6">
+                      <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Name on Card</label>
                       <input
-                        v-model="paymentInfo.cvv"
+                        v-model="paymentInfo.cardName"
                         type="text"
                         required
-                        placeholder="123"
                         class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
     bg-light-secondary dark:bg-dark-secondary
     text-light-text-primary dark:text-dark-text-primary
     rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
     outline-none transition-all"
-                        v-mask="'###'"
-                        maxlength="3"
                       >
-                      <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                        <button
-                          type="button"
-                          @click="showCvvHelp = !showCvvHelp"
-                          class="text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500 focus:outline-none"
+                    </div>
+
+                    <div class="mb-6">
+                      <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Card Number</label>
+                      <div class="relative">
+                        <input
+                          v-model="paymentInfo.cardNumber"
+                          type="text"
+                          required
+                          placeholder="1234 5678 9012 3456"
+                          class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+    bg-light-secondary dark:bg-dark-secondary
+    text-light-text-primary dark:text-dark-text-primary
+    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+    outline-none transition-all"
+                          v-mask="'#### #### #### ####'"
                         >
-                          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                          <svg class="h-5 w-5 text-light-neutral-400 dark:text-dark-neutral-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                           </svg>
-                        </button>
+                        </div>
                       </div>
                     </div>
-                    <div v-if="showCvvHelp" class="mt-1 text-sm text-light-neutral-500 dark:text-dark-neutral-500">
-                      The CVV is a 3-digit security code found on the back of your card.
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">Expiration Date</label>
+                        <input
+                          v-model="paymentInfo.expirationDate"
+                          type="text"
+                          required
+                          placeholder="MM/YY"
+                          class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+    bg-light-secondary dark:bg-dark-secondary
+    text-light-text-primary dark:text-dark-text-primary
+    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+    outline-none transition-all"
+                          v-mask="'##/##'"
+                        >
+                      </div>
+
+                      <div>
+                        <label class="block text-sm font-medium text-light-text-primary dark:text-dark-text-primary mb-1">CVV</label>
+                        <div class="relative">
+                          <input
+                            v-model="paymentInfo.cvv"
+                            type="text"
+                            required
+                            placeholder="123"
+                            class="w-full px-4 py-2 border border-light-neutral-300 dark:border-dark-neutral-600 
+    bg-light-secondary dark:bg-dark-secondary
+    text-light-text-primary dark:text-dark-text-primary
+    rounded-md focus:ring-2 focus:ring-accent-primary focus:border-accent-primary 
+    outline-none transition-all"
+                            v-mask="'###'"
+                            maxlength="3"
+                          >
+                          <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <button
+                              type="button"
+                              @click="showCvvHelp = !showCvvHelp"
+                              class="text-light-neutral-400 dark:text-dark-neutral-600 hover:text-light-neutral-500 dark:hover:text-dark-neutral-500 focus:outline-none"
+                            >
+                              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <div v-if="showCvvHelp" class="mt-1 text-sm text-light-neutral-500 dark:text-dark-neutral-500">
+                          The CVV is a 3-digit security code found on the back of your card.
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <!-- PayPal -->
+                <div v-if="selectedPaymentMethod === 'paypal'" class="mt-6">
+                  <div class="bg-light-neutral-100 dark:bg-dark-neutral-800 p-4 rounded-md text-center">
+                    <div class="mx-auto max-w-[200px] mb-4">
+                      <a 
+                        href="/digital-wallet/ways-to-pay/add-payment-method" 
+                        title="How PayPal Works" 
+                        @click.prevent="handlePayPalInfo"
+                        class="inline-block"
+                      >
+                        <img 
+                          src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" 
+                          alt="PayPal Logo"
+                          class="mx-auto"
+                        >
+                      </a>
+                    </div>
+                    <p class="text-sm text-light-text-primary dark:text-dark-text-primary my-4">
+                      You will be redirected to PayPal to complete your payment securely.
+                    </p>
+                    <div ref="paypalButtonsContainer"></div>
+                    <button
+                      type="button"
+                      @click="handlePayPalCheckout"
+                      class="w-full py-3 bg-btn-primary hover:bg-btn-primary-hover active:bg-btn-primary-dark text-white font-medium rounded-md transition-all"
+                    >
+                      Checkout with PayPal
+                    </button>
+                  </div>
+                </div>
+
               </div>
             </div>
 
             <button
               type="submit"
-              class="w-full py-4 bg-accent-primary hover:bg-accent-secondary text-white text-lg font-medium rounded-md transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary"
-              :class="{'opacity-75 cursor-not-allowed': loading}"
-              :disabled="loading"
+              class="w-full py-4 bg-btn-primary hover:bg-btn-primary-hover active:bg-btn-primary-dark text-white text-lg font-medium rounded-md transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-primary"
+              :class="{'opacity-75 cursor-not-allowed': loading || !isPaymentMethodValid}"
+              :disabled="loading || !isPaymentMethodValid"
             >
               <svg v-if="loading" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {{ loading ? 'Processing...' : `Complete Order - ${formatCurrency(total)}` }}
+              {{ getPaymentButtonText() }}
             </button>
           </form>
         </div>
@@ -470,11 +598,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useCartStore } from '../stores/cart'
 import { firebaseService } from '../services/firebaseService'
+import { paypalService } from '../services/paypalService'
 import { formatCurrency } from '@/utils/currency'
 
 // Remove the conflicting import and implement the directive locally
@@ -491,18 +620,72 @@ const userProfile = ref(null)
 const showCvvHelp = ref(false)
 const saveInfo = ref(true)
 
+const cities = [
+  'Nairobi',
+  'Mombasa',
+  'Kisumu',
+  'Nakuru',
+  'Eldoret',
+  'Kitengela',
+  'Thika',
+  'Machakos',
+  'Kahawa',
+  'Ruiru',
+  'Athi River',
+  'Kiambu',
+  'Rongai'
+];
+
+const pickupPoints = {
+  'Nairobi': [
+    'CBD - Kencom House',
+    'CBD - Archives',
+    'CBD - Afya Centre',
+    'Westlands - The Mall',
+    'Eastleigh - First Avenue',
+    'South B - Capital Center',
+    'Karen - Karen Hub'
+  ],
+  'Kitengela': [
+    'Kitengela Mall',
+    'EPZ Plaza',
+    'Milestone Mall'
+  ],
+  'Kahawa': [
+    'Kahawa West Shopping Center',
+    'Kahawa Sukari Mall',
+    'Kahawa Wendani Plaza'
+  ],
+  // Add more cities and their pickup points as needed
+};
+
 // Form data
 const shippingInfo = ref({
   firstName: '',
   lastName: '',
   email: '',
   phone: '',
-  address: '',
+  deliveryMethod: '',
   city: '',
-  state: '',
-  zipCode: '',
-  sameAsBilling: true
-})
+  pickupPoint: '',
+  address: ''
+});
+
+const availablePickupPoints = ref([]);
+
+const handleDeliveryMethodChange = () => {
+  shippingInfo.value.pickupPoint = '';
+  shippingInfo.value.address = '';
+};
+
+const handleCityChange = () => {
+  shippingInfo.value.pickupPoint = '';
+  if (shippingInfo.value.city && pickupPoints[shippingInfo.value.city]) {
+    availablePickupPoints.value = pickupPoints[shippingInfo.value.city];
+  } else {
+    availablePickupPoints.value = [];
+  }
+};
 
 const paymentInfo = ref({
   cardName: '',
@@ -510,6 +693,172 @@ const paymentInfo = ref({
   expirationDate: '',
   cvv: ''
 })
+
+// Payment method tabs
+const paymentTabs = [
+  { id: 'mobile-money', name: 'M-Pesa' },
+  { id: 'cash', name: 'Cash on Delivery' },
+  { id: 'card', name: 'Card Payment' },
+  { id: 'paypal', name: 'PayPal' }
+]
+
+const selectedPaymentMethod = ref('mobile-money')
+const mpesaInfo = ref({
+  phoneNumber: ''
+})
+const cashOnDeliveryAgreed = ref(false)
+
+// Add PayPal specific state
+const paypalButtonsContainer = ref(null)
+const paypalLoaded = ref(false)
+
+// Add payment loading state
+const paymentProcessing = ref(false)
+const paymentStep = ref(1) // 1: Info, 2: Payment, 3: Confirmation
+
+// Watch for payment method changes
+watch(selectedPaymentMethod, async (newMethod) => {
+  if (newMethod === 'paypal' && !paypalLoaded.value) {
+    await initializePayPalButtons()
+  }
+})
+
+// Initialize PayPal
+const initializePayPalButtons = async () => {
+  try {
+    const paypal = await paypalService.initializePayPal()
+    
+    if (paypalButtonsContainer.value) {
+      paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          color: 'blue',
+          shape: 'rect',
+          label: 'paypal'
+        },
+        createOrder: async (data, actions) => {
+          const orderData = paypalService.createOrder(
+            total.value + (subtotal.value * 0.08),
+            cart.value
+          )
+          return actions.order.create(orderData)
+        },
+        onApprove: async (data, actions) => {
+          paymentProcessing.value = true
+          try {
+            const order = await actions.order.capture()
+            await handlePayPalSuccess(order)
+          } catch (error) {
+            await paypalService.handlePayPalError(error)
+          } finally {
+            paymentProcessing.value = false
+          }
+        },
+        onError: async (err) => {
+          await paypalService.handlePayPalError(err)
+        }
+      }).render(paypalButtonsContainer.value)
+      
+      paypalLoaded.value = true
+    }
+  } catch (error) {
+    console.error('Failed to initialize PayPal:', error)
+    errorMsg.value = 'Failed to initialize PayPal. Please try another payment method.'
+  }
+}
+
+// Handle PayPal success
+const handlePayPalSuccess = async (paypalOrder) => {
+  try {
+    const orderData = {
+      ...getBaseOrderData(),
+      paymentMethod: 'paypal',
+      paymentDetails: {
+        paypal: true,
+        orderId: paypalOrder.id,
+        status: paypalOrder.status,
+        payerEmail: paypalOrder.payer.email_address
+      },
+      status: 'paid'
+    }
+    
+    await firebaseService.createOrder(orderData)
+    cartStore.clearCart()
+    successMsg.value = `Order placed successfully! Payment completed via PayPal.`
+    
+    setTimeout(() => {
+      router.push('/account')
+    }, 3000)
+  } catch (error) {
+    console.error('Error processing PayPal order:', error)
+    errorMsg.value = 'Failed to process PayPal payment. Please contact support.'
+  }
+}
+
+// Helper to get base order data
+const getBaseOrderData = () => ({
+  userId: authStore.user.uid,
+  orderNumber: `ORD-${Date.now().toString().slice(-6)}`,
+  items: cart.value,
+  subtotal: subtotal.value,
+  shipping: shippingCost.value,
+  total: total.value + (subtotal.value * 0.08),
+  shippingInfo: { ...shippingInfo.value },
+  orderDate: new Date(),
+  estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+})
+
+// Validate payment method
+const isPaymentMethodValid = computed(() => {
+  switch (selectedPaymentMethod.value) {
+    case 'mobile-money':
+      return /^254[0-9]{9}$/.test(mpesaInfo.value.phoneNumber)
+    case 'cash':
+      return cashOnDeliveryAgreed.value
+    case 'card':
+      return paymentInfo.value.cardNumber && 
+             paymentInfo.value.cardName && 
+             paymentInfo.value.expirationDate && 
+             paymentInfo.value.cvv
+    case 'paypal':
+      return true
+    default:
+      return false
+  }
+})
+
+// Get payment button text
+const getPaymentButtonText = () => {
+  if (loading.value) return 'Processing...'
+  
+  switch (selectedPaymentMethod.value) {
+    case 'mobile-money':
+      return `Pay with M-Pesa - ${formatCurrency(total.value + (subtotal.value * 0.08))}`
+    case 'cash':
+      return `Place Order - Pay ${formatCurrency(total.value + (subtotal.value * 0.08))} on Delivery`
+    case 'card':
+      return `Pay ${formatCurrency(total.value + (subtotal.value * 0.08))}`
+    case 'paypal':
+      return `Proceed to PayPal - ${formatCurrency(total.value + (subtotal.value * 0.08))}`
+    default:
+      return `Complete Order - ${formatCurrency(total.value + (subtotal.value * 0.08))}`
+  }
+}
+
+// Handle PayPal checkout
+const handlePayPalCheckout = () => {
+  // Implement PayPal checkout logic here
+  console.log('Redirecting to PayPal...')
+}
+
+// Add this new function for PayPal info modal
+const handlePayPalInfo = () => {
+  window.open(
+    '/digital-wallet/ways-to-pay/add-payment-method',
+    'WIPaypal',
+    'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'
+  )
+}
 
 // Cart calculations
 const cart = computed(() => cartStore.cart)
@@ -553,7 +902,6 @@ const placeOrder = async () => {
   loading.value = true
   errorMsg.value = ''
 
-  // Basic validation
   if (cart.value.length === 0) {
     errorMsg.value = 'Your cart is empty'
     loading.value = false
@@ -564,7 +912,7 @@ const placeOrder = async () => {
     const timestamp = new Date()
     const orderNumber = `ORD-${Date.now().toString().slice(-6)}`
 
-    // Create order in Firestore
+    // Create order in Firestore with payment method
     const orderData = {
       userId: authStore.user.uid,
       orderNumber: orderNumber,
@@ -575,25 +923,27 @@ const placeOrder = async () => {
       shippingInfo: {
         ...shippingInfo.value
       },
-      // Store minimal payment info for reference (avoid storing full card details)
-      paymentInfo: {
-        cardName: paymentInfo.value.cardName,
-        lastFourDigits: paymentInfo.value.cardNumber.slice(-4),
-        cardType: getCardType(paymentInfo.value.cardNumber)
-      },
-      status: 'processing',
-      paymentMethod: 'credit card',
+      paymentMethod: selectedPaymentMethod.value,
+      paymentDetails: getPaymentDetails(),
+      status: getOrderStatus(),
       orderDate: timestamp,
       estimatedDelivery: new Date(timestamp.setDate(timestamp.getDate() + 7))
     }
 
     const orderRef = await firebaseService.createOrder(orderData)
 
+    // Handle M-Pesa payment
+    if (selectedPaymentMethod.value === 'mobile-money') {
+      // Implement M-Pesa payment integration here
+      // You would typically call your backend API to initiate the M-Pesa payment
+      await initiateGepPayment(orderRef.id)
+    }
+
     // Clear the cart
     cartStore.clearCart()
 
     // Show success message
-    successMsg.value = `Order placed successfully! Your order number is ${orderNumber}.`
+    successMsg.value = getSuccessMessage(orderNumber)
 
     // Redirect to orders page after a delay
     setTimeout(() => {
@@ -604,6 +954,75 @@ const placeOrder = async () => {
     console.error('Error placing order:', error)
   } finally {
     loading.value = false
+  }
+}
+
+// Helper function to get payment details based on payment method
+const getPaymentDetails = () => {
+  switch (selectedPaymentMethod.value) {
+    case 'mobile-money':
+      return {
+        phoneNumber: mpesaInfo.value.phoneNumber
+      }
+    case 'cash':
+      return {
+        cashOnDelivery: true
+      }
+    case 'card':
+      return {
+        cardName: paymentInfo.value.cardName,
+        lastFourDigits: paymentInfo.value.cardNumber.slice(-4),
+        cardType: getCardType(paymentInfo.value.cardNumber)
+      }
+    case 'paypal':
+      return {
+        paypal: true
+      }
+    default:
+      return {}
+  }
+}
+
+// Helper function to get initial order status based on payment method
+const getOrderStatus = () => {
+  switch (selectedPaymentMethod.value) {
+    case 'mobile-money':
+      return 'awaiting_payment'
+    case 'cash':
+      return 'pending'
+    case 'card':
+    case 'paypal':
+      return 'processing'
+    default:
+      return 'pending'
+  }
+}
+
+// Helper function to get success message based on payment method
+const getSuccessMessage = (orderNumber) => {
+  switch (selectedPaymentMethod.value) {
+    case 'mobile-money':
+      return `Order ${orderNumber} placed! Please check your phone for the M-Pesa payment prompt.`
+    case 'cash':
+      return `Order ${orderNumber} placed! Please have ${formatCurrency(total.value + (subtotal.value * 0.08))} ready for delivery.`
+    case 'card':
+      return `Order ${orderNumber} placed successfully! Your card has been charged.`
+    case 'paypal':
+      return `Order ${orderNumber} placed successfully! Payment completed via PayPal.`
+    default:
+      return `Order placed successfully! Your order number is ${orderNumber}.`
+  }
+}
+
+// Implement M-Pesa payment initiation
+const initiateGepPayment = async (orderId) => {
+  try {
+    // This would be implemented according to your payment gateway's requirements
+    console.log('Initiating M-Pesa payment for order:', orderId)
+    // Call your backend API to initiate the payment
+  } catch (error) {
+    console.error('Error initiating M-Pesa payment:', error)
+    throw error
   }
 }
 
@@ -708,6 +1127,6 @@ const vMask = vMaskDirective
   color: var(--dark-text-primary);
 }
 :root[data-theme="dark"] .btn-secondary:hover {
-  background-color: var(--dark-neutral-600);
+  background-color: var (--dark-neutral-600);
 }
 </style>

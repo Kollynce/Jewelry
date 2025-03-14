@@ -12,41 +12,120 @@
     <div class="relative overflow-hidden bg-light-secondary dark:bg-dark-secondary">
       <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
         <div class="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
-          <div class="sm:max-w-lg">
-            <h1 class="text-4xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary sm:text-6xl">Stylish Beaded Jewelry Collection</h1>
+          <div class="sm:max-w-lg fade-slide-up">
+            <h1 class="text-2xl sm:text-4xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary">
+              Discover Handcrafted Jewelry
+              <span class="animated-text-wrapper">
+                <span 
+                  v-for="(text, index) in animatedTexts" 
+                  :key="text"
+                  class="animated-text-item"
+                  :class="{ active: currentTextIndex === index }">
+                  {{ text }}
+                </span>
+              </span>
+            </h1>
             <p class="mt-4 text-xl text-light-text-secondary dark:text-dark-text-secondary">Our handcrafted beaded jewelry pieces combine artistry and elegance, adding the perfect colorful accent to enhance any outfit.</p>
           </div>
           <div>
             <div class="mt-10">
-              <!-- Decorative image grid -->
+              <!-- Improved infinite scrolling image grid -->
               <div aria-hidden="true" class="pointer-events-none lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl">
                 <div class="absolute transform sm:top-0 sm:left-1/2 sm:translate-x-8 lg:top-1/2 lg:left-1/2 lg:-translate-y-1/2 lg:translate-x-8">
                   <div class="flex items-center space-x-6 lg:space-x-8">
-                    <div class="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div class="h-64 w-44 overflow-hidden rounded-lg sm:opacity-0 lg:opacity-100">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="" class="size-full object-cover" />
-                      </div>
-                      <div class="h-64 w-44 overflow-hidden rounded-lg">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="size-full object-cover" />
+                    <!-- First column scrolling up -->
+                    <div class="scroll-container">
+                      <div class="scroll-content scroll-up">
+                        <!-- Original set -->
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <!-- Duplicate set for seamless loop -->
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
                       </div>
                     </div>
-                    <div class="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div class="h-64 w-44 overflow-hidden rounded-lg">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="size-full object-cover" />
-                      </div>
-                      <div class="h-64 w-44 overflow-hidden rounded-lg">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="size-full object-cover" />
-                      </div>
-                      <div class="h-64 w-44 overflow-hidden rounded-lg">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-05.jpg" alt="" class="size-full object-cover" />
+
+                    <!-- Middle column scrolling down -->
+                    <div class="scroll-container">
+                      <div class="scroll-content scroll-down">
+                        <!-- Original set -->
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-05.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-07.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <!-- Duplicate set for seamless loop -->
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-05.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-07.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
                       </div>
                     </div>
-                    <div class="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                      <div class="h-64 w-44 overflow-hidden rounded-lg">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="size-full object-cover" />
-                      </div>
-                      <div class="h-64 w-44 overflow-hidden rounded-lg">
-                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-07.jpg" alt="" class="size-full object-cover" />
+
+                    <!-- Last column scrolling up at a different speed -->
+                    <div class="scroll-container">
+                      <div class="scroll-content scroll-up-slow">
+                        <!-- Original set -->
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <!-- Duplicate set for seamless loop -->
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="h-64 w-full overflow-hidden rounded-lg product-image-container">
+                          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="w-full h-full object-cover" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -62,15 +141,17 @@
 
     <!-- Collection Section - Modified to be truly full width -->
     <section class="py-16 bg-light-primary dark:bg-dark-primary w-full">
-      <div class="text-center mb-12">
+      <div class="text-center mb-12 fade-slide-up">
         <h2 class="text-3xl font-bold text-light-text-primary dark:text-dark-text-primary">Our Collections</h2>
       </div>
       <div class="w-full px-4 sm:px-6 lg:px-8 max-w-none mx-auto">
         <div class="max-w-7xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Collection Card for each category -->
-            <div v-for="collection in collections" :key="collection.name" 
-              class="collection-card relative overflow-hidden rounded-lg shadow-lg group h-80">
+            <div v-for="(collection, index) in collections" 
+              :key="collection.name" 
+              class="collection-card relative overflow-hidden rounded-lg shadow-lg group h-80 fade-slide-up"
+              :style="{ animationDelay: index * 100 + 'ms' }">
               
               <!-- Collection Image -->
               <img :src="processImageUrl(collection.image)" 
@@ -100,7 +181,7 @@
     <!-- Featured Products Section -->
     <section class="bg-light-secondary dark:bg-dark-secondary py-16">
       <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center mb-10">
+        <div class="flex justify-between items-center mb-10 fade-slide-up">
           <h2 class="text-3xl font-bold text-light-text-primary dark:text-dark-text-primary">Featured Products</h2>
           <router-link to="/products" class="text-accent-primary hover:text-accent-secondary font-medium">
             View all products <span aria-hidden="true">&rarr;</span>
@@ -116,7 +197,10 @@
         </div>
         
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <div v-for="product in featuredProducts" :key="product.id" class="relative">
+          <div v-for="(product, index) in featuredProducts" 
+              :key="product.id" 
+              class="relative fade-slide-up"
+              :style="{ animationDelay: index * 100 + 'ms' }">
             <!-- Debugging info (can be removed in production) -->
             <!-- <div class="absolute top-0 right-0 bg-black bg-opacity-75 text-white text-xs p-1 z-10">
               {{ product.image ? product.image.substring(0, 20) + '...' : 'No image' }}
@@ -145,10 +229,10 @@
           </dl>
         </div>
         <div class="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-01.jpg" alt="Close-up of beaded bracelet showing intricate pattern work." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-02.jpg" alt="Detail view of beaded necklace clasp and finishing." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-03.jpg" alt="Arrangement of colorful beads used in our jewelry collection." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
-          <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-04.jpg" alt="Handcrafting process showing artisan creating a beaded piece." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="/images/Auqa Sand.jpeg" alt="Close-up of beaded bracelet showing intricate pattern work." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="/images/Golden black.jpeg" alt="Detail view of beaded necklace clasp and finishing." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="/images/Golden Green.jpeg" alt="Arrangement of colorful beads used in our jewelry collection." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
+          <img src="/images/Neeon Moon 3.jpeg" alt="Handcrafting process showing artisan creating a beaded piece." class="rounded-lg bg-light-neutral-100 dark:bg-dark-neutral-800" />
         </div>
       </div>
     </section>
@@ -591,6 +675,27 @@ const addToCart = async (product) => {
     cartStore.addToCart(product, 1);
   }
 }
+
+// Add these near the top of your script setup section
+const currentTextIndex = ref(0)
+const animatedTexts = [
+  'That Elevates Style',
+  'With Timeless Beauty',
+  'For Every Moment',
+  'That Tells Stories',
+  'With Perfect Detail',
+  'For Your Journey'
+]
+
+// Update the animation logic in onMounted
+onMounted(() => {
+  // Smoother title animation with crossfade
+  setInterval(() => {
+    currentTextIndex.value = (currentTextIndex.value + 1) % animatedTexts.length
+  }, 3000) // Slightly longer duration for better readability
+  
+  // ...rest of your existing onMounted code...
+})
 </script>
 
 <style scoped>
@@ -623,5 +728,141 @@ const addToCart = async (product) => {
   align-items: center;
   justify-content: center;
   background-color: #f0f0f0;
+}
+
+/* Animation styles */
+.fade-slide-up {
+  animation: fadeSlideUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced infinite scroll animation - true seamless looping */
+.scroll-container {
+  height: 650px; /* Increased height for full coverage */
+  overflow: hidden;
+  position: relative;
+  width: 176px;
+  margin: 0;
+}
+
+.scroll-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image container styles with improved spacing */
+.scroll-content > div {
+  margin-bottom: 15px; /* Increased space between images */
+  margin-top: 15px; /* Added top spacing */
+  padding: 12px 0; /* Added padding to top and bottom only */
+  background-color: #f8f8f8; /* Light background */
+  border-radius: 8px;
+}
+
+/* Make the images take up full width of their container */
+.scroll-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 6px; /* Slight rounding of image corners */
+}
+
+/* Different scroll speeds for visual interest */
+.scroll-up {
+  animation: scrollUp 40s linear infinite; 
+}
+
+.scroll-down {
+  animation: scrollDown 45s linear infinite;
+}
+
+.scroll-up-slow {
+  animation: scrollUp 50s linear infinite;
+}
+
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Updated animation styles */
+.animated-text-wrapper {
+  position: relative;
+  display: block;
+  height: 1em;
+  overflow: hidden;
+  margin-top: 0.2em;
+  font-size: 1em;
+}
+
+.animated-text-item {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(1em);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1;
+}
+
+.animated-text-item.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Add specific styling for the product image containers */
+.product-image-container {
+  padding: 15px 0; /* Good padding at top and bottom only */
+  margin: 20px 0; /* Increased space between images */
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid rgba(0,0,0,0.05); /* Subtle border */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Subtle shadow */
+  height: auto !important; /* Override fixed height to allow padding to work */
+  min-height: 230px; /* Minimum height for images */
+  display: flex; /* For vertical centering */
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+}
+
+/* Adjust the image style within containers */
+.product-image-container img {
+  max-height: 220px; /* Make images slightly smaller than container */
+  width: 100%;
+  object-fit: contain; /* Keep aspect ratio without cropping */
+  transition: transform 0.3s ease; /* Add smooth hover effect */
+}
+
+.product-image-container:hover img {
+  transform: scale(1.05); /* Subtle zoom on hover */
 }
 </style>

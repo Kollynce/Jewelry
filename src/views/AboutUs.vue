@@ -2,16 +2,16 @@
   <div class="bg-light-primary dark:bg-dark-primary min-h-screen">
     <!-- Hero section -->
     <div class="relative overflow-hidden">
-      <div class="absolute inset-0">
+      <div class="absolute inset-0 fade-in">
         <img
-          src="/public/images/Neeon Moon 1.jpeg"
+          src="/images/Neeon Moon 1.jpeg"
           alt="Jewelry crafting"
           class="h-full w-full object-cover object-center"
         />
         <div class="absolute inset-0 bg-gray-900 opacity-60"></div>
       </div>
       <div class="relative px-6 py-32 sm:py-40 lg:px-8">
-        <div class="mx-auto max-w-2xl text-center">
+        <div class="mx-auto max-w-2xl text-center slide-up">
           <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">About Beabed Art</h1>
           <p class="mt-6 text-lg leading-8 text-white">Crafting uniquely beautiful jewelry to celebrate life's special moments</p>
         </div>
@@ -22,7 +22,7 @@
     <div class="overflow-hidden bg-light-secondary dark:bg-dark-secondary py-24 sm:py-32">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          <div class="lg:pr-8 lg:pt-4">
+          <div class="lg:pr-8 lg:pt-4 slide-up" style="animation-delay: 0.3s">
             <div class="lg:max-w-lg">
               <h2 class="text-base font-semibold leading-7 text-accent-primary">Our Story</h2>
               <p class="mt-2 text-3xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl">Handcrafted with passion</p>
@@ -40,7 +40,8 @@
           <img
             src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?ixlib=rb-4.0.3&auto=format&fit=crop&w=987&q=80"
             alt="Jewelry making process"
-            class="w-[48rem] max-h-[30rem] object-cover rounded-xl shadow-xl ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700 sm:w-[57rem] md:-ml-4 lg:-ml-0"
+            class="slide-in-right w-[48rem] max-h-[30rem] object-cover rounded-xl shadow-xl ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700 sm:w-[57rem] md:-ml-4 lg:-ml-0"
+            style="animation-delay: 0.6s"
             width="2432"
             height="1442"
           />
@@ -51,7 +52,7 @@
     <!-- Values section -->
     <div class="bg-light-primary dark:bg-dark-primary py-24 sm:py-32">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl lg:text-center">
+        <div class="mx-auto max-w-2xl lg:text-center slide-up" style="animation-delay: 0.3s">
           <h2 class="text-base font-semibold leading-7 text-accent-primary">Our Values</h2>
           <p class="mt-2 text-3xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl">
             What guides our craft
@@ -62,7 +63,10 @@
         </div>
         <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
           <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-            <div v-for="(value, index) in values" :key="index" class="relative pl-16">
+            <div v-for="(value, index) in values" 
+                 :key="index" 
+                 class="relative pl-16 stagger-item" 
+                 :style="{ animationDelay: `${0.3 + index * 0.2}s` }">
               <dt class="text-base font-semibold leading-7 text-light-text-primary dark:text-dark-text-primary">
                 <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary">
                   <component :is="value.icon" class="h-6 w-6 text-light-text-primary dark:text-dark-text-primary" />
@@ -81,14 +85,17 @@
     <!-- Team section -->
     <div class="bg-light-secondary dark:bg-dark-secondary py-24 sm:py-32">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl lg:mx-0">
+        <div class="mx-auto max-w-2xl lg:mx-0 slide-up" style="animation-delay: 0.3s">
           <h2 class="text-3xl font-bold tracking-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl">Our Team</h2>
           <p class="mt-6 text-lg leading-8 text-light-text-secondary dark:text-dark-text-secondary">
             Meet the creative minds and skilled hands behind every Beabed Art creation.
           </p>
         </div>
         <ul role="list" class="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          <li v-for="member in team" :key="member.name" class="group">
+          <li v-for="(member, index) in team" 
+              :key="member.name" 
+              class="group stagger-item" 
+              :style="{ animationDelay: `${0.5 + index * 0.2}s` }">
             <img :class="['aspect-[3/2] w-full rounded-2xl object-cover transition-all duration-300 group-hover:opacity-90', 
               'ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700']" 
               :src="member.image" :alt="member.name" />
@@ -105,7 +112,7 @@
     <!-- Call to action section -->
     <div class="bg-light-primary dark:bg-dark-primary">
       <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
-        <div class="relative isolate overflow-hidden bg-accent-primary px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
+        <div class="relative isolate overflow-hidden bg-accent-primary px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0 fade-in" style="animation-delay: 0.3s">
           <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0" aria-hidden="true">
             <circle cx="512" cy="512" r="512" fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fill-opacity="0.7" />
             <defs>
@@ -136,7 +143,7 @@
               class="w-[48rem] max-h-[30rem] object-cover rounded-xl shadow-xl 
                 ring-1 ring-light-neutral-300 dark:ring-dark-neutral-700 
                 sm:w-[57rem] md:-ml-4 lg:-ml-0" 
-              src="/public/images/Golden black.jpeg" 
+              src="/images/Golden black.jpeg" 
               alt="Jewelry workshop" />
           </div>
         </div>
@@ -148,6 +155,26 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { defineComponent } from 'vue';
+import { onMounted } from 'vue';
+
+// Add intersection observer to handle animations
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.visibility = 'visible';
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  // Observe all animated elements
+  document.querySelectorAll('.fade-in, .slide-up, .slide-in-right, .stagger-item').forEach(el => {
+    el.style.visibility = 'hidden';
+    observer.observe(el);
+  });
+});
 
 // Values data
 const values = [
@@ -225,5 +252,54 @@ const team = [
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.stagger-item {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 </style>

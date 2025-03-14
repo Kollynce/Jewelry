@@ -83,7 +83,7 @@
             <div class="ml-4 flex lg:ml-0">
               <RouterLink to="/" class="inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:rounded-md">
                 <span class="sr-only">Beabed Art</span>
-                <h1 class="text-2xl font-bold text-light-text-primary dark:text-dark-text-primary">Beabed Art</h1>
+                <img src="../../../public/images/sticky.PNG" alt="Beabed Art Logo" class="h-8 w-auto" />
               </RouterLink>
             </div>
 
