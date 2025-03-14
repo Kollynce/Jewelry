@@ -5,7 +5,7 @@
       v-if="animatingItem" 
       class="cart-animation fixed pointer-events-none z-50" 
       ref="cartAnimationEl"
-      :style="{ backgroundImage: `url(${animatingItem?.image || animatingItem?.imageUrl || './images/no-image.jpg'})` }">
+      :style="{ backgroundImage: `url(${animatingItem?.image || animatingItem?.imageUrl || '/images/no-image.jpg'})` }">
     </div>
     
     <!-- Hero Section -->
@@ -344,7 +344,7 @@ import { formatCurrency } from '@/utils/currency'
 
 // Update utility function to process image URLs
 const processImageUrl = (url) => {
-  if (!url) return './images/no-image.jpg'; // Changed to relative path
+  if (!url) return '/images/no-image.jpg';
   
   // Handle base64 images with the incorrect prefix
   if (typeof url === 'string' && url.startsWith('base64://')) {
@@ -356,9 +356,9 @@ const processImageUrl = (url) => {
     return url;
   }
   
-  // For local images, ensure they use relative paths
-  if (typeof url === 'string' && url.startsWith('/')) {
-    return '.' + url;
+  // For local images in public directory, ensure they use absolute paths
+  if (typeof url === 'string' && (url.startsWith('./') || url.startsWith('../'))) {
+    return url.replace(/^\.\/|^\.\.\//, '/');
   }
   
   // For normal URLs
