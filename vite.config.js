@@ -11,5 +11,13 @@ export default defineConfig({
       'vue': 'vue/dist/vue.esm-bundler.js'
     }
   },
-  assetsInclude: ['**/*.PNG'],  // Add this line to handle PNG files
+  build: {
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
+  assetsInclude: ['**/*.{PNG,jpeg,jpg,svg,gif}']
 })
