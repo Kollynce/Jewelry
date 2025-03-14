@@ -7,9 +7,20 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      'vue': 'vue/dist/vue.esm-bundler.js'
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  assetsInclude: ['**/*.PNG'] // Add support for PNG files
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url))
+      }
+    }
+  },
+  assetsInclude: ['**/*.{png,jpg,jpeg,PNG,JPG,JPEG,gif,svg}'],
+  optimizeDeps: {
+    include: ['vue']
+  }
 })
