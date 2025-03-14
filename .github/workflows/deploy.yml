@@ -30,7 +30,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build the Vue3 app
         run: npm run build
@@ -41,7 +41,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: dist
+          path: ./dist
 
   deploy:
     environment:
