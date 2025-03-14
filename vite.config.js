@@ -11,11 +11,16 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
     rollupOptions: {
-      output: {
-        manualChunks: undefined
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url))
       }
     }
   },
-  assetsInclude: ['**/*.{png,jpg,jpeg,PNG,JPG,JPEG,gif,svg}']
+  assetsInclude: ['**/*.{png,jpg,jpeg,PNG,JPG,JPEG,gif,svg}'],
+  optimizeDeps: {
+    include: ['vue']
+  }
 })
