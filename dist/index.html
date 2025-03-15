@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewelry Shop</title>
+    <script>
+      // Handle redirect from 404.html
+      (function() {
+        const redirect = sessionStorage.getItem('redirect');
+        if (redirect && redirect !== location.pathname) {
+          sessionStorage.removeItem('redirect');
+          const url = new URL(location.href);
+          const searchParams = new URLSearchParams(url.search);
+          searchParams.delete('p');
+          history.replaceState(null, null, 
+            location.pathname.replace(/\/$/, '') + (redirect ? '/' + redirect : '') + 
+            (searchParams.toString() ? '?' + searchParams.toString() : '')
+          );
+        }
+      })();
+    </script>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/Jewelry/assets/index-dP2aHmky.js"></script>
+    <link rel="stylesheet" crossorigin href="/Jewelry/assets/index-BPb_EU7u.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
