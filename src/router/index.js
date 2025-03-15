@@ -6,7 +6,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/Home.vue') // Dynamic import
+    component: () => import('../views/HomeView.vue') // Dynamic import
   },
   {
     path: '/products',
@@ -48,7 +48,7 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    component: () => import('../views/About.vue') // Dynamic import
+    component: () => import('../views/AboutUS.vue') // Dynamic import
   },
   {
     path: '/contact',
