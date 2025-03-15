@@ -1,100 +1,102 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '../stores/auth'
 
+// Replace static imports with dynamic imports
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('../views/Home.vue') // Dynamic import
+  },
+  {
+    path: '/products',
+    name: 'products',
+    component: () => import('../views/ProductsView.vue')
+  },
+  {
+    path: '/product/:id',
+    name: 'product-detail',
+    component: () => import('../views/ProductDetailView.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/RegisterView.vue')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: () => import('../views/AccountView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('../views/CartView.vue')
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: () => import('../views/CheckoutView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue') // Dynamic import
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: () => import('../views/ContactView.vue')
+  },
+  // Admin Routes
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/AdminDashboard.vue'),
+    meta: { requiresAuth: true, isAdmin: true }
+  },
+  {
+    path: '/admin/products',
+    name: 'admin-products',
+    component: () => import('../views/AdminProductsView.vue'),
+    meta: { requiresAuth: true, isAdmin: true }
+  },
+  {
+    path: '/admin/products/new',
+    name: 'admin-product-new',
+    component: () => import('../views/AdminProductForm.vue'),
+    meta: { requiresAuth: true, isAdmin: true }
+  },
+  {
+    path: '/admin/products/edit/:id',
+    name: 'admin-product-edit',
+    component: () => import('../views/AdminProductForm.vue'),
+    meta: { requiresAuth: true, isAdmin: true }
+  },
+  {
+    path: '/admin/orders',
+    name: 'admin-orders',
+    component: () => import('../views/AdminOrders.vue'),
+    meta: { requiresAuth: true, isAdmin: true }
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('../views/AdminUsersView.vue'),
+    meta: { requiresAuth: true, isAdmin: true }
+  }
+]
+
 const router = createRouter({
-  history: createWebHistory('/Jewelry/'),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/products',
-      name: 'products',
-      component: () => import('../views/ProductsView.vue')
-    },
-    {
-      path: '/product/:id',
-      name: 'product-detail',
-      component: () => import('../views/ProductDetailView.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginView.vue')
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import('../views/RegisterView.vue')
-    },
-    {
-      path: '/account',
-      name: 'account',
-      component: () => import('../views/AccountView.vue'),
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/cart',
-      name: 'cart',
-      component: () => import('../views/CartView.vue')
-    },
-    {
-      path: '/checkout',
-      name: 'checkout',
-      component: () => import('../views/CheckoutView.vue'),
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutUs.vue')
-    },
-    {
-      path: '/contact',
-      name: 'contact',
-      component: () => import('../views/ContactView.vue')
-    },
-    // Admin Routes
-    {
-      path: '/admin',
-      name: 'admin',
-      component: () => import('../views/AdminDashboard.vue'),
-      meta: { requiresAuth: true, isAdmin: true }
-    },
-    {
-      path: '/admin/products',
-      name: 'admin-products',
-      component: () => import('../views/AdminProductsView.vue'),
-      meta: { requiresAuth: true, isAdmin: true }
-    },
-    {
-      path: '/admin/products/new',
-      name: 'admin-product-new',
-      component: () => import('../views/AdminProductForm.vue'),
-      meta: { requiresAuth: true, isAdmin: true }
-    },
-    {
-      path: '/admin/products/edit/:id',
-      name: 'admin-product-edit',
-      component: () => import('../views/AdminProductForm.vue'),
-      meta: { requiresAuth: true, isAdmin: true }
-    },
-    {
-      path: '/admin/orders',
-      name: 'admin-orders',
-      component: () => import('../views/AdminOrders.vue'),
-      meta: { requiresAuth: true, isAdmin: true }
-    },
-    {
-      path: '/admin/users',
-      name: 'admin-users',
-      component: () => import('../views/AdminUsersView.vue'),
-      meta: { requiresAuth: true, isAdmin: true }
-    }
-  ]
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes
 })
 
 // Navigation guard for protected routes
